@@ -8,7 +8,7 @@
             <div class="row md-n3">
                 <div class="col col-sm-12 col-md-6  px-md-3 gy-3">
                     <label for="inputAddress">Cedula</label>
-                    <input type="text" class="form-control" placeholder="Cedula" name="document_id">
+                    <input type="number" class="form-control" placeholder="Cedula" name="document_id">
                 </div>
             </div>
             <div class="row md-n3">
@@ -37,14 +37,24 @@
                 </div>
                 <div class="col col-xs-12 col-sm-12 col-md-6  col-lg-2 px-md-6 px-lg-3 gy-3">
                     <label for="inputAddress">Genero</label>
-                    <input type="text" class="form-control" placeholder="Genero" name="gender">
+                    <select class="form-select" aria-label="Default select example" name="gender">
+                      <option selected>Genero</option>
+                      <option value="Hombre">Hombre</option>
+                      <option value="Mujer">Mujer</option>
+                    </select>
                 </div>
             </div>
 
             <div class="row  md-n3">
                 <div class="col col-xs-12 col-sm-12 col-md-3 px-md-3 gy-3">
                     <label for="inputAddress">Municipio</label>
-                    <input type="text" class="form-control" placeholder="Municipio" name="municipio">
+                    <select class="form-select" aria-label="Default select example" name="municipio">
+                      <option selected>Municipio</option>
+                      <option value="Bucaramanga">Bucaramanga</option>
+                      <option value="Floridablanca">Floridablanca</option>
+                      <option value="Piedecuesta">Piedecuesta</option>
+                      <option value="Giron">Giron</option>
+                    </select>
                 </div>
 
                 <div class="col col-xs-12 col-sm-12 col-md-3 px-md-3 gy-3">
