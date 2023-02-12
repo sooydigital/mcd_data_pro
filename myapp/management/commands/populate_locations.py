@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from myapp.models import Municipio, Barrio, Comuna
+from myapp.models import Municipio, Barrio, Departamento
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -288,19 +288,29 @@ class Command(BaseCommand):
             }
         }
 
+        departamento_name = 'SANTANDER'
+        departamento_object = None
+
+        if not Departamento.objects.filter(name=departamento_name).exists():
+            departamento_object = Departamento(name=departamento_name)
+            departamento_object.save()
+
+        else:
+            departamento_object = Departamento.objects.filter(name=departamento_name).first()
+
         for municipio, comunas in locations.items():
             # create municipo
-            if not Municipio.objects.filter(name=municipio).exists():
+            municipio_object = None
+            if not Municipio.objects.filter(name=municipio, departamento__name=departamento_name).exists():
                 print(">>> Municipio with label: '{}' created".format(municipio))
-                municipio_object = Municipio(name=municipio)
+                municipio_object = Municipio(name=municipio, departamento=departamento_object)
                 municipio_object.save()
-                for comuna, barrios in comunas.items():
-                    if not Comuna.objects.filter(name=comuna).exists():
-                        print(">>>> Comuna with label: '{}' created".format(comuna))
-                        comuna_object = Comuna(municipio=municipio_object, name=comuna)
-                        comuna_object.save()
-                        for barrio in barrios:
-                            if not Barrio.objects.filter(name=barrio, comuna__municipio__name=municipio).exists():
-                                print(">>>>> Barrio with label: '{}' created".format(barrio))
-                                barrio_object = Barrio(comuna=comuna_object, name=barrio)
-                                barrio_object.save()
+            else:
+                municipio_object = Municipio.objects.filter(name=municipio).first()
+
+            for comuna, barrios in comunas.items():
+                for barrio in barrios:
+                    if not Barrio.objects.filter(name=barrio, municipio__name=municipio).exists():
+                        print(">>>>> Barrio with label: '{}' created".format(barrio))
+                        barrio_object = Barrio(municipio=municipio_object, name=barrio)
+                        barrio_object.save()

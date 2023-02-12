@@ -8,7 +8,7 @@ from django.contrib.auth.models import AbstractUser
 class Departamento(models.Model):
     name = models.CharField(
         max_length=1024,
-        verbose_name="nombre del municipio"
+        verbose_name="nombre del departamento"
     )
     slug = models.SlugField()
 
