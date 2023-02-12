@@ -138,7 +138,7 @@ class CustomUser(models.Model):
 
 
 class Votante(models.Model):
-    codigo = models.CharField(
+    document_id = models.CharField(
         max_length=20,
         verbose_name="Cedula",
         unique=True
