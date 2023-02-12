@@ -8,7 +8,9 @@ from django.urls import path
 app_name = "app"
 urlpatterns = [
     path('', views.home, name='home'),
-    path('formulario', views.formulario, name='formulario'),
+    path('summary', views.summary, name='summary'),
+    path('insert_votante', views.insert_votante, name='insert_votante'),
+    path('geomapa', views.geomapa, name='geomapa'),
     # path('api/dates_records', views.get_date_records, name='get_date_records'),
     # path('api/barrio_by_date/<str:date>', views.get_barrios_by_date, name='barrios_date'),
     # path('api/colaboradores_by_date_and_barrio/<str:date>/<int:barrio>', views.colaboradores_by_date_and_barrio, name='colaboradores_by_date_and_barrio'),

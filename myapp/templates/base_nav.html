@@ -19,9 +19,18 @@
             </ul>
 
             <ul class="navbar-nav me-auto">
-                <a class="navbar-brand" href="#">Jovany Riaño</a>
-                <a class="navbar-brand" href="#">GIRON</a>
-                <a class="navbar-brand" href="#">Oscar Reyes</a>
+                <a class="navbar-brand px-md-3" href="#">
+                    Candidato:
+                    <br>
+                    Jovany Riaño
+                </a>
+                <a class="navbar-brand px-md-3" href="#">
+                                        Municipio:
+                    <br>
+                    GIRON</a>
+                <a class="navbar-brand px-md-3" href="#">
+                                        Nombre:
+                    <br>Oscar Reyes</a>
 
             </ul>
 
@@ -31,10 +40,7 @@
 
                     <li class="nav-item">
                         <div class="nav-link text-center">
-                            <a class="text-decoration-none text-white"
-                               href="{% url 'app:home' %}">
-                                {{ request.user.first_name }} {{ request.user.last_name }}
-                            </a>
+
                             {% if request.user|has_role:'ENCUESTADOR' %}
                                 <br><i class="fa fa-4x"
                                        aria-hidden="true"> {{ request.user.pollresponse_set.all |length }} </i>

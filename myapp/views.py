@@ -24,12 +24,34 @@ def home(request):
 
 # Create your views here.
 @login_required
-def formulario(request):
+def summary(request):
     context = {}
 
     return render(
         request,
-        'dashboard.html',
+        'summary.html',
+        context
+    )
+
+# Create your views here.
+@login_required
+def insert_votante(request):
+    context = {}
+
+    return render(
+        request,
+        'insert_votante.html',
+        context
+    )
+
+# Create your views here.
+@login_required
+def geomapa(request):
+    context = {}
+
+    return render(
+        request,
+        'geomapa.html',
         context
     )
 

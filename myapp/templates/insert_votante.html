@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %} {% load permissions_tags %}
+{% block content %}
+    <br><br>
+    <div class="container mt-3">
+        <h2>Ingresar Votante</h2>
+        <form>
+            <div class="row mx-md-n3">
+                <div class="col col-sm-6  px-md-3">
+                    <label for="inputAddress">Cedula</label>
+                    <input type="text" class="form-control" placeholder="Cedula" name="document_id">
+                </div>
+            </div>
+            <br>
+            <div class="row mx-md-n3">
+                <div class="col px-md-3">
+                    <label for="inputAddress">Nombre</label>
+                    <input type="text" class="form-control" placeholder="Nombre" name="first_name">
+                </div>
+                <div class="col px-md-3">
+                    <label for="inputAddress">Apellido</label>
+                    <input type="text" class="form-control" placeholder="Apellido" name="last_name">
+                </div>
+            </div>
+            <br>
+
+            <div class="row  mx-md-n3">
+                <div class="col  px-md-3">
+                    <label for="inputAddress">Email</label>
+                    <input type="email" class="form-control" placeholder="Correo Electrónico" name="email">
+                </div>
+                <div class="col  px-md-3">
+                    <label for="inputAddress">Celular</label>
+                    <input type="number" class="form-control" placeholder="Celular" name="mobile_phone">
+                </div>
+                <div class="col  col-sm-2   px-md-3">
+                    <label for="inputAddress">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" placeholder="DD/MM/AAAA" name="birdthday">
+                </div>
+                <div class="col  col-sm-2 ">
+                    <label for="inputAddress">Genero</label>
+                    <input type="text" class="form-control" placeholder="Genero" name="gender">
+                </div>
+            </div>
+            <br>
+            <div class="row  mx-md-n3">
+
+                <div class="col  px-md-3">
+                    <label for="inputAddress">Municipio</label>
+                    <input type="text" class="form-control" placeholder="Municipio" name="municipio">
+                </div>
+
+                <div class="col  px-md-3">
+                    <label for="inputAddress">Barrio</label>
+                    <input type="text" class="form-control" placeholder="Barrio" name="barrio">
+                </div>
+
+                <div class="col  px-md-3">
+                    <label for="inputAddress">Dirección</label>
+                    <input type="text" class="form-control" placeholder="Dirección" name="address">
+                </div>
+            </div>
+            <br>
+            <div class="d-flex justify-content-center">
+
+                <button type="button" class="btn btn-success">Guardar</button>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
