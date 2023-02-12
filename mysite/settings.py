@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'myapp.apps.MyappConfig',
     'corsheaders',
     'rest_framework',
-    'import_export',
+    # 'import_export',
 ]
 
 MIDDLEWARE = [

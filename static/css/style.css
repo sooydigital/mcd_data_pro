@@ -1,0 +1,219 @@
+
+body {
+    background-color: white;
+}
+
+@font-face {
+    font-family: 'poppins_font';
+    src: url("/static/fonts/PoppinsRegular.ttf");
+
+}
+
+.font_poppins {
+    font-family: 'poppins_font';
+}
+*{
+    font-family: 'poppins_font';
+}
+
+
+.list-group-modal {
+    max-height: 300px;
+    margin-bottom: 10px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.principal_color {
+    background-color: #47B5FF !important;
+}
+
+.verde_color {
+    background-color: #3b933f !important;
+}
+
+.principal_dos_color {
+    background-color: #0047BA !important;
+}
+
+
+.secondary_color {
+    --bs-table-bg: #FFFF00 !important;
+}
+
+.secondary_color_text {
+    color: #808002 !important;
+}
+
+
+.third_color_text {
+    color: #E74C3C;
+}
+
+.verde_color_text {
+    color: #109a23;
+}
+
+.fcc-btn {
+        background-color: #109a23;
+
+    /*background-color: #0047BA;*/
+    /*transition: background-color 2s ease-out 100ms;*/
+    color: white;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+
+    padding: 50px 50px 50px 50px;
+    text-decoration: none;
+    vertical-align: middle;
+    border-radius: 10px;
+
+}
+
+
+.fcc-btn:hover {
+    background-color: #1c7b34;
+    color: white;
+}
+
+.card_municipio {
+    font-size: 30px;
+    color: white;
+    background-color: #109a73;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card_municipio:hover {
+    background-color: #1c7b6d;
+    color: white;
+}
+
+.card_comuna {
+    font-size: 30px;
+    color: white;
+    background-color: #7366f5;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card_comuna:hover {
+    background-color: #4346f8;
+    color: white;
+}
+
+.card_barrio {
+    font-size: 30px;
+    color: white;
+    background-color: #db66f5;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card_barrio:hover {
+    background-color: #b343f8;
+    color: white;
+}
+
+.card_gender {
+    font-size: 30px;
+    color: white;
+    background-color: #53c9ad;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card_gender:hover {
+    background-color: #35ad97;
+    color: white;
+}
+
+.card_range_opt {
+    font-size: 30px;
+    color: white;
+    background-color: #5396c9;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card_range_opt:hover {
+    background-color: #357dad;
+    color: white;
+}
+
+.card_encuesta {
+    font-size: 30px;
+    color: white;
+    background-color: #c97853;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.card_encuesta:hover {
+    background-color: #ad7335;
+    color: white;
+}
+
+.card_gray {
+
+    font-size: 30px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color: #9e9e9e;
+    color: white;
+}
+
+.nav-link {
+    color: white;
+}
+
+.card_respuesta {
+    border-radius: 5px;
+    font-size: 20px;
+    color: white;
+    background-color: #6598fd;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 100px;
+    padding-left: 20px;
+}
+
+.card_respuesta:hover  {
+    background-color: #327eff;
+}
+
+.respuesta_form:checked+label {
+        background-color: #071b40;
+
+}
+input[type=radio]{
+    opacity: 0;
+}
+
+.card_pregunta {
+    border-radius: 25px;
+    font-size: 30px;
+    color: white;
+    background-color: #3b6ff8;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+}
+
+.img-question {
+    height: 300px;
+    width: 300px;
+    border-radius: 10%;
+}
+
+.breadcrumb-text {
+    font-size: 26px !important;
+}
+
+
+.count_ditribution {
+    font-size: 30px !important;
+}
