@@ -54,11 +54,10 @@ body {
     color: #109a23;
 }
 
-.fcc-btn {
-        background-color: #109a23;
 
-    /*background-color: #0047BA;*/
-    /*transition: background-color 2s ease-out 100ms;*/
+.home-action-btn {
+    
+    background-color: #0047BA;
     color: white;
     text-align: center;
     font-size: 30px;
@@ -68,12 +67,14 @@ body {
     text-decoration: none;
     vertical-align: middle;
     border-radius: 10px;
+    margin-bottom: 10px;
+    min-width: 400px;
 
 }
 
 
-.fcc-btn:hover {
-    background-color: #1c7b34;
+.home-action-btn:hover {
+    background-color: #0159e7;
     color: white;
 }
 

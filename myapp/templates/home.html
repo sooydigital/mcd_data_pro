@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %} {% load permissions_tags %}
+{% block content %}
+    <br><br>
+    <div class="row">
+        {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ENTREVISTADOR' %}
+
+        <div class="d-flex justify-content-center align-items-center">
+            <a href="{% url 'app:home' %}" class="home-action-btn text-center ">
+                Agregar Votante
+            </a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a href="{% url 'app:home' %}" class="home-action-btn text-center ">
+                Como Vamos
+            </a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a href="{% url 'app:home' %}" class="home-action-btn text-center ">
+                Mapa
+            </a>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <a href="{% url 'app:votantes_download' %}" class="home-action-btn text-center ">
+                Descarga
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+{% endblock %}

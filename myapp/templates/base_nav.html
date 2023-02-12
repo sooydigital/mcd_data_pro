@@ -1,0 +1,66 @@
+{% load permissions_tags %} {% load static %}
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark principal_color">
+    <div class="container-fluid">
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mynavbar">
+              <!-- Centered link -->
+
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link text-center" href="{% url 'app:home' %}">
+                        <i class="fa fa-home fa-4x" aria-hidden="true"></i> <br>
+                        Inicio
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav me-auto">
+                <a class="navbar-brand" href="#">Jovany Riaño</a>
+                <a class="navbar-brand" href="#">GIRON</a>
+                <a class="navbar-brand" href="#">Oscar Reyes</a>
+
+            </ul>
+
+
+            <div class=" ">
+                <ul class="navbar-nav me-auto">
+
+                    <li class="nav-item">
+                        <div class="nav-link text-center">
+                            <a class="text-decoration-none text-white"
+                               href="{% url 'app:home' %}">
+                                {{ request.user.first_name }} {{ request.user.last_name }}
+                            </a>
+                            {% if request.user|has_role:'ENCUESTADOR' %}
+                                <br><i class="fa fa-4x"
+                                       aria-hidden="true"> {{ request.user.pollresponse_set.all |length }} </i>
+                            {% endif %}
+
+
+                        </div>
+                    </li>
+                    {% if request.user|has_role:'SUPER_ADMIN' %}
+                        <li class="nav-item">
+
+                            <a class="nav-link text-center" href="{% url 'admin:index' %}">
+                                Admin <br> <i class="fa fa-4x fa-user-circle" aria-hidden="true"></i>
+                            </a>
+                        </li>
+
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <a class="nav-link text-center" href="{% url 'logout' %}">
+                            Salir <br> <i class="fa fa-4x fa-sign-out" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</nav>

@@ -7,7 +7,7 @@ from django.urls import path
 
 app_name = "app"
 urlpatterns = [
-    path('', views.dashboard, name='dashboard'),
+    path('', views.home, name='home'),
     path('formulario', views.formulario, name='formulario'),
     # path('api/dates_records', views.get_date_records, name='get_date_records'),
     # path('api/barrio_by_date/<str:date>', views.get_barrios_by_date, name='barrios_date'),
@@ -21,9 +21,9 @@ urlpatterns = [
     # path('api/get_all_cc_registered/', views.get_all_cc_registered, name='get_all_cc_registered'),
     # path('api/', include(router.urls)),
     # path('test/', TemplateView.as_view(template_name="modal_form.html")),
-    # path(
-    #     route='acciones_bloque/registros/download',
-    #     view=views.registros_download,
-    #     name='registros_download'
-    # ),
+    path(
+        route='acciones_bloque/votantes/download',
+        view=views.votantes_download,
+        name='votantes_download'
+    ),
 ]

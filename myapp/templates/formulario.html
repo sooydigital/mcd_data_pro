@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %} {% load permissions_tags %}
+{% block content %}
+    <br><br>
+    <div class="row">
+        {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ENTREVISTADOR' %}
+
+            <div class="d-flex justify-content-center align-items-center">
+                <a href="{% url 'app:home' %}" class="fcc-btn text-center font_poppins ">
+                    Nueva
+                    Encuesta
+                </a>
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}

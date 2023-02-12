@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-
+from myapp.download_controller import DownloadController
 # Create your views here.
 
 def has_role(user, names):
@@ -13,12 +13,12 @@ def has_role(user, names):
 
 # Create your views here.
 @login_required
-def dashboard(request):
+def home(request):
     context = {}
 
     return render(
         request,
-        'dashboard.html',
+        'home.html',
         context
     )
 
@@ -32,3 +32,8 @@ def formulario(request):
         'dashboard.html',
         context
     )
+
+@login_required
+def votantes_download(request):
+    response = DownloadController.document_download()
+    return response
