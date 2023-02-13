@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from myapp.download_controller import DownloadController
+
+
 # Create your views here.
 
 def has_role(user, names):
@@ -22,6 +24,7 @@ def home(request):
         context
     )
 
+
 # Create your views here.
 @login_required
 def summary(request):
@@ -32,6 +35,7 @@ def summary(request):
         'summary.html',
         context
     )
+
 
 # Create your views here.
 @login_required
@@ -44,6 +48,7 @@ def insert_votante(request):
         context
     )
 
+
 # Create your views here.
 @login_required
 def geomapa(request):
@@ -54,6 +59,7 @@ def geomapa(request):
         'geomapa.html',
         context
     )
+
 
 @login_required
 def votantes_download(request):
