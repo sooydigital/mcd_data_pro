@@ -95,10 +95,12 @@ class CustomUserAdmin(admin.ModelAdmin):
         return obj.full_name()
 
 class VotanteAdmin(admin.ModelAdmin):
-    list_display = ('document_id', 'status', 'custom_user')
+    list_display = ('document_id', 'full_name', 'status', 'custom_user')
     search_fields = ('document_id', )
     list_filter = ('status', 'custom_user')
 
+    def full_name(self, obj):
+        return obj.full_name()
 
 class VotanteProfileAdmin(admin.ModelAdmin):
     list_display = ('votante', 'first_name', 'last_name', 'email', 'mobile_phone', 'age', 'birthday', 'gender', 'address', 'barrio', 'municipio' )

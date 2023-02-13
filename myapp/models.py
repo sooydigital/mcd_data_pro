@@ -182,6 +182,13 @@ class Votante(models.Model):
     def __str__(self):
         return '{}'.format(self.document_id)
 
+    def full_name(self):
+        profile = self.votanteprofile_set.first()
+        if profile:
+            return '{} {}'.format(profile.first_name, profile.last_name)
+        return ''
+
+
 class VotanteProfile(models.Model):
     votante = models.ForeignKey(
         Votante,
