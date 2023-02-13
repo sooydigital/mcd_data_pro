@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from myapp.download_controller import DownloadController
+from myapp.controller import Controller
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -65,3 +67,13 @@ def geomapa(request):
 def votantes_download(request):
     response = DownloadController.document_download()
     return response
+
+
+@login_required
+def validate_cc(request, document_id):
+    document_validation = Controller.validate_document_id(document_id)
+
+    response = {
+        "data": document_validation
+    }
+    return JsonResponse(response)
