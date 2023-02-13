@@ -18,21 +18,23 @@
                 </li>
             </ul>
 
-            <ul class="navbar-nav me-auto">
-                <a class="navbar-brand px-md-3" href="#">
-                    Candidato:
-                    <br>
-                    Jovany Riaño
-                </a>
-                <a class="navbar-brand px-md-3" href="#">
-                    Municipio:
-                    <br>
-                    GIRON</a>
-                <a class="navbar-brand px-md-3" href="#">
-                    Nombre:
-                    <br>Oscar Reyes</a>
-
-            </ul>
+            {% if request.user|has_role:'ALIMENTADOR' %}
+                <ul class="navbar-nav me-auto">
+                    <a class="navbar-brand px-md-3" href="#">
+                        Candidato:
+                        <br>
+                        {{ request.user.customuser_set.first.super_visor.user.first_name }} {{ request.user.customuser_set.first.super_visor.user.last_name }}
+                    </a>
+                    <a class="navbar-brand px-md-3" href="#">
+                        Municipio:
+                        <br>
+{#                        {{ request.user.customuser_set.first().municipio.name}}#}
+                    </a>
+                    <a class="navbar-brand px-md-3" href="#">
+                        Nombre:
+                        <br>{{ request.user.first_name }} {{ request.user.last_name }}</a>
+                </ul>
+            {% endif %}
 
 
             <div class=" ">

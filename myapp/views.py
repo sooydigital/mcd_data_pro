@@ -45,9 +45,11 @@ def summary(request):
 def insert_votante(request):
     context = {}
     if request.method == 'POST':
-        DataController.store_reponses(dict(request.POST), request.user)
-        messages.success(request, 'La encuesta se a guardado exitosamente')
-
+        respuesta = DataController.store_reponses(dict(request.POST), request.user)
+        if type(respuesta) == str:
+            messages.error(request, respuesta)
+        else:
+            messages.success(request, 'el registro se a guardado exitosamente')
         return redirect('app:home')
 
 

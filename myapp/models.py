@@ -135,6 +135,12 @@ class CustomUser(models.Model):
         null=True,
         on_delete=models.CASCADE
     )
+    municipio = models.ForeignKey(
+        Municipio,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return '{} {}'.format(self.user.first_name, self.user.last_name)
@@ -157,13 +163,16 @@ class Votante(models.Model):
         max_length=10,
         choices=STATUS_CHOICES,
     )
-    
+
     custom_user = models.ForeignKey(
         CustomUser,
         blank=True,
         null=True,
         on_delete=models.CASCADE
     )
+
+    def __str__(self):
+        return '{}'.format(self.document_id)
 
 class VotanteProfile(models.Model):
     votante = models.ForeignKey(
