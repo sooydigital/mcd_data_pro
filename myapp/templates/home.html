@@ -3,7 +3,7 @@
 {% block content %}
     <br><br>
     <div class="row">
-        {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ENTREVISTADOR' %}
+        {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ALIMENTADOR' %}
 
         <div class="d-flex justify-content-center align-items-center">
             <a href="{% url 'app:insert_votante' %}" class="home-action-btn text-center ">

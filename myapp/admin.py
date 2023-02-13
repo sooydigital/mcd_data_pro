@@ -29,9 +29,9 @@ class PuestoVotacionAdmin(admin.ModelAdmin):
 
 
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('document_id',  'user', 'code', 'super_visor')
+    list_display = ('document_id',  'user', 'code', 'municipio', 'super_visor')
     search_fields = ('document_id', 'code')
-    list_filter = ('super_visor',)
+    list_filter = ('municipio', 'super_visor',)
 
 
 class VotanteAdmin(admin.ModelAdmin):

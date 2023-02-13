@@ -131,12 +131,15 @@ class Command(BaseCommand):
                     if '_' in code:
                         sub_code = code.split('_')[0]
                         super_visor = CustomUser.objects.filter(code=sub_code).first()
+                    municipio = user.get('municipio', 'BUCARAMANGA')
+                    municipio_obj = CustomUser.objects.filter(name=municipio).first()
 
                     custom_user_object = CustomUser(
                         user=user_object,
                         document_id=user.get('document_id', '000'),
                         code=code,
-                        super_visor=super_visor
+                        super_visor=super_visor,
+                        municipio_obj=municipio_obj
                     )
                     custom_user_object.save()
 

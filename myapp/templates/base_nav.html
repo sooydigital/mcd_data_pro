@@ -28,11 +28,34 @@
                     <a class="navbar-brand px-md-3" href="#">
                         Municipio:
                         <br>
-{#                        {{ request.user.customuser_set.first().municipio.name}}#}
+                        {{ request.user.customuser_set.first.municipio.name }}
                     </a>
                     <a class="navbar-brand px-md-3" href="#">
                         Nombre:
                         <br>{{ request.user.first_name }} {{ request.user.last_name }}</a>
+                </ul>
+
+            {% elif request.user|has_role:'SUPERVISOR' %}
+                 <ul class="navbar-nav me-auto">
+                    <a class="navbar-brand px-md-3" href="#">
+                        Nombre:
+                        <br>
+                        {{ request.user.first_name }} {{ request.user.last_name }}</a>
+                    </a>
+                    <a class="navbar-brand px-md-3" href="#">
+                        Municipio:
+                        <br>
+                        {{ request.user.customuser_set.first.municipio.name }}
+                    </a>
+                </ul>
+
+            {% elif request.user|has_role:'SUPER_ADMIN' %}
+                 <ul class="navbar-nav me-auto">
+                    <a class="navbar-brand px-md-3" href="#">
+                        Nombre:
+                        <br>
+                        {{ request.user.first_name }} {{ request.user.last_name }}</a>
+                    </a>
                 </ul>
             {% endif %}
 
@@ -40,17 +63,6 @@
             <div class=" ">
                 <ul class="navbar-nav me-auto">
 
-                    <li class="nav-item">
-                        <div class="nav-link text-center">
-
-                            {% if request.user|has_role:'ENCUESTADOR' %}
-                                <br><i class="fa fa-4x"
-                                       aria-hidden="true"> {{ request.user.pollresponse_set.all |length }} </i>
-                            {% endif %}
-
-
-                        </div>
-                    </li>
                     {% if request.user|has_role:'SUPER_ADMIN' %}
                         <li class="nav-item">
 
