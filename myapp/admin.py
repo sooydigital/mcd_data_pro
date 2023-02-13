@@ -35,9 +35,9 @@ class CustomUserAdmin(admin.ModelAdmin):
 
 
 class VotanteAdmin(admin.ModelAdmin):
-    list_display = ('document_id', 'status')
+    list_display = ('document_id', 'status', 'custom_user')
     search_fields = ('document_id', )
-    list_filter = ('status',)
+    list_filter = ('status', 'custom_user')
 
 
 class VotanteProfileAdmin(admin.ModelAdmin):
