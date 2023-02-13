@@ -25,6 +25,7 @@ class DownloadController():
             "DÍA",
             "MES",
             "AÑO",
+            "EDAD",
             "18 - 28",
             "29 - 44",
             "45 - 59",
@@ -41,70 +42,6 @@ class DownloadController():
             "DIRECCIÓN",
         ]
         hoja.append(encabezado)
-
-        data = [
-            "1",
-            "G01",
-            "MAC GRÉGOR HERRERA ANAYA",
-            "G01_001",
-            "ÓSCAR JESÚS REYES PEÑA",
-            "Mac Grégor",
-            "Herrera Anaya",
-            "1095933743",
-            "3002156687",
-            "Macgregorherrera@gmail.com",
-            "31",
-            "8",
-            "1993",
-            "",
-            "X",
-            "",
-            "",
-            "Hombre",
-            "Calle 49 N. 23 - 107 Apto 501",
-            "El Poblado",
-            "Girón",
-            "1095933743",
-            "SANTANDER",
-            "GIRON",
-            "COLEGIO GABRIEL GARCIA MARQUEZ",
-            "12",
-            "TRANSV 20 # 10-20",
-            ""
-        ]
-        hoja.append(data)
-
-        data = [
-            "2",
-            "G01",
-            "MAC GRÉGOR HERRERA ANAYA",
-            "G01_001",
-            "ÓSCAR JESÚS REYES PEÑA",
-            "Mac ",
-            "Herrera ",
-            "1095933732",
-            "3002156632",
-            "Macgregorherrera_1@gmail.com",
-            "31",
-            "8",
-            "1993",
-            "",
-            "X",
-            "",
-            "",
-            "Hombre",
-            "Calle 49 N. 23 - 107 Apto 501",
-            "El Poblado",
-            "Girón",
-            "1095933743",
-            "SANTANDER",
-            "GIRON",
-            "COLEGIO GABRIEL GARCIA MARQUEZ",
-            "12",
-            "TRANSV 20 # 10-20",
-            ""
-        ]
-        hoja.append(data)
 
         # TODO: check this
         votantes = data_mappings.get('votante_mapping')
@@ -131,6 +68,11 @@ class DownloadController():
             votante_profile_birthday_day = ""
             votante_profile_birthday_month = ""
             votante_profile_birthday_year = ""
+            votante_profile_age = ""
+            votante_profile_age_range_1 = ""
+            votante_profile_age_range_2 = ""
+            votante_profile_age_range_3 = ""
+            votante_profile_age_range_4 = ""
             # todo check range age
             votante_profile_gender = ""
             votante_profile_address = ""
@@ -172,7 +114,16 @@ class DownloadController():
                     votante_profile_birthday_month = birthday.month
                     votante_profile_birthday_year = birthday.year
 
-                # todo check range age
+                votante_profile_age = votante_profile_data.get('age', 0)
+                if votante_profile_age >= 18 and votante_profile_age<=28:
+                    votante_profile_age_range_1 = "X"
+                elif votante_profile_age >= 29 and votante_profile_age<=44:
+                    votante_profile_age_range_2 = "X"
+                elif votante_profile_age >= 45 and votante_profile_age<=59:
+                    votante_profile_age_range_3 = "X"
+                elif votante_profile_age >= 60:
+                    votante_profile_age_range_4 = "X"
+
                 votante_profile_gender = votante_profile_data.get('gender', "")
                 votante_profile_address = votante_profile_data.get('address', "")
                 votante_profile_barrio = votante_profile_data.get('barrio', "")
@@ -204,7 +155,11 @@ class DownloadController():
                 votante_profile_birthday_day,
                 votante_profile_birthday_month,
                 votante_profile_birthday_year,
-                "","","","", # todo check range age
+                votante_profile_age,
+                votante_profile_age_range_1,
+                votante_profile_age_range_2,
+                votante_profile_age_range_3,
+                votante_profile_age_range_4,
                 votante_profile_gender,
                 votante_profile_address,
                 votante_profile_barrio,

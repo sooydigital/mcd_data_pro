@@ -202,6 +202,7 @@ class DataController():
                 "email": votante_profile.email,
                 "mobile_phone": votante_profile.mobile_phone,
                 "birthday": votante_profile.birthday,
+                "age": votante_profile.age(),
                 "gender": votante_profile.gender,
                 "address": votante_profile.address,
                 "departamento": votante_profile.municipio.departamento.name,
