@@ -14,7 +14,7 @@
             <div class="row md-n3">
                 <div class="col col-sm-12 col-md-6  px-md-3 gy-3">
                     <label for="inputAddress">Cedula</label>
-                    <input type="number" class="form-control" placeholder="Cedula" id='input_document_id' name="document_id">
+                    <input required type="number" class="form-control" placeholder="Cedula" id='input_document_id' name="document_id">
                 </div>
                 <div class="col col-sm-12 col-md-6  px-md-3 gy-3">
                     <label for="inputAddress">Validacion</label> <br>
@@ -27,31 +27,30 @@
             <div class="row md-n3">
                 <div class="col col-sm-12 col-md-6 px-md-3 gy-3">
                     <label for="inputAddress">Nombre</label>
-                    <input type="text" class="form-control" placeholder="Nombre" name="first_name">
+                    <input required type="text" class="form-control" placeholder="Nombre" name="first_name">
                 </div>
                 <div class="col col-sm-12 col-md-6 px-md-3 gy-3">
                     <label for="inputAddress">Apellido</label>
-                    <input type="text" class="form-control" placeholder="Apellido" name="last_name">
+                    <input required type="text" class="form-control" placeholder="Apellido" name="last_name">
                 </div>
             </div>
 
             <div class="row md-n3">
                 <div class="col col-xs-12 col-sm-12 col-md-6 col-lg-5 px-md-3 gy-3">
                     <label for="inputAddress">Email</label>
-                    <input type="email" class="form-control" placeholder="Correo Electrónico" name="email">
+                    <input required type="email" class="form-control" placeholder="Correo Electrónico" name="email">
                 </div>
                 <div class="col col-xs-12 col-sm-12 col-md-6 col-lg-3 px-md-3 gy-3">
                     <label for="inputAddress">Celular</label>
-                    <input type="number" class="form-control" placeholder="Celular" name="mobile_phone">
+                    <input required type="number" class="form-control" placeholder="Celular" name="mobile_phone">
                 </div>
                 <div class="col col-xs-12 col-sm-12 col-md-6  col-lg-2 px-md-6  px-lg-3 gy-3">
                     <label for="inputAddress">F. Nacimiento</label>
-                    <input type="date" class="form-control" placeholder="DD/MM/AAAA" name="birthday">
+                    <input required type="date" class="form-control" placeholder="DD/MM/AAAA" name="birthday">
                 </div>
                 <div class="col col-xs-12 col-sm-12 col-md-6  col-lg-2 px-md-6 px-lg-3 gy-3">
                     <label for="inputAddress">Genero</label>
-                    <select class="form-select" aria-label="Default select example" name="gender">
-                        <option selected>Genero</option>
+                    <select required class="form-select" aria-label="Default select example" name="gender">
                         <option value="HOMBRE">Hombre</option>
                         <option value="MUJER">Mujer</option>
                     </select>
@@ -61,8 +60,7 @@
             <div class="row  md-n3">
                 <div class="col col-xs-12 col-sm-12 col-md-3 px-md-3 gy-3">
                     <label for="inputAddress">Municipio</label>
-                    <select class="form-select" aria-label="Default select example" id='select_municipio'  name="municipio">
-                        <option selected>Municipio</option>
+                    <select required class="form-select" aria-label="Default select example" id='select_municipio'  name="municipio">
                         <option value="BUCARAMANGA">Bucaramanga</option>
                         <option value="FLORIDABLANCA">Floridablanca</option>
                         <option value="PIEDECUESTA">Piedecuesta</option>
@@ -72,13 +70,12 @@
 
                 <div class="col col-xs-12 col-sm-12 col-md-3 px-md-3 gy-3">
                     <label for="inputAddress">Barrio</label>
-                    <select class="form-select" aria-label="Default select example" id='select_barrio' name="barrio">
-                        <option selected>Barrio</option>
+                    <select required class="form-select" aria-label="Default select example" id='select_barrio' name="barrio">
                     </select></div>
 
                 <div class="col col-xs-12 col-sm-12 col-md-6 px-md-3 gy-3">
                     <label for="inputAddress">Dirección</label>
-                    <input type="text" class="form-control" placeholder="Dirección" name="address">
+                    <input required type="text" class="form-control" placeholder="Dirección" name="address">
                 </div>
             </div>
             <br>
