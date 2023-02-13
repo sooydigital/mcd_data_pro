@@ -2,6 +2,9 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
+from tzlocal import get_localzone
+from datetime import datetime
+from dateutil import relativedelta as rdelta
 
 
 # Create your models here.
@@ -113,6 +116,8 @@ class PuestoVotacion(models.Model):
         verbose_name="latitude"
     )
 
+    def __str__(self):
+        return '{}, {}, {}'.format(self.name, self.barrio, self.municipio)
 
 class CustomUser(models.Model):
     user = models.ForeignKey(
@@ -143,6 +148,9 @@ class CustomUser(models.Model):
     )
 
     def __str__(self):
+        return '{} {}'.format(self.user.first_name, self.user.last_name)
+
+    def full_name(self):
         return '{} {}'.format(self.user.first_name, self.user.last_name)
 
 
@@ -242,6 +250,14 @@ class VotanteProfile(models.Model):
         null=True,
         on_delete=models.CASCADE
     )
+
+    def age(self):
+        local_tz = get_localzone()
+        now = datetime.now(local_tz).date()
+        birthday = self.birthday
+        rd = rdelta.relativedelta(now, birthday)
+        return rd.years
+
 
 
 class VotantePuestoVotacion(models.Model):
