@@ -178,6 +178,7 @@ class Votante(models.Model):
         null=True,
         on_delete=models.CASCADE
     )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return '{}'.format(self.document_id)

@@ -1,6 +1,11 @@
+from datetime import datetime, timedelta
 
-from myapp.models import Votante, VotanteProfile,  Municipio, Barrio, Departamento
+from myapp.models import Votante, VotanteProfile
+from myapp.models import Municipio, Barrio, Departamento
+from myapp.models import CustomUser
+
 from myapp.serializers import BarrioSerializer
+
 
 def get_data_from_post(data_dict, name):
     data = ""
@@ -12,9 +17,11 @@ def get_data_from_post(data_dict, name):
         data = ""
     return data
 
+
 def clena_data_cc(message):
     message = message.replace(" ", "").replace(".", "").replace(",", "")
     return message
+
 
 class DataController():
     @staticmethod
@@ -111,4 +118,37 @@ class DataController():
         return {
             "votante": votante,
             "votante_profile": votante_profile
+        }
+
+    @staticmethod
+    def get_summary_by_user(customer_user_id):
+        customer_user = CustomUser.objects.filter(user_id=customer_user_id).first()
+        if customer_user:
+            is_super_visor = not customer_user.super_visor_id
+            if is_super_visor:
+                alimentadores = customer_user.customuser_set.all()
+                votantes = Votante.objects.filter(custom_user__in=alimentadores)
+            else:
+                votantes = Votante.objects.filter(custom_user=customer_user)
+        else:
+            votantes = Votante.objects
+
+        today = datetime.today()
+        return {
+            "num_encuestas_total": len(votantes.all()),
+            # todo: agregar filtro por mes, semana, dia
+            "num_encuestas_mes": len(votantes.filter(
+                created_at__gte=(today - timedelta(days=today.day)),
+                created_at__lte=today,
+            ).all()),
+            "num_encuestas_semana": len(votantes.filter(
+                created_at__gte=(
+                        today - timedelta(hours=today.hour, minutes=today.minute, seconds=today.second) - timedelta(
+                    days=today.weekday())),
+                created_at__lte=today + timedelta(days=1),
+            ).all()),
+            "num_encuestas_hoy": len(votantes.filter(
+                created_at__gte=today.replace(hour=0, minute=0, second=0, microsecond=0),
+                created_at__lte=today,
+            ).all()),
         }
