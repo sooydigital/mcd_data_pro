@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% load static %} {% load permissions_tags %}
+{% block headcontent %}
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+{% endblock %}
 {% block content %}
     <br><br>
     <div class="container mt-3">
@@ -83,4 +88,59 @@
 
         </form>
     </div>
+{% endblock %}
+
+{% block scriptcontent %}
+    <script type="text/javascript">
+var DOM_IDS = {
+    SELECT_MUNICIPIO: 'select_municipio',
+    SELECT_BARRIO: 'select_barrio',
+}
+
+
+    $('#'+DOM_IDS.SELECT_MUNICIPIO).on("change", populate_barrios)
+
+    function getBarriosByMunicipio(municipio, successCallback, errorCallback) {
+          var url = `/api/get_barrio_by_municipio/${municipio}`
+          $.ajax({
+            type: 'GET',
+            url,
+            error: errorCallback,
+            success: successCallback
+          });
+    }
+
+    function pintarBarrios(barrios) {
+        console.log('barrios', barrios)
+        options = []
+        element = $('#'+DOM_IDS.SELECT_BARRIO)
+            for (var i = 0; i < barrios.length; i++) {
+                options.push('<option value="',
+                  barrios[i].name, '">',
+                  barrios[i].name, '</option>');
+            }
+        element.html(options.join(''));
+
+    }
+
+
+    function  barriosSuccessCallback (data)  {
+        pintarBarrios(data.data)
+    }
+
+    function  barriosErrorCallback() {
+        console.log('barriosErrorCallback, error trayendo la info de los barrios ')
+
+    }
+
+    function populate_barrios() {
+        municipio = $('#'+DOM_IDS.SELECT_MUNICIPIO).val()
+        console.log('municipio', municipio)
+
+        element = $('#'+DOM_IDS.SELECT_BARRIO)
+        console.log(element)
+        getBarriosByMunicipio(municipio, barriosSuccessCallback, barriosErrorCallback )
+    }
+
+    </script>
 {% endblock %}

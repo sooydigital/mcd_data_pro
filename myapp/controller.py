@@ -24,9 +24,19 @@ class DataController():
 
     @staticmethod
     def get_barrios_by_municipio(municipio_id):
-        municipio = Municipio.objects.filter(id=municipio_id).first()
-        barrios = municipio.barrio_set.all()
-        barrios_data = BarrioSerializer(barrios).data
+        municipio = Municipio.objects.filter(name=municipio_id).first()
+        barrios_data = []
+        if municipio:
+            barrios = municipio.barrio_set.order_by("name").all()
+            # barrios_data = BarrioSerializer(data=barrios, many=True)
+            for barrio in barrios:
+                barrios_data.append(
+                    {
+                        "id": barrio.id,
+                        "name": barrio.name,
+                    }
+                )
+
         return barrios_data
 
     @staticmethod
