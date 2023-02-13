@@ -16,21 +16,35 @@
 
     <script type="text/javascript">
 
-        function pintarMapa() {
+        function pintarMapa(new_data) {
+            puestos_votacion = new_data.puestos_votacion
+
+            pv_lat = puestos_votacion.pv_lat
+            pv_lon = puestos_votacion.pv_lon
+            pv_text = puestos_votacion.pv_text
+            pv_size = puestos_votacion.pv_size
+
+            intensidad = new_data.intensidad
+
+            in_lat = intensidad.in_lat
+            in_lon = intensidad.in_lon
+            in_text = intensidad.in_text
+            in_size = intensidad.in_size
+
             var data = [
                 {
                     "uid": "00e4ba",
                     "mode": "markers",
                     "name": "Intensidad",
                     "type": "scattermapbox",
-                    "lat": ["Lattitude", "7.0609029", "7.0610946", "7.0721335"],
-                    "lon": ["Longitude", "-73.1719275", "-73.1711808", "-73.166756"],
+                    "lat": in_lat,
+                    "lon": in_lon,
                     "marker": {
                         "meta": {"columnNames": {"size": "Intensidad, size"}},
                         "sizeref": null,
-                        "size": ["Size E", "26.5", "16", "46.5"]
+                        "size": in_size
                     },
-                    "text": ["Intensidad", "53", "32", "93"],
+                    "text": in_text,
                     "visible": true,
                     "hoverinfo": "text+name"
                 },
@@ -39,14 +53,14 @@
                     "mode": "markers",
                     "name": "Puesto de Votación",
                     "type": "scattermapbox",
-                    "lat": ["Lattitude", "7.0609029", "7.0610946", "7.0721335"],
-                    "lon": ["Longitude", "-73.1719275", "-73.1711808", "-73.166756"],
+                    "lat": pv_lat,
+                    "lon": pv_lon,
                     "marker": {
                         "meta": {"columnNames": {"size": "Puesto de Votación, size"}},
                         "sizeref": null,
-                        "size": ["Size B", "10", "10", "10"]
+                        "size": pv_size
                     },
-                    "text": ["TOTAL JOBS", "Colegio Santa Cruz", "Colegio Juan Cristobal Martinez", "Colegio niño jesus de praga"],
+                    "text": pv_text,
                     "hoverinfo": "text+name"
                 }
             ]
@@ -71,10 +85,23 @@
             }
 
             Plotly.newPlot("myDiv_super_visor_map", data, layout, config = config);
-
-
         }
 
-        pintarMapa()
+        new_data = {
+            puestos_votacion: {
+                pv_lat: ["Lattitude", "7.0609029", "7.0610946", "7.0721335", "7.0526437", "7.1128186"],
+                pv_lon: ["Longitude", "-73.1719275", "-73.1711808", "-73.166756", "-73.1654239", "-73.1284499"],
+                pv_text: ["", "Colegio Santa Cruz", "Colegio Juan Cristobal Martinez", "Colegio niño jesus de praga", "COLEGIO GABRIEL GARCIA MARQUEZ", "SENA - CSET - SEDE SAN JUAN DE DIOS"],
+                pv_size: ["Size B", "10", "10", "10", "10", "10"]
+            },
+            intensidad: {
+                in_lat: ["Lattitude", "7.0609029", "7.0610946", "7.0721335",  "7.0526437", "7.1128186"],
+                in_lon: ["Longitude", "-73.1719275", "-73.1711808", "-73.166756", "-73.1654239", "-73.1284499"],
+                in_text: ["Intensidad", "10", "5", "20", "2", "1"],
+                in_size: ["Size E", "20", "15", "30", "12", "11"]
+            }
+        }
+        pintarMapa(new_data)
+
     </script>
 {% endblock %}
