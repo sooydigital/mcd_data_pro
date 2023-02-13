@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
+from myapp.models import CustomUser
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -121,6 +122,23 @@ class Command(BaseCommand):
                 user_object.groups.add(grupo)
                 user_object.is_staff = True
                 user_object.save()
+            else:
+                user_object = User.objects.filter(email=user['username']).first()
+            if 'code' in user:
+                if not CustomUser.objects.filter(user=user_object).exists():
+                    code = user['code']
+                    super_visor = None
+                    if '_' in code:
+                        sub_code = code.split('_')[0]
+                        super_visor = CustomUser.objects.filter(code=sub_code).first()
+
+                    custom_user_object = CustomUser(
+                        user=user_object,
+                        document_id=user.get('document_id', '000'),
+                        code=code,
+                        super_visor=super_visor
+                    )
+                    custom_user_object.save()
 
         if not User.objects.filter(email='admin@mail.com').exists():
             user_object = User(username='admin', email='admin@mail.com', first_name='admin', last_name="super")

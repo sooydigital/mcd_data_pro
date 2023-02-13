@@ -136,6 +136,8 @@ class CustomUser(models.Model):
         on_delete=models.CASCADE
     )
 
+    def __str__(self):
+        return '{} {}'.format(self.user.first_name, self.user.last_name)
 
 class Votante(models.Model):
     document_id = models.CharField(
