@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
-from myapp.models import Votante, VotanteProfile
-from myapp.models import Municipio, Barrio, Departamento
+from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion
+from myapp.models import Municipio, Barrio, Departamento, PuestoVotacion
 from myapp.models import CustomUser
 
 from myapp.serializers import BarrioSerializer
@@ -152,3 +152,93 @@ class DataController():
                 created_at__lte=today,
             ).all()),
         }
+
+    @staticmethod
+    def get_votantes_information_to_download():
+        data = {}
+        custom_users = CustomUser.objects.exclude(super_visor=None).all()
+        custom_user_mapping = {
+        }
+
+        for custom_user in custom_users:
+            custom_user_mapping[custom_user.id] = {
+                "code": custom_user.code,
+                "full_name": custom_user.full_name(),
+                "super_visor": custom_user.super_visor_id
+            }
+        data["custom_user_mapping"] = custom_user_mapping
+        custom_users_super_visor = CustomUser.objects.filter(super_visor=None).all()
+        custom_user_super_visor_mapping = {
+        }
+
+        for custom_user in custom_users_super_visor:
+            custom_user_super_visor_mapping[custom_user.id] = {
+                "code": custom_user.code,
+                "full_name": custom_user.full_name(),
+            }
+        data["custom_user_super_visor_mapping"] = custom_user_super_visor_mapping
+
+        votantes = Votante.objects.all()
+        votante_mapping = {
+        }
+
+        for votante in votantes:
+            votante_mapping[votante.id] = {
+                "document_id": votante.document_id,
+                "status": votante.status,
+                "custom_user": votante.custom_user_id
+            }
+        data["votante_mapping"] = votante_mapping
+
+        votantes_profile = VotanteProfile.objects.all()
+        votante_profile_mapping = {
+        }
+
+        for votante_profile in votantes_profile:
+            votante_profile_mapping[votante_profile.votante_id] = {
+                "votante_id": votante_profile.votante_id,
+                "first_name": votante_profile.first_name,
+                "last_name": votante_profile.last_name,
+                "email": votante_profile.email,
+                "mobile_phone": votante_profile.mobile_phone,
+                "birthday": votante_profile.birthday,
+                "gender": votante_profile.gender,
+                "address": votante_profile.address,
+                "departamento": votante_profile.municipio.departamento.name,
+                "municipio": votante_profile.municipio.name,
+                "barrio": votante_profile.barrio.name,
+            }
+
+        data["votante_profile_mapping"] = votante_profile_mapping
+
+        votantes_puesto_votacion = VotantePuestoVotacion.objects.all()
+        votante_puesto_votacion_mapping = {
+        }
+
+        for votante_puesto_votacion in votantes_puesto_votacion:
+            votante_puesto_votacion_mapping[votante_puesto_votacion.votante_id] = {
+                "votante_id": votante_puesto_votacion.votante_id,
+                "mesa": votante_puesto_votacion.mesa,
+                "puesto_votacion_id": votante_puesto_votacion.puesto_votacion_id,
+            }
+
+        data["votante_puesto_votacion_mapping"] = votante_puesto_votacion_mapping
+
+
+        puestos_votacion = PuestoVotacion.objects.all()
+        puesto_votacion_mapping = {
+        }
+
+        for puesto_votacion in puestos_votacion:
+            puesto_votacion_mapping[puesto_votacion.id] = {
+                "departamento": puesto_votacion.departamento.name,
+                "municipio": puesto_votacion.municipio.name,
+                "barrio": puesto_votacion.barrio.name,
+                "name": puesto_votacion.name,
+                "address": puesto_votacion.address,
+            }
+
+        data["puesto_votacion_mapping"] = puesto_votacion_mapping
+
+        print('data', data)
+        return data
