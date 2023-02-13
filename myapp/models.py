@@ -139,6 +139,7 @@ class CustomUser(models.Model):
     def __str__(self):
         return '{} {}'.format(self.user.first_name, self.user.last_name)
 
+
 class Votante(models.Model):
     document_id = models.CharField(
         max_length=20,
@@ -156,7 +157,13 @@ class Votante(models.Model):
         max_length=10,
         choices=STATUS_CHOICES,
     )
-
+    
+    custom_user = models.ForeignKey(
+        CustomUser,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
 
 class VotanteProfile(models.Model):
     votante = models.ForeignKey(
