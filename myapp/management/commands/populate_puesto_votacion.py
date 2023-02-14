@@ -51,8 +51,8 @@ class Command(BaseCommand):
         for puesto in PUESTOS:
             clean_puesto = puesto[0].strip()
             address = puesto[1].strip()
-            longitude = puesto[2]
-            latitude = puesto[3]
+            latitude = puesto[2]
+            longitude = puesto[3]
             if not PuestoVotacion.objects.filter(name=clean_puesto).exists():
                 PuestoVotacion.objects.create(
                     name=clean_puesto,
