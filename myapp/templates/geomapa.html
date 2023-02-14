@@ -17,19 +17,14 @@
     <script type="text/javascript">
 
         function pintarMapa(new_data) {
-            puestos_votacion = new_data.puestos_votacion
 
-            pv_lat = puestos_votacion.pv_lat
-            pv_lon = puestos_votacion.pv_lon
-            pv_text = puestos_votacion.pv_text
-            pv_size = puestos_votacion.pv_size
+            lat = new_data.lat
+            lon = new_data.lon
+            pv_text = new_data.pv_text
+            pv_size = new_data.pv_size
 
-            intensidad = new_data.intensidad
-
-            in_lat = intensidad.in_lat
-            in_lon = intensidad.in_lon
-            in_text = intensidad.in_text
-            in_size = intensidad.in_size
+            in_text = new_data.in_text
+            in_size = new_data.in_size
 
             var data = [
                 {
@@ -37,8 +32,8 @@
                     "mode": "markers",
                     "name": "Intensidad",
                     "type": "scattermapbox",
-                    "lat": in_lat,
-                    "lon": in_lon,
+                    "lat": lat,
+                    "lon": lon,
                     "marker": {
                         "meta": {"columnNames": {"size": "Intensidad, size"}},
                         "sizeref": null,
@@ -53,8 +48,8 @@
                     "mode": "markers",
                     "name": "Puesto de Votación",
                     "type": "scattermapbox",
-                    "lat": pv_lat,
-                    "lon": pv_lon,
+                    "lat": lat,
+                    "lon": lon,
                     "marker": {
                         "meta": {"columnNames": {"size": "Puesto de Votación, size"}},
                         "sizeref": null,
@@ -87,21 +82,27 @@
             Plotly.newPlot("myDiv_super_visor_map", data, layout, config = config);
         }
 
-        new_data = {
-            puestos_votacion: {
-                pv_lat: ["Lattitude", "7.0609029", "7.0610946", "7.0721335", "7.0526437", "7.1128186"],
-                pv_lon: ["Longitude", "-73.1719275", "-73.1711808", "-73.166756", "-73.1654239", "-73.1284499"],
-                pv_text: ["", "Colegio Santa Cruz", "Colegio Juan Cristobal Martinez", "Colegio niño jesus de praga", "COLEGIO GABRIEL GARCIA MARQUEZ", "SENA - CSET - SEDE SAN JUAN DE DIOS"],
-                pv_size: ["Size B", "10", "10", "10", "10", "10"]
-            },
-            intensidad: {
-                in_lat: ["Lattitude", "7.0609029", "7.0610946", "7.0721335",  "7.0526437", "7.1128186"],
-                in_lon: ["Longitude", "-73.1719275", "-73.1711808", "-73.166756", "-73.1654239", "-73.1284499"],
-                in_text: ["Intensidad", "10", "5", "20", "2", "1"],
-                in_size: ["Size E", "20", "15", "30", "12", "11"]
-            }
+        function getInfoPuestosSuccessCallback(data) {
+
+            pintarMapa(data.data)
         }
-        pintarMapa(new_data)
+
+        function getInfoPuestosErrorCallback() {
+            console.log('getInfoPuestosErrorCallback, error trayendo la info de  getInfoPuestos ')
+
+        }
+
+        var getInfoPuestos = (successCallback, errorCallback,) => {
+            var url = `/api/mapa_puestos/`
+            $.ajax({
+                type: 'GET',
+                url,
+                error: errorCallback,
+                success: successCallback
+            });
+        };
+
+        getInfoPuestos(getInfoPuestosSuccessCallback, getInfoPuestosErrorCallback)
 
     </script>
 {% endblock %}

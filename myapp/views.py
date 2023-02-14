@@ -98,3 +98,19 @@ def get_barrio_by_municipio(request, municipio_id):
         "data": barrios
     }
     return JsonResponse(response)
+
+@login_required
+def get_mapa_puestos(request):
+    data = {
+        "lat": ["Lattitude", "7.0609029", "7.0610946", "7.0721335", "7.0526437", "7.1128186"],
+        "lon": ["Longitude", "-73.1719275", "-73.1711808", "-73.166756", "-73.1654239", "-73.1284499"],
+        "pv_text": ["", "Colegio Santa Cruz", "Colegio Juan Cristobal Martinez", "Colegio niño jesus de praga", "COLEGIO GABRIEL GARCIA MARQUEZ", "SENA - CSET - SEDE SAN JUAN DE DIOS"],
+        "pv_size": ["Size B", "10", "10", "10", "10", "10"],
+
+        "in_text": ["Intensidad", "10", "5", "20", "2", "1"],
+        "in_size": ["Size E", "20", "15", "30", "12", "11"]
+    }
+    response = {
+        "data": data
+    }
+    return JsonResponse(response)
