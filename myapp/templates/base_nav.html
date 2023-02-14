@@ -54,7 +54,11 @@
                     <a class="navbar-brand px-md-3" href="#">
                         Admin:
                         <br>
-                        {{ request.user.first_name }} {{ request.user.last_name }}</a>
+                        <div class="display-6">
+                        {{ request.user.first_name }} {{ request.user.last_name }}
+
+                        </div>
+                    </a>
                     </a>
                 </ul>
             {% endif %}
