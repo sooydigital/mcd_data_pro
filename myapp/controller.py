@@ -251,7 +251,7 @@ class DataController():
             "lon": ["Longitude"],
             "pv_text": [""],
             "pv_size": ["Size B"],
-            "in_text": ["Intensidad"],
+            "in_text": ["Votos"],
             "in_size": ["Size E"],
         }
         puesto_votaciones = PuestoVotacion.objects.all()

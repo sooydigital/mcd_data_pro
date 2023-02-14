@@ -31,14 +31,14 @@
                         {{ request.user.customuser_set.first.municipio.name }}
                     </a>
                     <a class="navbar-brand px-md-3" href="#">
-                        Nombre:
+                        Lider:
                         <br>{{ request.user.first_name }} {{ request.user.last_name }}</a>
                 </ul>
 
             {% elif request.user|has_role:'SUPERVISOR' %}
                 <ul class="navbar-nav me-auto">
                     <a class="navbar-brand px-md-3" href="#">
-                        Nombre:
+                        Candidato:
                         <br>
                         {{ request.user.first_name }} {{ request.user.last_name }}</a>
                     </a>
@@ -52,7 +52,7 @@
             {% elif request.user|has_role:'SUPER_ADMIN' %}
                 <ul class="navbar-nav me-auto">
                     <a class="navbar-brand px-md-3" href="#">
-                        Nombre:
+                        Admin:
                         <br>
                         {{ request.user.first_name }} {{ request.user.last_name }}</a>
                     </a>
