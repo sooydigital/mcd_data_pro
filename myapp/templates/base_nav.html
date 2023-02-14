@@ -36,7 +36,7 @@
                 </ul>
 
             {% elif request.user|has_role:'SUPERVISOR' %}
-                 <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto">
                     <a class="navbar-brand px-md-3" href="#">
                         Nombre:
                         <br>
@@ -50,7 +50,7 @@
                 </ul>
 
             {% elif request.user|has_role:'SUPER_ADMIN' %}
-                 <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto">
                     <a class="navbar-brand px-md-3" href="#">
                         Nombre:
                         <br>
@@ -70,7 +70,18 @@
                                 Admin <br> <i class="fa fa-4x fa-user-circle" aria-hidden="true"></i>
                             </a>
                         </li>
-
+                    {% elif request.user|has_role:'SUPERVISOR' %}
+                        <li class="nav-item">
+                            <a class="nav-link text-center" href="#">
+                                Candidato <br> <i class="fa fa-4x fa-user-circle" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                    {% elif request.user|has_role:'ALIMENTADOR' %}
+                        <li class="nav-item">
+                            <a class="nav-link text-center" href="#">
+                                Lider <br> <i class="fa fa-4x fa-user-circle" aria-hidden="true"></i>
+                            </a>
+                        </li>
                     {% endif %}
 
                     <li class="nav-item">

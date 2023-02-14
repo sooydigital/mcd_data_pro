@@ -2,29 +2,43 @@
 {% load static %} {% load permissions_tags %}
 {% block content %}
     <br><br>
-    <div class="row">
+    <div class="container mt-3">
         {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ALIMENTADOR' %}
 
-        <div class="d-flex justify-content-center align-items-center">
-            <a href="{% url 'app:insert_votante' %}" class="home-action-btn text-center ">
-                Agregar Votante
-            </a>
-        </div>
-        <div class="d-flex justify-content-center align-items-center">
-            <a href="{% url 'app:summary' %}" class="home-action-btn text-center ">
-                Como Vamos
-            </a>
-        </div>
-        <div class="d-flex justify-content-center align-items-center">
-            <a href="{% url 'app:geomapa' %}" class="home-action-btn text-center ">
-                Mapa
-            </a>
-        </div>
-        <div class="d-flex justify-content-center align-items-center">
-            <a href="{% url 'app:votantes_download' %}" class="home-action-btn text-center ">
-                Descarga
-            </a>
-        </div>
+            <div class="row md-n3">
+            <div class=" d-md-none d-lg-block col-lg-2" ></div>
+                <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+                    <a href="{% url 'app:insert_votante' %}" class="home-action-btn text-center ">
+                        Agregar Votante
+                    </a>
+                </div>
+                <div class=" col-md-2 d-lg-none" ></div>
+
+                <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+                    <a href="{% url 'app:summary' %}" class="home-action-btn text-center ">
+                        Como Vamos
+                    </a>
+                </div>
+            <div class=" d-md-none d-lg-block col-lg-2" ></div>
+
+            </div>
+            <div class="row">
+            <div class=" d-md-none d-lg-block col-lg-2" ></div>
+
+                <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+                    <a href="{% url 'app:geomapa' %}" class="home-action-btn text-center ">
+                        Mapa
+                    </a>
+                </div>
+                <div class=" col-md-2 d-lg-none" ></div>
+                <div class="  col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+                    <a href="{% url 'app:votantes_download' %}" class="home-action-btn text-center ">
+                        Descarga
+                    </a>
+                </div>
+            <div class=" d-md-none d-lg-block col-lg-2" ></div>
+
+            </div>
         {% endif %}
 
     </div>
