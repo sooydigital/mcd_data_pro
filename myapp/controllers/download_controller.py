@@ -1,10 +1,7 @@
-
-import openpyxl
 from openpyxl import Workbook
-from openpyxl.styles import Font, PatternFill, Alignment
 from django.http import FileResponse
 from django.conf import settings
-from myapp.controller import DataController
+from myapp.controllers.controller import DataController
 media_root = settings.MEDIA_ROOT
 
 class DownloadController():

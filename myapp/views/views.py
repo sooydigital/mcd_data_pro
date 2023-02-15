@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from myapp.download_controller import DownloadController
-from myapp.controller import DataController
+from myapp.controllers.download_controller import DownloadController
+from myapp.controllers.controller import DataController
 from django.http import JsonResponse
 
 

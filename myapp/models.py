@@ -266,6 +266,8 @@ class VotanteProfile(models.Model):
         rd = rdelta.relativedelta(now, birthday)
         return rd.years
 
+    def full_name(self):
+        return '{} {}'.format(self.first_name, self.last_name)
 
 
 class VotantePuestoVotacion(models.Model):

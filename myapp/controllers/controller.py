@@ -272,3 +272,38 @@ class DataController():
             data["in_size"].append(intensidad)
 
         return data
+
+    @staticmethod
+    def get_votante_info(document_id):
+        votante = Votante.objects.filter(document_id=document_id).first()
+        if not votante:
+            return None
+        if votante.status == "PROCESSED":
+            votante_perfil = votante.votanteprofile_set.first()
+            if not votante_perfil:
+                return None
+
+            votante_puesto = votante.votantepuestovotacion_set.first()
+            if not votante_puesto:
+                return None
+
+            puesto = votante_puesto.puesto_votacion
+
+            data = {
+                "name": votante_perfil.full_name(),
+                "departamento": votante_perfil.municipio.departamento.name,
+                "municipio": votante_perfil.municipio.name,
+                "puesto": puesto.name,
+                "mesa": votante_puesto.mesa,
+                "direccion": puesto.address,
+            }
+
+            return data
+
+    @staticmethod
+    def get_all_registered():
+        votantes = Votante.objects.all()
+        lista = [
+            votante.document_id for votante in votantes
+        ]
+        return lista
