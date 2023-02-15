@@ -27,7 +27,7 @@ class DataController():
     @staticmethod
     def validate_document_id(document_id):
         votante_validation = Votante.objects.filter(document_id=document_id).exists()
-        return votante_validation
+        return not votante_validation
 
     @staticmethod
     def get_barrios_by_municipio(municipio_id):

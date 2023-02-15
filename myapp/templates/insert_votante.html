@@ -21,10 +21,17 @@
                     <input required type="number" class="form-control" placeholder="Cédula" id='input_document_id' name="document_id">
                 </div>
                 <div class="col col-sm-12 col-md-6  px-md-3 gy-3">
-                    <label for="inputAddress">Validación</label> <br>
-                        <i class="fa fa-circle-o-notch" aria-hidden="true"></i>
-                        <i class="fa fa-check-circle" aria-hidden="true"></i>
-                        <i class="fa fa-times-circle" aria-hidden="true"></i>
+                    <label for="inputAddress">Validación</label>
+                    <br>
+                    <div id="status_validation">
+                        <div id="loaing_validation" class="spinner-border text-info" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                        <i id="success_validation" class="fa  fa-2x fa-check-circle verde_color_t invisible" aria-hidden="true"></i>
+                        <i id="error_validation" class="fa  fa-2x fa-times-circle red_color_t invisible" aria-hidden="true"></i>
+                    </div>
+
+
 
                 </div>
             </div>
@@ -84,7 +91,7 @@
             </div>
             <br>
             <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-success">Guardar</button>
+                <button id="enviat_form" type="submit" class="btn btn-success disabled">Guardar</button>
             </div>
 
         </form>
@@ -96,6 +103,8 @@
 var DOM_IDS = {
     SELECT_MUNICIPIO: 'select_municipio',
     SELECT_BARRIO: 'select_barrio',
+    INPUT_DOCUMENT_ID: 'input_document_id',
+    BTN_ENVIAR: "enviat_form",
 }
 
 
@@ -111,8 +120,17 @@ var DOM_IDS = {
           });
     }
 
+    function checkValidationDocumentId(cc, successCallback, errorCallback) {
+          var url = `/api/validate_cc/${cc}`
+          $.ajax({
+            type: 'GET',
+            url,
+            error: errorCallback,
+            success: successCallback
+          });
+    }
+
     function pintarBarrios(barrios) {
-        console.log('barrios', barrios)
         options = []
         element = $('#'+DOM_IDS.SELECT_BARRIO)
             for (var i = 0; i < barrios.length; i++) {
@@ -124,6 +142,22 @@ var DOM_IDS = {
 
     }
 
+    function actualizarValidacion(validation) {
+        add_hidden_class("loaing_validation")
+        if (validation) {
+            add_hidden_class("error_validation")
+            remove_hidden_class("success_validation")
+                        $('#'+DOM_IDS.BTN_ENVIAR)[0].classList.remove('disabled')
+
+
+        } else {
+            add_hidden_class("success_validation")
+            remove_hidden_class("error_validation")
+                        $('#'+DOM_IDS.BTN_ENVIAR)[0].classList.add('disabled')
+
+
+        }
+    }
 
     function  barriosSuccessCallback (data)  {
         pintarBarrios(data.data)
@@ -134,14 +168,39 @@ var DOM_IDS = {
 
     }
 
+    function  validationDocumentIdSuccessCallback (data)  {
+        actualizarValidacion(data.data)
+    }
+
+    function  validationDocumentIdErrorCallback() {
+        console.log('validationDocumentIdErrorCallback, error validando la info del document ')
+
+    }
+
     function populate_barrios() {
         municipio = $('#'+DOM_IDS.SELECT_MUNICIPIO).val()
-        console.log('municipio', municipio)
-
-        element = $('#'+DOM_IDS.SELECT_BARRIO)
-        console.log(element)
         getBarriosByMunicipio(municipio, barriosSuccessCallback, barriosErrorCallback )
     }
+
+    function add_hidden_class(id){
+        element = $("#" + id)[0]
+        element.classList.add("invisible");
+    }
+
+    function remove_hidden_class(id){
+        element = $("#" + id)[0]
+        element.classList.remove("invisible");
+    }
+
+    $("#" + DOM_IDS.INPUT_DOCUMENT_ID).on('change',function(e){
+        document_id = $('#'+DOM_IDS.INPUT_DOCUMENT_ID).val()
+        remove_hidden_class("loaing_validation")
+        add_hidden_class("success_validation")
+        add_hidden_class("error_validation")
+
+        checkValidationDocumentId(document_id, validationDocumentIdSuccessCallback, validationDocumentIdErrorCallback)
+
+    });
 
     populate_barrios()
     </script>

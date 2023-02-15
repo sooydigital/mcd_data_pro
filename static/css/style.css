@@ -28,9 +28,22 @@ body {
     background-color: #47B5FF !important;
 }
 
-.verde_color {
+.verde_color_b {
     background-color: #3b933f !important;
 }
+
+.red_color_b {
+    background-color: #db4a4a !important;
+}
+
+.verde_color_t {
+    color: #3b933f !important;
+}
+
+.red_color_t {
+    color: #db4a4a !important;
+}
+
 
 .principal_dos_color {
     background-color: #0047BA !important;
