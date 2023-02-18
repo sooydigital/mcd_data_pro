@@ -22,6 +22,7 @@ urlpatterns = [
 
     path('api/insert-multi-votantes/', api_views.insert_multi_votantes, name='insert_multi_votantes'),
     path('api/get_all_cc_registered/', api_views.get_all_cc_registered, name='get_all_cc_registered'),
+    path('api/get_all_cc_by_status/', api_views.get_all_cc_by_status, name='get_all_cc_by_status'),
 
     path(
         route='acciones_bloque/votantes/download',

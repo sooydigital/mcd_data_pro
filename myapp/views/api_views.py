@@ -74,43 +74,29 @@ def get_all_cc_registered(request):
         }
         return JsonResponse(response)
 
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+def get_all_cc_by_status(request):
+    if request.method == 'GET':
+        status = request.query_params.get('status')
+        vontante_lista = DataController.get_all_cc_by_status(status)
+
+        response = {
+            "data": vontante_lista
+        }
+        return JsonResponse(response)
+
 
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 def insert_multi_votantes(request):
-    pass
-    # if request.method == 'POST':
-    #
-    #     body = request.body
-    #     data = json.loads(body)
-    #     registro_obj = Registro.objects.first()
-    #     registros = data.get('registros')
-    #     for registro in registros:
-    #         codigo = clean_data(registro.get('codigo'))
-    #         nombre = registro.get('nombre')
-    #         departamento = registro.get('departamento')
-    #         municipio = registro.get('municipio')
-    #         puesto = clean_data(registro.get('puesto'))
-    #         mesa = clean_data(registro.get('mesa'))
-    #         direccion = registro.get('direccion')
-    #         is_valid = True
-    #         if 'is_valid' in registro:
-    #             is_valid = clean_data(registro.get('is_valid')) == 'True'
-    #
-    #         votante_obj = Votante.objects.filter(codigo=codigo).first()
-    #         if not votante_obj:
-    #             votante_obj = Votante.objects.create(
-    #                 registro=registro_obj,
-    #                 nombre=nombre,
-    #                 codigo=codigo,
-    #                 departamento=departamento,
-    #                 municipio=municipio,
-    #                 puesto=puesto,
-    #                 mesa=mesa,
-    #                 direccion=direccion,
-    #                 is_valid=is_valid,
-    #                 is_runned=True
-    #             )
-    #     response = {"message": "done!"}
-    #     return JsonResponse(response)
+    if request.method == 'POST':
+        body = request.body
+        data = json.loads(body)
+        registros = data.get('registros')
+        for registro in registros:
+            DataController.update_votantes_processsing(registro)
+
+        response = {"message": "done!"}
+        return JsonResponse(response)
     #

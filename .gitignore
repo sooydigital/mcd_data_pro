@@ -132,3 +132,5 @@ dmypy.json
 /media/temporal_data_pdf/*
 /media/temporal_data_pdf/*
 /media/result.pdf
+/__procesamiento/
+/__procesamiento/*

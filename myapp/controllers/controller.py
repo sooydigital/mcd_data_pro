@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion
+from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage
 from myapp.models import Municipio, Barrio, Departamento, PuestoVotacion
 from myapp.models import CustomUser
 
@@ -30,6 +30,27 @@ class DataController():
         return not votante_validation
 
     @staticmethod
+    def get_or_create_puesto_votacion(departamento, municipio, name, address):
+        departamento_obj = DataController.get_or_create_departamento(departamento)
+        municipio_obj = DataController.get_or_create_municipio(departamento_obj, municipio)
+
+        puesto_obj = None
+        if PuestoVotacion.objects.filter(departamento=departamento_obj, municipio=municipio_obj, name=name).exists():
+            puesto_obj = PuestoVotacion.objects.filter(departamento=departamento_obj, municipio=municipio_obj, name=name).first()
+        else:
+            puesto_obj = PuestoVotacion(
+                departamento=departamento_obj,
+                municipio=municipio_obj,
+                barrio=None,
+                name=name,
+                address=address,
+                longitude="",
+                latitude="",
+            )
+            puesto_obj.save()
+        return puesto_obj
+
+    @staticmethod
     def get_barrios_by_municipio(municipio_id):
         municipio = Municipio.objects.filter(name=municipio_id).first()
         barrios_data = []
@@ -45,6 +66,18 @@ class DataController():
                 )
 
         return barrios_data
+
+    @staticmethod
+    def get_or_create_departamento(departamento):
+        departamento_obj = None
+        if Departamento.objects.filter(name=departamento).exists():
+            departamento_obj = Departamento.objects.filter(name=departamento).first()
+        else:
+            departamento_obj = Departamento(
+                name=departamento,
+            )
+            departamento_obj.save()
+        return departamento_obj
 
     @staticmethod
     def get_or_create_municipio(departamento, municipio):
@@ -307,3 +340,58 @@ class DataController():
             votante.document_id for votante in votantes
         ]
         return lista
+
+    @staticmethod
+    def get_all_cc_by_status(status):
+        votantes = Votante.objects.filter(
+            status=status
+        ).all()
+
+        lista = [
+            votante.document_id for votante in votantes
+        ]
+        return lista
+
+    @staticmethod
+    def update_votantes_processsing(registro):
+
+        document_id = registro.get("codigo")
+        status = registro.get("status")
+        message = registro.get("message")
+        departamento = registro.get("departamento")
+        municipio = registro.get("municipio")
+        name = registro.get("puesto")
+        address = registro.get("direccion")
+        mesa = registro.get("mesa")
+
+        new_status = "PROCESSED"
+        if status == "ERROR":
+            new_status = "ERROR"
+
+        votante = Votante.objects.filter(document_id=document_id).first()
+        if votante.status == "PROCESSED":
+            return None
+
+        votante.status = new_status
+        votante.save()
+
+        if status == "ERROR":
+            votante_message = VotanteMessage(
+                votante=votante,
+                message=message
+            )
+            votante_message.save()
+
+        else:
+            puesto_votacion = DataController.get_or_create_puesto_votacion(
+                departamento=departamento,
+                municipio=municipio,
+                name=name,
+                address=address,
+            )
+            votante_puesto_votacion = VotantePuestoVotacion(
+                votante=votante,
+                mesa=mesa,
+                puesto_votacion=puesto_votacion
+            )
+            votante_puesto_votacion.save()
