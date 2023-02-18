@@ -168,6 +168,10 @@ class DataController():
 
         today = datetime.today()
         return {
+            "votante_error": len(votantes.filter(status="ERROR").all()),
+            "votante_pending_proceess": len(votantes.filter(status="PENDING").all()),
+            "votante_proceess": len(votantes.filter(status="PROCESSED").all()),
+
             "num_encuestas_total": len(votantes.all()),
             # todo: agregar filtro por mes, semana, dia
             "num_encuestas_mes": len(votantes.filter(
@@ -395,3 +399,15 @@ class DataController():
                 puesto_votacion=puesto_votacion
             )
             votante_puesto_votacion.save()
+
+    @staticmethod
+    def insert_only_cc_votante(document_id):
+        status = "PENDING"
+
+        if not Votante.objects.filter(document_id=document_id).exists():
+            votante = Votante(
+                document_id=document_id,
+                status=status
+            )
+            votante.save()
+

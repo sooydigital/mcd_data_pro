@@ -100,3 +100,15 @@ def insert_multi_votantes(request):
         response = {"message": "done!"}
         return JsonResponse(response)
     #
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+def insert_only_cc_votante(request):
+    if request.method == 'POST':
+        body = request.body
+        data = json.loads(body)
+        registro = data.get('registro')
+        DataController.insert_only_cc_votante(registro)
+
+        response = {"message": "done!"}
+        return JsonResponse(response)
