@@ -3,15 +3,42 @@
 {% block content %}
     <br><br>
     <div class="container mt-3">
-    test
-    {% for votante_no_profil in votante_no_profile %}
-        {{ forloop.counter }}
-        -
-        {{ votante_no_profil.votante.document_id }}
-        --
-        {{ votante_no_profil.full_name }}
-        <br>
+        <div class="container">
 
-    {% endfor %}
+
+            {% for puesto in puesto_votacion %}
+                <div class="row">
+
+                    {{ forloop.counter }}
+                    <div class="col col-sm-1">
+                        {{ puesto.votantepuestovotacion_set.all | length }} --
+
+                        {{ puesto.municipio.name }}
+                    </div>
+
+                    <div class="col col-sm-4">
+                        <input type="text" style="width: 100%" disabled value="{{ puesto.name }}">
+                    </div>
+
+                    <div class="col col-sm-4">
+                        <input type="text" style="width: 100%" disabled value="{{ puesto.address }}">
+                    </div>
+
+                    <div class="col col-sm-2">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="puesto_id" value="{{ puesto.id }}">
+                            <input type="text" name="lat_lon" style="width: 100%">
+                            <button type="submit"> Up </button>
+                        </form>
+                    </div>
+
+                </div>
+
+                <br>
+
+            {% endfor %}
+        </div>
+
     </div>
 {% endblock %}

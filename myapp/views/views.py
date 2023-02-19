@@ -30,18 +30,31 @@ def home(request):
 # Create your views here.
 @login_required
 def test(request):
-    from myapp.models import Votante, VotanteProfile
-    votantes = Votante.objects.all()
+    from myapp.models import VotantePuestoVotacion, PuestoVotacion
+
+    if request.method == "POST":
+        lat_lon = request.POST.get('lat_lon')
+        data = lat_lon.split(',')
+        lat = data[0]
+        lon = data[1]
+        puesto_id = request.POST.get('puesto_id')
+        puesto = PuestoVotacion.objects.filter(id=puesto_id).first()
+        if puesto:
+            puesto.longitude = lon
+            puesto.latitude = lat
+            puesto.save()
+
+        pass
+
+    puesto_votacion = PuestoVotacion.objects.filter(municipio__name__in=(["GIRON", "BUCARAMANGA", "FLORIDABLANCA"])).order_by('municipio').all()
     votante_no_profile = []
-    for votante in votantes:
-        if votante.votanteprofile_set.all():
-            profile = votante.votanteprofile_set.first()
-            full_name = profile.full_name()
-            if not " " in full_name:
-                votante_no_profile.append(profile)
+    for puesto in puesto_votacion:
+        if not puesto.longitude:
+            votante_no_profile.append(puesto)
     context = {
-        "votante_no_profile": votante_no_profile
+        "puesto_votacion": votante_no_profile
     }
+
 
     return render(
         request,
