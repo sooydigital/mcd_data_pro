@@ -27,6 +27,28 @@ def home(request):
         context
     )
 
+# Create your views here.
+@login_required
+def test(request):
+    from myapp.models import Votante, VotanteProfile
+    votantes = Votante.objects.all()
+    votante_no_profile = []
+    for votante in votantes:
+        if votante.votanteprofile_set.all():
+            profile = votante.votanteprofile_set.first()
+            full_name = profile.full_name()
+            if not " " in full_name:
+                votante_no_profile.append(profile)
+    context = {
+        "votante_no_profile": votante_no_profile
+    }
+
+    return render(
+        request,
+        'test.html',
+        context
+    )
+
 
 # Create your views here.
 @login_required

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %} {% load permissions_tags %}
+{% block content %}
+    <br><br>
+    <div class="container mt-3">
+    test
+    {% for votante_no_profil in votante_no_profile %}
+        {{ forloop.counter }}
+        -
+        {{ votante_no_profil.votante.document_id }}
+        --
+        {{ votante_no_profil.full_name }}
+        <br>
+
+    {% endfor %}
+    </div>
+{% endblock %}

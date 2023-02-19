@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage
 from myapp.models import Municipio, Barrio, Departamento, PuestoVotacion
 from myapp.models import CustomUser
+import math
 
 from myapp.serializers import BarrioSerializer
 
@@ -321,7 +322,8 @@ class DataController():
             num_votantes = len(puesto_votacion.votantepuestovotacion_set.all())
             intensidad = "0"
             if num_votantes:
-                intensidad = str(10 + num_votantes)
+                log_10 = math.log2(num_votantes) * 2
+                intensidad = str(10 + log_10)
             else:
                 intensidad = "0"
 

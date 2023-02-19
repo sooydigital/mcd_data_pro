@@ -8,6 +8,7 @@ from django.urls import path
 app_name = "app"
 urlpatterns = [
     path('', views.home, name='home'),
+    path('test', views.test, name='test'),
     path('summary', views.summary, name='summary'),
     path('insert_votante', views.insert_votante, name='insert_votante'),
     path('geomapa', views.geomapa, name='geomapa'),
