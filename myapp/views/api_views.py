@@ -99,6 +99,19 @@ def insert_multi_votantes(request):
 
         response = {"message": "done!"}
         return JsonResponse(response)
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+def update_multi_profile_votantes(request):
+    if request.method == 'POST':
+        body = request.body
+        data = json.loads(body)
+        registros = data.get('registros')
+        for registro in registros:
+            DataController.update_profile_votantes(registro)
+
+        response = {"message": "done!"}
+        return JsonResponse(response)
     #
 
 @api_view(['POST'])

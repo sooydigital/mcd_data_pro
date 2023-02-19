@@ -30,6 +30,18 @@ class DataController():
         return not votante_validation
 
     @staticmethod
+    def get_or_create_votante_profile(votante):
+        votante_profile_obj = None
+        if VotanteProfile.objects.filter(votante=votante).exists():
+            votante_profile_obj = VotanteProfile.objects.filter(votante=votante).first()
+        else:
+            votante_profile_obj = VotanteProfile(
+                votante=votante
+            )
+            votante_profile_obj.save()
+        return votante_profile_obj
+
+    @staticmethod
     def get_or_create_puesto_votacion(departamento, municipio, name, address):
         departamento_obj = DataController.get_or_create_departamento(departamento)
         municipio_obj = DataController.get_or_create_municipio(departamento_obj, municipio)
@@ -400,6 +412,55 @@ class DataController():
                 puesto_votacion=puesto_votacion
             )
             votante_puesto_votacion.save()
+
+    @staticmethod
+    def update_profile_votantes(registro):
+        document_id = registro.get("codigo")
+        first_name = registro.get("first_name")
+        last_name = registro.get("last_name")
+        email = registro.get("email")
+        mobile_phone = registro.get("mobile_phone")
+        birthday = registro.get("birthday")
+        gender = registro.get("gender")
+        address = registro.get("address")
+        municipio = registro.get("municipio")
+        barrio = registro.get("barrio")
+        
+        votante = Votante.objects.filter(document_id=document_id).first()
+        if votante:
+            votante_profile = DataController.get_or_create_votante_profile(votante)
+            if first_name:
+                votante_profile.first_name = first_name
+
+            if last_name:
+                votante_profile.last_name = last_name
+
+            if email:
+                votante_profile.email = email
+
+            if mobile_phone:
+                votante_profile.mobile_phone = mobile_phone
+
+            if birthday:
+                votante_profile.birthday = birthday
+
+            if gender:
+                votante_profile.gender = gender
+
+            if address:
+                votante_profile.address = address
+
+            if municipio:
+                departamento_name = "SANTANDER"
+                departamento_obj = DataController.get_or_create_departamento(departamento_name)
+                municipio_obj = DataController.get_or_create_municipio(departamento_obj, municipio)
+                votante_profile.municipio = municipio_obj
+
+                if barrio:
+                    barrio = DataController.get_or_create_barrio(municipio_obj, barrio)
+                    votante_profile.barrio = barrio
+
+            votante_profile.save()
 
     @staticmethod
     def insert_only_cc_votante(document_id):
