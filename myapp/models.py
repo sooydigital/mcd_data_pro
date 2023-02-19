@@ -235,7 +235,10 @@ class VotanteProfile(models.Model):
         null=True,
     )
 
-    birthday = models.DateField()
+    birthday = models.DateField(
+        blank=True,
+        null=True,
+    )
 
     GENDER_CHOICES = [
         ("HOMBRE", "HOMBRE"),
@@ -245,6 +248,8 @@ class VotanteProfile(models.Model):
     gender = models.CharField(
         max_length=10,
         choices=GENDER_CHOICES,
+        blank=True,
+        null=True,
     )
 
     address = models.CharField(

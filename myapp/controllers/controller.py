@@ -243,6 +243,20 @@ class DataController():
         }
 
         for votante_profile in votantes_profile:
+            barrio = ""
+            if votante_profile.barrio:
+                barrio = votante_profile.barrio.name
+
+            municipio = ""
+            departamento = ""
+            if votante_profile.municipio:
+                municipio = votante_profile.municipio.name
+                if votante_profile.municipio.departamento:
+                    departamento = votante_profile.municipio.departamento.name
+
+            if votante_profile.municipio:
+                departamento = votante_profile.municipio.name
+
             votante_profile_mapping[votante_profile.votante_id] = {
                 "votante_id": votante_profile.votante_id,
                 "first_name": votante_profile.first_name,
@@ -253,9 +267,9 @@ class DataController():
                 "age": votante_profile.age(),
                 "gender": votante_profile.gender,
                 "address": votante_profile.address,
-                "departamento": votante_profile.municipio.departamento.name,
-                "municipio": votante_profile.municipio.name,
-                "barrio": votante_profile.barrio.name,
+                "departamento": departamento,
+                "municipio": municipio,
+                "barrio": barrio,
             }
 
         data["votante_profile_mapping"] = votante_profile_mapping
@@ -425,7 +439,7 @@ class DataController():
         address = registro.get("address")
         municipio = registro.get("municipio")
         barrio = registro.get("barrio")
-        
+
         votante = Votante.objects.filter(document_id=document_id).first()
         if votante:
             votante_profile = DataController.get_or_create_votante_profile(votante)
@@ -499,7 +513,7 @@ class DataController():
                         "mesa": votante_puestovotacion.mesa,
                 }
                 if votante_profile:
-                    votante_data['mobile_phone'] = votante_profile.mobile_phone
+                    votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
                     votante_data['age'] = votante_profile.age()
 
                 votantes.append(

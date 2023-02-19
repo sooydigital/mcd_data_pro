@@ -113,14 +113,15 @@ class DownloadController():
                     votante_profile_birthday_year = birthday.year
 
                 votante_profile_age = votante_profile_data.get('age', 0)
-                if votante_profile_age >= 18 and votante_profile_age<=28:
-                    votante_profile_age_range_1 = "X"
-                elif votante_profile_age >= 29 and votante_profile_age<=44:
-                    votante_profile_age_range_2 = "X"
-                elif votante_profile_age >= 45 and votante_profile_age<=59:
-                    votante_profile_age_range_3 = "X"
-                elif votante_profile_age >= 60:
-                    votante_profile_age_range_4 = "X"
+                if votante_profile_age:
+                    if votante_profile_age >= 18 and votante_profile_age<=28:
+                        votante_profile_age_range_1 = "X"
+                    elif votante_profile_age >= 29 and votante_profile_age<=44:
+                        votante_profile_age_range_2 = "X"
+                    elif votante_profile_age >= 45 and votante_profile_age<=59:
+                        votante_profile_age_range_3 = "X"
+                    elif votante_profile_age >= 60:
+                        votante_profile_age_range_4 = "X"
 
                 votante_profile_gender = votante_profile_data.get('gender', "")
                 votante_profile_address = votante_profile_data.get('address', "")
