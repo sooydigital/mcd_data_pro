@@ -269,11 +269,13 @@ class VotanteProfile(models.Model):
     )
 
     def age(self):
-        local_tz = get_localzone()
-        now = datetime.now(local_tz).date()
-        birthday = self.birthday
-        rd = rdelta.relativedelta(now, birthday)
-        return rd.years
+        if self.birthday:
+            local_tz = get_localzone()
+            now = datetime.now(local_tz).date()
+            birthday = self.birthday
+            rd = rdelta.relativedelta(now, birthday)
+            return rd.years
+        return ""
 
     def full_name(self):
         if self.last_name:

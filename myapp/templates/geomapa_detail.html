@@ -16,19 +16,28 @@
 
     <div class="container">
         <div class="row">
-            <div class="col text-center">
-                <i class="fa fa-2x fa-bookmark" aria-hidden="true"></i>
+            <a href="{% url 'app:geomapa' %}"
+               class="text-decoration-none col col-sm-2 text-center d-flex justify-content-center align-items-center">
+                <i class="fa fa-2x fa-map-marker" aria-hidden="true"></i>
+                &nbsp
+                Mapa
 
+            </a>
+
+
+            <div class="col text-center d-flex justify-content-center align-items-center">
+                <i class="fa fa-2x fa-bookmark" aria-hidden="true"></i>
+                &nbsp
                 {{ departamento }}
             </div>
-            <div class="col text-center">
+            <div class="col text-center d-flex justify-content-center align-items-center">
                 <i class="fa fa-2x fa-university" aria-hidden="true"></i>
-
+                &nbsp
                 {{ municipio }}
             </div>
-            <div class="col text-center">
+            <div class="col text-center d-flex justify-content-center align-items-center">
                 <i class="fa fa-2x fa-thumbs-up" aria-hidden="true"></i>
-
+                &nbsp
                 {{ num_puestos }}
             </div>
         </div>
@@ -44,34 +53,60 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Contacto</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Edad</th>
-                    <th scope="col">Mesa</th>
+                    <th scope="col" class="w-50">Nombre</th>
+                    <th scope="col" class="text-center">Edad</th>
+                    <th scope="col" class="text-center">Mesa</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for votante in votantes %}
                     <tr>
-                        <th scope="row">{{ forloop.counter }}</th>
+                        <th scope="row ">
+                            <spam class="table-icon-text">
+
+                                {{ forloop.counter }}
+                            </spam>
+
+                        </th>
+
                         <td>
-                            {{ votante.mobile_phone }}
+                            <spam class="table-icon-text ">
+                                {{ votante.mobile_phone }}
+                            </spam>
 
                             {% if votante.mobile_phone %}
-                                <a href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone  }}&text=Hola%2C%20Mensaje%20de%20Prueba...%20">
-                                    <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                                &nbsp
+                                <a class="text-decoration-none verde_color_t"
+                                   href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola%2C%20Mensaje%20de%20Prueba...%20">
+                                    <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
                                 </a>
-
-                                <a href="tel:{{ votante.mobile_phone  }}">
-                                  <i class="fa fa-phone" aria-hidden="true"></i>
+                                &nbsp
+                                <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
+                                    <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
                                 </a>
 
                             {% endif %}
 
 
                         </td>
-                        <td>{{ votante.name }}</td>
-                        <td>{{ votante.age }}</td>
-                        <td>{{ votante.mesa }}</td>
+                        <td>
+                            <spam class="table-icon-text">
+
+                                {{ votante.name|upper }}
+                            </spam>
+                        </td>
+                        <td class="text-center">
+                            <spam class="table-icon-text">
+
+                            {{ votante.age }}</td>
+                        </spam>
+
+                        <td class="text-center">
+                            <spam class="table-icon-text">
+
+                            {{ votante.mesa }}</td>
+                        </spam>
+
                     </tr>
                 {% endfor %}
                 </tbody>
