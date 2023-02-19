@@ -109,11 +109,16 @@ class PuestoVotacion(models.Model):
     )
     longitude = models.CharField(
         max_length=1024,
-        verbose_name="longitude"
+        verbose_name="longitude",
+        blank=True,
+        null=True,
+
     )
     latitude = models.CharField(
         max_length=1024,
-        verbose_name="latitude"
+        verbose_name="latitude",
+        blank=True,
+        null=True,
     )
 
     def __str__(self):
