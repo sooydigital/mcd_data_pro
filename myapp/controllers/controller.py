@@ -282,6 +282,7 @@ class DataController():
     @staticmethod
     def get_puestos_votacion_to_plot():
         data = {
+            "ids": ["ID"],
             "lat": ["Lattitude"],
             "lon": ["Longitude"],
             "pv_text": [""],
@@ -297,6 +298,8 @@ class DataController():
                 intensidad = str(10 + num_votantes)
             else:
                 intensidad = "0"
+
+            data["ids"].append(puesto_votacion.id)
 
             data["lat"].append(puesto_votacion.latitude)
             data["lon"].append(puesto_votacion.longitude)
@@ -409,3 +412,38 @@ class DataController():
             )
             votante.save()
 
+    @staticmethod
+    def get_info_puesto_by_id(puesto_id):
+        data = {
+            "nombre": ""
+        }
+        puesto = PuestoVotacion.objects.filter(id=puesto_id).first()
+        if puesto:
+            data["name"] = puesto.name
+            data["departamento"] = puesto.departamento.name
+            data["municipio"] = puesto.municipio.name
+            data["address"] = puesto.address
+            data["longitude"] = puesto.longitude
+            data["latitude"] = puesto.latitude
+            data["num_puestos"] = len(puesto.votantepuestovotacion_set.all())
+
+            votantes_puestovotacion = puesto.votantepuestovotacion_set.all()
+            votantes = []
+            for votante_puestovotacion in votantes_puestovotacion:
+                votante = votante_puestovotacion.votante
+                votante_profile = votante.votanteprofile_set.first()
+
+                votante_data = {
+                        "name": votante.full_name(),
+                        "mesa": votante_puestovotacion.mesa,
+                }
+                if votante_profile:
+                    votante_data['mobile_phone'] = votante_profile.mobile_phone
+                    votante_data['age'] = votante_profile.age()
+
+                votantes.append(
+                    votante_data
+                )
+
+            data["votantes"] = votantes
+        return data

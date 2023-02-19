@@ -11,6 +11,8 @@ urlpatterns = [
     path('summary', views.summary, name='summary'),
     path('insert_votante', views.insert_votante, name='insert_votante'),
     path('geomapa', views.geomapa, name='geomapa'),
+    path('geomapa/detail/', views.geomapa_detail, name='geomapa_detail'),
+    path('geomapa/detail/<str:puesto_id>', views.geomapa_detail, name='geomapa_detail_id'),
 
     path('api/validate_cc/<str:document_id>', views.validate_cc, name='validate_cc'),
     path('api/get_barrio_by_municipio/<str:municipio_id>', views.get_barrio_by_municipio, name='get_barrio_by_municipio'),

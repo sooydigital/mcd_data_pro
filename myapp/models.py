@@ -156,7 +156,9 @@ class CustomUser(models.Model):
         return '{} {}'.format(self.user.first_name, self.user.last_name)
 
     def full_name(self):
-        return '{} {}'.format(self.user.first_name, self.user.last_name)
+        if self.user.last_name:
+            return '{} {}'.format(self.user.first_name, self.user.last_name)
+        return '{}'.format(self.user.first_name)
 
 
 class Votante(models.Model):
@@ -191,7 +193,9 @@ class Votante(models.Model):
     def full_name(self):
         profile = self.votanteprofile_set.first()
         if profile:
-            return '{} {}'.format(profile.first_name, profile.last_name)
+            if profile.last_name:
+                return '{} {}'.format(profile.first_name, profile.last_name)
+            return '{}'.format(profile.first_name)
         return ''
 
 
@@ -272,7 +276,9 @@ class VotanteProfile(models.Model):
         return rd.years
 
     def full_name(self):
-        return '{} {}'.format(self.first_name, self.last_name)
+        if self.last_name:
+            return '{} {}'.format(self.first_name, self.last_name)
+        return '{}'.format(self.first_name)
 
 
 class VotantePuestoVotacion(models.Model):

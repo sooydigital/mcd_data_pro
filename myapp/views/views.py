@@ -74,6 +74,17 @@ def geomapa(request):
         context
     )
 
+@login_required
+def geomapa_detail(request, puesto_id=None):
+    context = {}
+    info_puesto = DataController.get_info_puesto_by_id(puesto_id)
+    context.update(info_puesto)
+    return render(
+        request,
+        'geomapa_detail.html',
+        context
+    )
+
 
 @login_required
 def votantes_download(request):

@@ -18,6 +18,8 @@
 
         function pintarMapa(new_data) {
 
+            ids = new_data.ids
+            console.log('ids', ids)
             lat = new_data.lat
             lon = new_data.lon
             pv_text = new_data.pv_text
@@ -28,10 +30,10 @@
 
             var data = [
                 {
-                    "uid": "00e4ba",
                     "mode": "markers",
                     "name": "Votos",
                     "type": "scattermapbox",
+                    "id": ids,
                     "lat": lat,
                     "lon": lon,
                     "marker": {
@@ -44,10 +46,10 @@
                     "hoverinfo": "text+name"
                 },
                 {
-                    "uid": "507651",
                     "mode": "markers",
                     "name": "Puesto de Votación",
                     "type": "scattermapbox",
+                    "id": ids,
                     "lat": lat,
                     "lon": lon,
                     "marker": {
@@ -80,6 +82,18 @@
             }
 
             Plotly.newPlot("myDiv_super_visor_map", data, layout, config = config);
+
+            var myPlot = document.getElementById('myDiv_super_visor_map')
+
+            myPlot.on('plotly_click', function(data){
+                pointIndex = data.points[0].pointIndex
+                point = `${data.points[0].data.id[pointIndex]}`
+                url = "{% url 'app:geomapa_detail' %}"
+                new_url = `${url}${point}`
+                window.open(
+                    new_url
+                )
+            });
         }
 
         function getInfoPuestosSuccessCallback(data) {
