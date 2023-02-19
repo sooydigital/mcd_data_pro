@@ -41,7 +41,6 @@ class DataController():
             puesto_obj = PuestoVotacion(
                 departamento=departamento_obj,
                 municipio=municipio_obj,
-                barrio=None,
                 name=name,
                 address=address,
                 longitude="",
@@ -271,7 +270,6 @@ class DataController():
             puesto_votacion_mapping[puesto_votacion.id] = {
                 "departamento": puesto_votacion.departamento.name,
                 "municipio": puesto_votacion.municipio.name,
-                "barrio": puesto_votacion.barrio.name if puesto_votacion.barrio else "",
                 "name": puesto_votacion.name,
                 "address": puesto_votacion.address,
             }

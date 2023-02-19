@@ -81,9 +81,9 @@ class BarrioAdmin(admin.ModelAdmin):
 
 # Puesto Votacion y User
 class PuestoVotacionAdmin(admin.ModelAdmin):
-    list_display = ('departamento', 'municipio', 'barrio', 'name', 'address', 'longitude', 'latitude')
+    list_display = ('departamento', 'municipio', 'name', 'address', 'longitude', 'latitude')
     search_fields = ('name', 'address')
-    list_filter = ('municipio', 'barrio')
+    list_filter = ('departamento', 'municipio')
 
 
 class CustomUserAdmin(admin.ModelAdmin):
@@ -112,8 +112,12 @@ class VotanteProfileAdmin(admin.ModelAdmin):
         return obj.age()
 
 class VotantePuestoVotacionAdmin(admin.ModelAdmin):
-    list_display = ('votante', 'mesa', 'puesto_votacion')
-    search_fields = ('votante__document_id',)
+    list_display = ('votante', 'full_name', 'mesa', 'puesto_votacion')
+    search_fields = ('votante__document_id', 'mesa')
+    list_filter = ('puesto_votacion__departamento', )
+
+    def full_name(self, obj):
+        return obj.votante.full_name()
 
 class VotanteMessageAdmin(admin.ModelAdmin):
     list_display = ('votante', 'message', )

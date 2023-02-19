@@ -51,6 +51,7 @@ class DownloadController():
 
         contador = 0
         for votante_id, votante_info in votantes.items():
+            votante_profile_document_id = votante_info.get("document_id")
             contador = contador + 1
             super_visor_code = ""
             super_visor_full_name = ""
@@ -59,7 +60,7 @@ class DownloadController():
 
             votante_profile_first_name = ""
             votante_profile_last_name = ""
-            votante_profile_document_id = ""
+            # votante_profile_document_id = ""
             votante_profile_mobile_phone = ""
             votante_profile_email = ""
             votante_profile_birthday_day = ""

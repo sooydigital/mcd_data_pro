@@ -89,12 +89,12 @@ class PuestoVotacion(models.Model):
         on_delete=models.CASCADE
     )
 
-    barrio = models.ForeignKey(
-        Barrio,
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE
-    )
+    # barrio = models.ForeignKey(
+    #     Barrio,
+    #     blank=True,
+    #     null=True,
+    #     on_delete=models.CASCADE
+    # )
     name = models.CharField(
         max_length=1024,
         verbose_name="Nombre Puesto de Votación",
@@ -117,7 +117,7 @@ class PuestoVotacion(models.Model):
     )
 
     def __str__(self):
-        return '{}, {}, {}'.format(self.name, self.barrio, self.municipio)
+        return '{} -- {} -- {}'.format(self.name, self.address, self.municipio)
 
 class CustomUser(models.Model):
     user = models.ForeignKey(
