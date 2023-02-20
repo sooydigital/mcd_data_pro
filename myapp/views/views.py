@@ -147,7 +147,8 @@ def get_barrio_by_municipio(request, municipio_id):
 
 @login_required
 def get_mapa_puestos(request):
-    data = DataController.get_puestos_votacion_to_plot()
+    municipio = request.GET.get('municipio')
+    data = DataController.get_puestos_votacion_to_plot(municipio)
 
     response = {
         "data": data

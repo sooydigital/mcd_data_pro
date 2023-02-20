@@ -307,7 +307,7 @@ class DataController():
         return data
 
     @staticmethod
-    def get_puestos_votacion_to_plot():
+    def get_puestos_votacion_to_plot(municipio):
         data = {
             "ids": ["ID"],
             "lat": ["Lattitude"],
@@ -317,7 +317,11 @@ class DataController():
             "in_text": ["Votos"],
             "in_size": ["Size E"],
         }
-        puesto_votaciones = PuestoVotacion.objects.all()
+        puesto_votaciones_query = PuestoVotacion.objects
+        if not municipio == "ALL":
+            puesto_votaciones_query = puesto_votaciones_query.filter(municipio__name=municipio)
+
+        puesto_votaciones = puesto_votaciones_query.all()
         for puesto_votacion in puesto_votaciones:
             num_votantes = len(puesto_votacion.votantepuestovotacion_set.all())
             intensidad = "0"
@@ -336,6 +340,7 @@ class DataController():
 
             data["in_text"].append(str(num_votantes))
             data["in_size"].append(intensidad)
+
 
         return data
 

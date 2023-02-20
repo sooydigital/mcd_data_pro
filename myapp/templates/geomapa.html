@@ -9,6 +9,42 @@
     Geo Mapa | MCD
 {% endblock %}
 {% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div data-param="ALL" class="btn_mapa mapa-action-btn mapa-action-btn-selected text-center ">
+                    TODO
+                </div>
+            </div>
+            <div class="col">
+                <div  data-param="BUCARAMANGA" class="btn_mapa mapa-action-btn text-center ">
+                    Bucaramanga
+                </div>
+            </div>
+            <div class="col">
+                <div  data-param="FLORIDABLANCA" class="btn_mapa mapa-action-btn text-center ">
+                    Floridablanca
+                </div>
+            </div>
+            <div class="col">
+                <div  data-param="GIRON" class="btn_mapa mapa-action-btn text-center ">
+                    Giron
+                </div>
+            </div>
+            <div class="col">
+                <div  data-param="PIEDECUESTA" class="btn_mapa mapa-action-btn text-center ">
+                    Piedecuesta
+                </div>
+            </div>
+            <div class="col">
+                <div  data-param="LEBRIJA" class="btn_mapa mapa-action-btn text-center ">
+                    Lebrija
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <br>
     <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
 {% endblock %}
 
@@ -17,9 +53,7 @@
     <script type="text/javascript">
 
         function pintarMapa(new_data) {
-
             ids = new_data.ids
-            console.log('ids', ids)
             lat = new_data.lat
             lon = new_data.lon
             pv_text = new_data.pv_text
@@ -85,7 +119,7 @@
 
             var myPlot = document.getElementById('myDiv_super_visor_map')
 
-            myPlot.on('plotly_click', function(data){
+            myPlot.on('plotly_click', function (data) {
                 pointIndex = data.points[0].pointIndex
                 point = `${data.points[0].data.id[pointIndex]}`
                 url = "{% url 'app:geomapa_detail' %}"
@@ -106,8 +140,8 @@
 
         }
 
-        var getInfoPuestos = (successCallback, errorCallback,) => {
-            var url = `/api/mapa_puestos/`
+        var getInfoPuestos = (successCallback, errorCallback, param) => {
+            var url = `/api/mapa_puestos/?municipio=${param}`
             $.ajax({
                 type: 'GET',
                 url,
@@ -116,7 +150,22 @@
             });
         };
 
-        getInfoPuestos(getInfoPuestosSuccessCallback, getInfoPuestosErrorCallback)
+        getInfoPuestos(getInfoPuestosSuccessCallback, getInfoPuestosErrorCallback, param="ALL")
 
+
+        const nav_items = document.querySelectorAll('.btn_mapa');
+
+        nav_items.forEach(element => {
+                element.addEventListener("click", () => {
+                    nav_items.forEach( el => {
+                        el.classList.remove("mapa-action-btn-selected")
+                        }
+                    )
+                    element.classList.add("mapa-action-btn-selected")
+                    const param = element.getAttribute("data-param")
+                    getInfoPuestos(getInfoPuestosSuccessCallback, getInfoPuestosErrorCallback, param)
+                } )
+            }
+        )
     </script>
 {% endblock %}
