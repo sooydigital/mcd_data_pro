@@ -407,6 +407,9 @@ class DataController():
             new_status = "ERROR"
 
         votante = Votante.objects.filter(document_id=document_id).first()
+        if not votante:
+            return None
+
         if votante.status == "PROCESSED":
             return None
 
@@ -493,6 +496,23 @@ class DataController():
                 status=status
             )
             votante.save()
+
+    @staticmethod
+    def get_puesto_votation_by_cc(document_id):
+        data = {}
+        votante = Votante.objects.filter(document_id=document_id).first()
+        if votante:
+            votante_puesto = VotantePuestoVotacion.objects.filter(votante=votante).first()
+            if votante_puesto:
+                puesto = votante_puesto.puesto_votacion
+                if puesto:
+                    data["document_id"] = votante.document_id
+                    data["mesa"] = votante_puesto.mesa
+                    data["departamento"] = puesto.departamento.name
+                    data["municipio"] = puesto.municipio.name
+                    data["direccion"] = puesto.address
+                    data["puesto"] = puesto.name
+        return data
 
     @staticmethod
     def get_info_puesto_by_id(puesto_id):

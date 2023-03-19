@@ -121,7 +121,7 @@ class VotantePuestoVotacionAdmin(admin.ModelAdmin):
 
 class VotanteMessageAdmin(admin.ModelAdmin):
     list_display = ('votante', 'message', )
-    search_fields = ('votante__document_id',)
+    search_fields = ('votante__document_id','message')
 
 
 

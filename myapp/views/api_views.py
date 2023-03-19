@@ -124,4 +124,22 @@ def insert_only_cc_votante(request):
         DataController.insert_only_cc_votante(registro)
 
         response = {"message": "done!"}
+        return JsonResponse(response)\
+
+@api_view(['POST'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+def get_puesto_votation_by_cc(request):
+    if request.method == 'POST':
+        body = request.body
+        data = json.loads(body)
+        registros = data.get('registros')
+        data_response = []
+        for registro in registros:
+            result = DataController.get_puesto_votation_by_cc(registro)
+            data_response.append(result)
+
+        response = {
+            "message": "done!",
+            "data": data_response
+        }
         return JsonResponse(response)
