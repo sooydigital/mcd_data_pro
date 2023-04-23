@@ -265,3 +265,8 @@ input[type=radio]{
 .count_ditribution {
     font-size: 30px !important;
 }
+
+.invisible {
+    display: None;
+    visibility: hidden;
+}

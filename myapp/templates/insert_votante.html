@@ -29,6 +29,9 @@
                         </div>
                         <i id="success_validation" class="fa  fa-2x fa-check-circle verde_color_t invisible" aria-hidden="true"></i>
                         <i id="error_validation" class="fa  fa-2x fa-times-circle red_color_t invisible" aria-hidden="true"></i>
+                        <div id="error_message_validation" class="red_color_t invisible">
+                            El número de documento que intentas ingresar ya se encuentra registrado en V-Data.
+                        </div>
                     </div>
 
 
@@ -146,16 +149,15 @@ var DOM_IDS = {
         add_hidden_class("loaing_validation")
         if (validation) {
             add_hidden_class("error_validation")
+            add_hidden_class("error_message_validation")
             remove_hidden_class("success_validation")
-                        $('#'+DOM_IDS.BTN_ENVIAR)[0].classList.remove('disabled')
-
+            $('#'+DOM_IDS.BTN_ENVIAR)[0].classList.remove('disabled')
 
         } else {
             add_hidden_class("success_validation")
             remove_hidden_class("error_validation")
-                        $('#'+DOM_IDS.BTN_ENVIAR)[0].classList.add('disabled')
-
-
+            remove_hidden_class("error_message_validation")
+            $('#'+DOM_IDS.BTN_ENVIAR)[0].classList.add('disabled')
         }
     }
 
@@ -197,6 +199,7 @@ var DOM_IDS = {
         remove_hidden_class("loaing_validation")
         add_hidden_class("success_validation")
         add_hidden_class("error_validation")
+        add_hidden_class("error_message_validation")
 
         checkValidationDocumentId(document_id, validationDocumentIdSuccessCallback, validationDocumentIdErrorCallback)
 
