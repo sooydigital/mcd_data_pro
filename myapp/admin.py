@@ -3,7 +3,8 @@
 from django.contrib import admin
 from myapp.models import Departamento, Municipio, Barrio
 from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage
-from myapp.models import PuestoVotacion, CustomUser
+from myapp.models import PuestoVotacion, CustomUser, IntecionDeVoto
+from myapp.models import CustomLink, EtiquetaVotante, Etiqueta
 from datetime import date, timedelta
 
 # filters
@@ -85,6 +86,11 @@ class PuestoVotacionAdmin(admin.ModelAdmin):
     search_fields = ('name', 'address')
     list_filter = ('departamento', 'municipio')
 
+class IntecionDeVotoAdmin(admin.ModelAdmin):
+    list_display = ('puesto_votacion',)
+    search_fields = ('puesto_votacion__name',)
+    list_filter = ('intencion_de_voto',)
+
 
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('document_id',  'full_name', 'user', 'code', 'municipio', 'super_visor')
@@ -133,6 +139,7 @@ admin.site.register(Barrio, BarrioAdmin)
 
 # Puesto Votacion y User
 admin.site.register(PuestoVotacion, PuestoVotacionAdmin)
+admin.site.register(IntecionDeVoto, IntecionDeVotoAdmin)
 admin.site.register(CustomUser, CustomUserAdmin)
 
 # votante info

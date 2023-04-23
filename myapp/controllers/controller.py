@@ -517,17 +517,31 @@ class DataController():
     @staticmethod
     def get_info_puesto_by_id(puesto_id):
         data = {
-            "nombre": ""
+            "nombre": "",
+            'intencion_voto': 0,
+            'intencion_voto_percentage': 0
         }
+
         puesto = PuestoVotacion.objects.filter(id=puesto_id).first()
+        intencion_voto = puesto.inteciondevoto_set.first()
+
         if puesto:
+            num_puestos =  len(puesto.votantepuestovotacion_set.all())
             data["name"] = puesto.name
             data["departamento"] = puesto.departamento.name
             data["municipio"] = puesto.municipio.name
             data["address"] = puesto.address
             data["longitude"] = puesto.longitude
             data["latitude"] = puesto.latitude
-            data["num_puestos"] = len(puesto.votantepuestovotacion_set.all())
+            data["num_puestos"] = num_puestos
+
+            if intencion_voto and num_puestos:
+                data['intencion_voto'] = intencion_voto.intencion_de_voto
+                if  num_puestos >= intencion_voto.intencion_de_voto:
+                    data['intencion_voto_percentage'] = 100
+                else:
+                    data['intencion_voto_percentage'] = num_puestos*100/intencion_voto.intencion_de_voto
+
 
             votantes_puestovotacion = puesto.votantepuestovotacion_set.all()
             votantes = []

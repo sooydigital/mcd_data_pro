@@ -231,8 +231,23 @@ body {
         background-color: #071b40;
 
 }
-input[type=radio]{
-    opacity: 0;
+
+ input[type=radio].semaforo {
+    transform: scale(3);
+    margin-left: 30px;
+}
+
+.semaforo.rojo {
+    background-color: #ff6969;
+    border-color: #ff6969;
+}
+
+.semaforo.naranja {
+    color: red;
+}
+
+.semaforo.naranja {
+    color: red;
 }
 
 .card_pregunta {
