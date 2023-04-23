@@ -124,6 +124,20 @@ class PuestoVotacion(models.Model):
     def __str__(self):
         return '{} -- {} -- {}'.format(self.name, self.address, self.municipio)
 
+
+class IntecionDeVoto(models.Model):
+    puesto_votacion = models.ForeignKey(
+        PuestoVotacion,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
+    intencion_de_voto = models.PositiveIntegerField()
+    
+    def __str__(self):
+        return '{} - {} #{}'.format(self.puesto_votacion.municipio.name, self.puesto_votacion.name, self.intencion_de_voto)
+
+
 class CustomUser(models.Model):
     user = models.ForeignKey(
         User,
@@ -324,3 +338,49 @@ class VotanteMessage(models.Model):
         blank=True,
         null=True,
     )
+
+class Etiqueta(models.Model):
+    name = models.CharField(
+        max_length=1024,
+        verbose_name="nombre de la etiqueta"
+    )
+    def __str__(self):
+        return '{}'.format(self.name)
+
+
+class EtiquetaVotante(models.Model):
+    votante = models.ForeignKey(
+        Votante,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
+
+    etiqueta = models.ForeignKey(
+        Etiqueta,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
+    is_active = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return '{} - {} #{}'.format(self.votante.document_id, self.etiqueta.name, self.is_active)
+
+
+class CustomLink(models.Model):
+    votante = models.ForeignKey(
+        Votante,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
+
+    sub_link = models.CharField(
+        max_length=1024,
+        verbose_name="enlace personalizado"
+    )
+    is_active = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return '{} - {} #{}'.format(self.votante.document_id, self.sub_link, self.is_active)
