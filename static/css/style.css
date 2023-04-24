@@ -238,16 +238,15 @@ body {
 }
 
 .semaforo.rojo {
-    background-color: #ff6969;
-    border-color: #ff6969;
+    accent-color: #ff6969;
 }
 
-.semaforo.naranja {
-    color: red;
+.semaforo.naraja {
+    accent-color: #ffcb69;
 }
 
-.semaforo.naranja {
-    color: red;
+.semaforo.verde {
+    accent-color: #7dff69;
 }
 
 .card_pregunta {
