@@ -45,6 +45,7 @@ class DownloadController():
         # TODO: check this
         votantes = data_mappings.get('votante_mapping')
         custom_user_mapping = data_mappings.get('custom_user_mapping')
+        lider_user_mapping = data_mappings.get('lider_user_mapping')
         custom_user_super_visor_mapping = data_mappings.get('custom_user_super_visor_mapping')
         votante_profile_mapping = data_mappings.get('votante_profile_mapping')
         votante_puesto_votacion_mapping = data_mappings.get('votante_puesto_votacion_mapping')
@@ -59,6 +60,8 @@ class DownloadController():
             super_visor_full_name = ""
             custom_user_code = ""
             custom_user_full_name = ""
+            lider_full_name = ""
+            lider_cutom_link = ""
 
             votante_profile_first_name = ""
             votante_profile_last_name = ""
@@ -91,6 +94,7 @@ class DownloadController():
                 if custom_user_data:
                     super_visor_id = custom_user_data.get('super_visor')
                     custom_user_code = custom_user_data.get("code", "")
+
                     custom_user_full_name = custom_user_data.get("full_name", "")
                     if super_visor_id:
                         super_visor_data = custom_user_super_visor_mapping.get(super_visor_id, {})
@@ -100,6 +104,13 @@ class DownloadController():
                     super_visor_data = custom_user_super_visor_mapping.get(custom_user_id, {})
                     super_visor_code = super_visor_data.get("code", "")
                     super_visor_full_name = super_visor_data.get("full_name", "")
+
+            lider_user_id = votante_info.get('lider_user')
+            if lider_user_id:
+                lider_user_data = lider_user_mapping.get(lider_user_id, {})
+                if lider_user_data:
+                    lider_full_name = lider_user_data.get('lider_full_name', "")
+                    lider_cutom_link = lider_user_data.get("lider_cutom_link", "")
 
             votante_profile_data = votante_profile_mapping.get(votante_id, {})
             if votante_profile_data:
@@ -147,8 +158,8 @@ class DownloadController():
                 super_visor_full_name,
                 custom_user_code,
                 custom_user_full_name,
-                "",
-                "",
+                lider_full_name,
+                lider_cutom_link,
                 votante_profile_first_name,
                 votante_profile_last_name,
                 votante_profile_document_id,

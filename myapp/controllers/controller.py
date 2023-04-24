@@ -221,6 +221,7 @@ class DataController():
     def get_votantes_information_to_download():
         data = {}
         custom_users = CustomUser.objects.exclude(super_visor=None).all()
+
         custom_user_mapping = {
         }
 
@@ -230,7 +231,18 @@ class DataController():
                 "full_name": custom_user.full_name(),
                 "super_visor": custom_user.super_visor_id
             }
+        lider_custom_link_users = CustomLink.objects.all()
+        lider_user_mapping = {
+        }
+        for lider_custom_link_user in lider_custom_link_users:
+            lider_id = lider_custom_link_user.votante
+            lider_user_mapping[lider_id.id] = {
+                "lider_full_name": lider_id.full_name(),
+                "lider_cutom_link": lider_custom_link_user.sub_link
+            }
+
         data["custom_user_mapping"] = custom_user_mapping
+        data["lider_user_mapping"] = lider_user_mapping
         custom_users_super_visor = CustomUser.objects.filter(super_visor=None).all()
         custom_user_super_visor_mapping = {
         }
@@ -250,7 +262,8 @@ class DataController():
             votante_mapping[votante.id] = {
                 "document_id": votante.document_id,
                 "status": votante.status,
-                "custom_user": votante.custom_user_id
+                "custom_user": votante.custom_user_id,
+                "lider_user": votante.lider_id
             }
         data["votante_mapping"] = votante_mapping
 
@@ -572,11 +585,17 @@ class DataController():
             for votante_puestovotacion in votantes_puestovotacion:
                 votante = votante_puestovotacion.votante
                 votante_profile = votante.votanteprofile_set.first()
-
                 votante_data = {
+                        "id": votante.id,
                         "name": votante.full_name(),
                         "mesa": votante_puestovotacion.mesa,
                 }
+                has_customlink = votante.customlink_set.first()
+                if has_customlink:
+                    votante_data['is_leader'] = True
+                else:
+                    votante_data['is_leader'] = False
+
                 if votante_profile:
                     votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
                     votante_data['age'] = votante_profile.age()
@@ -586,4 +605,39 @@ class DataController():
                 )
 
             data["votantes"] = votantes
+        return data
+
+    @staticmethod
+    def get_info_puesto_by_leader(leader_id):
+        data = {
+            "nombre": "",
+            'intencion_voto': 0,
+            'intencion_voto_percentage': 0
+        }
+        lider = Votante.objects.filter(id=leader_id).first()
+        votantes_list = []
+        if lider:
+            votantes = lider.votante_set.all()
+            for votante in votantes:
+                votante_profile = votante.votanteprofile_set.first()
+                votante_puestovotacion = votante.votantepuestovotacion_set.first()
+                votante_data = {
+                        "name": votante.full_name(),
+                        "mesa": votante_puestovotacion.mesa if votante_puestovotacion else "",
+                }
+                has_customlink = votante.customlink_set.first()
+                if has_customlink:
+                    votante_data['is_leader'] = True
+                else:
+                    votante_data['is_leader'] = False
+
+                if votante_profile:
+                    votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                    votante_data['age'] = votante_profile.age()
+
+                votantes_list.append(
+                    votante_data
+                )
+
+        data["votantes"] = votantes_list
         return data

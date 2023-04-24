@@ -91,6 +91,7 @@
                     <th scope="col" class="w-50">Nombre</th>
                     <th scope="col" class="text-center">Edad</th>
                     <th scope="col" class="text-center">Mesa</th>
+                    <th scope="col" class="text-center"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -140,6 +141,16 @@
                             <spam class="table-icon-text">
 
                             {{ votante.mesa }}</td>
+                        </spam>
+
+                        <td class="text-center">
+                            <spam class="table-icon-text">
+                            {% if votante.is_leader %}
+                                <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}" >
+                                    <i class="fa fa-shield" aria-hidden="true"></i>
+                                </a>
+                            {% endif %}
+                        </td>
                         </spam>
 
                     </tr>
