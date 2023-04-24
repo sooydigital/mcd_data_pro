@@ -38,7 +38,20 @@ class Municipio(models.Model):
         verbose_name="nombre del municipio"
     )
     slug = models.SlugField()
+    
+    longitude = models.CharField(
+        max_length=1024,
+        verbose_name="longitude",
+        blank=True,
+        null=True,
 
+    )
+    latitude = models.CharField(
+        max_length=1024,
+        verbose_name="latitude",
+        blank=True,
+        null=True,
+    )
     def save(self, *args, **kwargs):
         if not self.id:
             # Newly created object, so set slug

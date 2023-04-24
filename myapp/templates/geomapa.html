@@ -16,6 +16,7 @@
                     TODO
                 </div>
             </div>
+           
             <div class="col">
                 <div  data-param="BUCARAMANGA" class="btn_mapa mapa-action-btn text-center ">
                     Bucaramanga
@@ -41,7 +42,26 @@
                     Lebrija
                 </div>
             </div>
-
+            <div class="col">
+                <div  data-param="BOGOTA. D.C." class="btn_mapa mapa-action-btn text-center ">
+                    Bogotá
+                </div>
+            </div> 
+            <div class="col">
+                <div  data-param="MEDELLIN" class="btn_mapa mapa-action-btn text-center ">
+                    Medellin
+                </div>
+            </div> 
+            <div class="col">
+                <div  data-param="CALI" class="btn_mapa mapa-action-btn text-center ">
+                    Cali
+                </div>
+            </div> 
+            <div class="col">
+                <div  data-param="CUCUTA" class="btn_mapa mapa-action-btn text-center ">
+                    Cucuta
+                </div>
+            </div> 
         </div>
     </div>
     <br>
@@ -61,6 +81,11 @@
 
             in_text = new_data.in_text
             in_size = new_data.in_size
+
+            center = {"lat": 7.070479, "lon": -73.106224}
+            if (new_data.center) {
+                center = new_data.center
+            }
 
             var data = [
                 {
@@ -103,7 +128,7 @@
                 "mapbox": {
                     "zoom": 11,
                     "pitch": 2,
-                    "center": {"lat": 7.070479, "lon": -73.106224},
+                    "center": center,
                     "bearing": 0
                 },
                 "margin": {"b": 40, "l": 40, "r": 40, "t": 40},

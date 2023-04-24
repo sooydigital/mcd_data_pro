@@ -316,10 +316,18 @@ class DataController():
             "pv_size": ["Size B"],
             "in_text": ["Votos"],
             "in_size": ["Size E"],
+            "center": {"lat": 7.070479, "lon": -73.106224} # Bucaramanga
         }
         puesto_votaciones_query = PuestoVotacion.objects
         if not municipio == "ALL":
             puesto_votaciones_query = puesto_votaciones_query.filter(municipio__name=municipio)
+            municipio_obj = Municipio.objects.filter(name=municipio).first()
+            if municipio_obj and municipio_obj.longitude:
+                data["center"] = {
+                    "lat": municipio_obj.latitude, 
+                    "lon": municipio_obj.longitude
+                }
+
 
         puesto_votaciones = puesto_votaciones_query.all()
         for puesto_votacion in puesto_votaciones:
@@ -340,6 +348,7 @@ class DataController():
 
             data["in_text"].append(str(num_votantes))
             data["in_size"].append(intensidad)
+
 
 
         return data
