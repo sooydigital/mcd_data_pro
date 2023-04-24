@@ -11,6 +11,9 @@ urlpatterns = [
     path('test', views.test, name='test'),
     path('summary', views.summary, name='summary'),
     path('insert_votante', views.insert_votante, name='insert_votante'),
+    path('iv/<str:sub_link>', views.insert_votante_with_sub_link, name='insert_votante_sub_link'),
+    path('iv_confirm', TemplateView.as_view(template_name='insert_votante_confirm.html'), name='insert_votante_confirm'),
+
     path('geomapa', views.geomapa, name='geomapa'),
     path('geomapa/detail/', views.geomapa_detail, name='geomapa_detail'),
     path('geomapa/detail/<str:puesto_id>', views.geomapa_detail, name='geomapa_detail_id'),

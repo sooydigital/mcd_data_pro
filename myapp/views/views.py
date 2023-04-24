@@ -97,6 +97,22 @@ def insert_votante(request):
         context
     )
 
+def insert_votante_with_sub_link(request, sub_link):
+    context = {}
+    if request.method == 'POST':
+        respuesta = DataController.store_reponses(dict(request.POST), request.user, sub_link=sub_link)
+        if type(respuesta) == str:
+            messages.error(request, respuesta)
+        else:
+            messages.success(request, 'el registro se a guardado exitosamente')
+        return redirect('app:insert_votante_confirm')
+
+
+    return render(
+        request,
+        'insert_votante.html',
+        context
+    )
 
 # Create your views here.
 @login_required
@@ -127,7 +143,7 @@ def votantes_download(request):
     return response
 
 
-@login_required
+# @login_required
 def validate_cc(request, document_id):
     document_validation = DataController.validate_document_id(document_id)
 
@@ -136,7 +152,7 @@ def validate_cc(request, document_id):
     }
     return JsonResponse(response)
 
-@login_required
+# @login_required
 def get_barrio_by_municipio(request, municipio_id):
     barrios = DataController.get_barrios_by_municipio(municipio_id)
 

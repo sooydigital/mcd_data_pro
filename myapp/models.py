@@ -38,7 +38,7 @@ class Municipio(models.Model):
         verbose_name="nombre del municipio"
     )
     slug = models.SlugField()
-    
+
     longitude = models.CharField(
         max_length=1024,
         verbose_name="longitude",
@@ -146,7 +146,7 @@ class IntecionDeVoto(models.Model):
         on_delete=models.CASCADE
     )
     intencion_de_voto = models.PositiveIntegerField()
-    
+
     def __str__(self):
         return '{} - {} #{}'.format(self.puesto_votacion.municipio.name, self.puesto_votacion.name, self.intencion_de_voto)
 
@@ -208,6 +208,14 @@ class Votante(models.Model):
 
     custom_user = models.ForeignKey(
         CustomUser,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        verbose_name='supervisor'
+    )
+
+    lider = models.ForeignKey(
+        "self",
         blank=True,
         null=True,
         on_delete=models.CASCADE
@@ -376,7 +384,7 @@ class EtiquetaVotante(models.Model):
         on_delete=models.CASCADE
     )
     is_active = models.BooleanField(default=True)
-    
+
     def __str__(self):
         return '{} - {} #{}'.format(self.votante.document_id, self.etiqueta.name, self.is_active)
 
@@ -394,6 +402,6 @@ class CustomLink(models.Model):
         verbose_name="enlace personalizado"
     )
     is_active = models.BooleanField(default=True)
-    
+
     def __str__(self):
         return '{} - {} #{}'.format(self.votante.document_id, self.sub_link, self.is_active)

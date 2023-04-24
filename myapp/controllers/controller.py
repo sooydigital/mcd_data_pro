@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage
 from myapp.models import Municipio, Barrio, Departamento, PuestoVotacion
-from myapp.models import CustomUser
+from myapp.models import CustomUser, CustomLink
 import math
 
 from myapp.serializers import BarrioSerializer
@@ -118,18 +118,33 @@ class DataController():
         return barrio_obj
 
     @staticmethod
-    def store_reponses(data, user):
+    def store_reponses(data, user, sub_link=None):
+        votante_lider = None
+        if sub_link:
+            sub_link_obj = CustomLink.objects.filter(sub_link=sub_link).first()
+            if sub_link_obj:
+                votante_lider = sub_link_obj.votante
+
         document_id = clena_data_cc(get_data_from_post(data, "document_id"))
         if Votante.objects.filter(document_id=document_id).exists():
             return "Esta cedula ya existe"
 
         status = "PENDING"
-        custom_user = user.customuser_set.first()
+        custom_user = None
         votante = Votante(
             document_id=document_id,
             status=status,
-            custom_user=custom_user
         )
+
+        if votante_lider:
+            votante.lider = votante_lider
+            custom_user = votante_lider.custom_user
+            votante.custom_user = custom_user
+        else:
+            custom_user = user.customuser_set.first()
+            votante.custom_user = custom_user
+
+
         votante.save()
 
         first_name = get_data_from_post(data, "first_name")
@@ -324,7 +339,7 @@ class DataController():
             municipio_obj = Municipio.objects.filter(name=municipio).first()
             if municipio_obj and municipio_obj.longitude:
                 data["center"] = {
-                    "lat": municipio_obj.latitude, 
+                    "lat": municipio_obj.latitude,
                     "lon": municipio_obj.longitude
                 }
 

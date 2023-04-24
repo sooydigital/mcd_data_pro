@@ -80,16 +80,21 @@ class BarrioAdmin(admin.ModelAdmin):
     list_filter = ('municipio',)
     search_fields = ('name',)
 
+class IntecionDeVotoInline(admin.StackedInline):
+    model = IntecionDeVoto
+    extra = 0
+
 # Puesto Votacion y User
 class PuestoVotacionAdmin(admin.ModelAdmin):
     list_display = ('departamento', 'municipio', 'name', 'address', 'longitude', 'latitude')
     search_fields = ('name', 'address')
     list_filter = ('departamento', 'municipio')
+    inlines = [IntecionDeVotoInline,]
 
 class IntecionDeVotoAdmin(admin.ModelAdmin):
-    list_display = ('puesto_votacion',)
-    search_fields = ('puesto_votacion__name',)
-    list_filter = ('intencion_de_voto',)
+    list_display = ('puesto_votacion', 'intencion_de_voto')
+    search_fields = ('puesto_votacion__name', 'puesto_votacion__municipio__name')
+    list_filter = ('intencion_de_voto', 'puesto_votacion__municipio__name',)
 
 
 class CustomUserAdmin(admin.ModelAdmin):
@@ -100,10 +105,17 @@ class CustomUserAdmin(admin.ModelAdmin):
     def full_name(self, obj):
         return obj.full_name()
 
+
+class EtiquetaVotanteInline(admin.StackedInline):
+    model = EtiquetaVotante
+    extra = 0
+
+
 class VotanteAdmin(admin.ModelAdmin):
     list_display = ('document_id', 'full_name', 'status', 'custom_user')
     search_fields = ('document_id', )
     list_filter = ('status', 'custom_user')
+    inlines = [EtiquetaVotanteInline,]
 
     def full_name(self, obj):
         return obj.full_name()
@@ -147,3 +159,8 @@ admin.site.register(Votante, VotanteAdmin)
 admin.site.register(VotanteProfile, VotanteProfileAdmin)
 admin.site.register(VotantePuestoVotacion, VotantePuestoVotacionAdmin)
 admin.site.register(VotanteMessage, VotanteMessageAdmin)
+
+# etiquetas
+admin.site.register(Etiqueta)
+admin.site.register(EtiquetaVotante)
+admin.site.register(CustomLink)
