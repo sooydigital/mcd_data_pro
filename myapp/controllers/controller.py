@@ -382,6 +382,43 @@ class DataController():
         return data
 
     @staticmethod
+    def get_puestos_votacion_to_plot_by_leader(leader_id):
+        data = {
+            "ids": ["ID"],
+            "lat": ["Lattitude"],
+            "lon": ["Longitude"],
+            "pv_text": [""],
+            "pv_size": ["Size B"],
+            "in_text": ["Votos"],
+            "in_size": ["Size E"],
+            "center": {"lat": 7.070479, "lon": -73.106224} # Bucaramanga
+        }
+        puesto_votaciones_query = PuestoVotacion.objects
+        puesto_votaciones_query = puesto_votaciones_query.filter(votantepuestovotacion__votante__lider_id=leader_id)
+
+        puesto_votaciones = puesto_votaciones_query.all()
+        for puesto_votacion in puesto_votaciones:
+            num_votantes = len(puesto_votacion.votantepuestovotacion_set.all())
+            intensidad = "0"
+            if num_votantes:
+                log_10 = math.log2(num_votantes) * 2
+                intensidad = str(10 + log_10)
+            else:
+                intensidad = "0"
+
+            data["ids"].append(puesto_votacion.id)
+
+            data["lat"].append(puesto_votacion.latitude)
+            data["lon"].append(puesto_votacion.longitude)
+            data["pv_text"].append(puesto_votacion.name)
+            data["pv_size"].append("10")
+
+            data["in_text"].append(str(num_votantes))
+            data["in_size"].append(intensidad)
+
+        return data
+
+    @staticmethod
     def get_votante_info(document_id):
         votante = Votante.objects.filter(document_id=document_id).first()
         if not votante:

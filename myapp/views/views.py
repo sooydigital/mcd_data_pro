@@ -143,7 +143,7 @@ def geomapa_detail_by_leader(request, leader_id):
     context.update(info_puesto)
     return render(
         request,
-        'geomapa_detail.html',
+        'geomapa_detail_by_leader.html',
         context
     )
 
@@ -175,7 +175,13 @@ def get_barrio_by_municipio(request, municipio_id):
 @login_required
 def get_mapa_puestos(request):
     municipio = request.GET.get('municipio')
-    data = DataController.get_puestos_votacion_to_plot(municipio)
+    data = []
+    if municipio:
+        data = DataController.get_puestos_votacion_to_plot(municipio)
+    leader = request.GET.get('leader')
+    if leader:
+        data = DataController.get_puestos_votacion_to_plot_by_leader(leader)
+
 
     response = {
         "data": data
