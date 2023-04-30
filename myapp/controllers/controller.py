@@ -677,4 +677,6 @@ class DataController():
                 )
 
         data["votantes"] = votantes_list
+        data["nombre"] = lider.full_name()
+
         return data

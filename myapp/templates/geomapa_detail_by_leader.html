@@ -11,75 +11,24 @@
 {% block content %}
 
     <h1 class="text-center">
-        {{ name }}
+        {{ nombre }}
     </h1>
     <input type="hidden" id="mapa_leader_id" value="1">
     <div class="container">
-        <div class="row">
-            <div class="col col-sm-2 text-center d-flex justify-content-center align-items-center">
-
-            </div>
-            <div class="col text-center d-flex justify-content-center align-items-center">
-                Departamento
-            </div>
-            <div class="col text-center d-flex justify-content-center align-items-center">
-                Municipio
-            </div>
-            <div class="col text-center d-flex justify-content-center align-items-center">
-                Intención de Voto
-            </div>
-        </div>
-            <div class="row">
-            <a href="{% url 'app:geomapa' %}"
-               class="text-decoration-none col col-sm-2 text-center d-flex justify-content-center align-items-center">
-                <i class="fa fa-2x fa-map-marker" aria-hidden="true"></i>
-                &nbsp
-                Mapa
-
-            </a>
-            <div class="col text-center d-flex justify-content-center align-items-center">
-                <i class="fa fa-2x fa-bookmark" aria-hidden="true"></i>
-                &nbsp
-                {{ departamento }}
-            </div>
-            <div class="col text-center d-flex justify-content-center align-items-center">
-                <i class="fa fa-2x fa-university" aria-hidden="true"></i>
-                &nbsp
-                {{ municipio }}
-            </div>
-            <div class="col text-center d-flex justify-content-center align-items-center">
-                <i class="fa fa-2x fa-thumbs-up" aria-hidden="true"></i>
-                &nbsp
-                {{ num_puestos }}/ {{ intencion_voto }}
-            </div>
-        </div>
         <div class="row  mt-5">
             <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
         </div>
         <div class="row">
-            <p class=" text-end text-muted">{{ name }} - {{ address }} - {{ municipio }} - {{ departamento }}</p>
+                    <a href="{% url 'app:geomapa' %}"
+               class="text-decoration-none col col-sm-2 text-center d-flex justify-content-center align-items-center">
+                <i class="fa fa-2x fa-map-marker" aria-hidden="true"></i>
+                &nbsp
+                Mapa
+        </a>
+            <p class=" text-end text-muted">{{ nombre }}</p>
         </div>
 
         <div>
-            {% if intencion_voto_percentage < 30 %}
-                <div class="form-check semaforo_intencion_votos">
-                    <input type="radio" class="semaforo rojo"  checked>
-                    <input type="radio" class="semaforo naraja" disabled>
-                    <input type="radio" class="semaforo verde" disabled>
-            </div>
-            {% elif intencion_voto_percentage < 80 %}
-            <div class="form-check semaforo_intencion_votos">
-                <input type="radio" class="semaforo rojo"  checked>
-                <input type="radio" class="semaforo naraja"  checked>
-                <input type="radio" class="semaforo verde" disabled>
-            </div>
-            {% else %}
-            <div class="form-check semaforo_intencion_votos">
-                <input type="radio" class="semaforo rojo"  checked>
-                <input type="radio" class="semaforo naraja"  checked>
-                <input type="radio" class="semaforo verde"  checked>
-            </div>
-            {% endif %}
 
         </div>
         <div class="row mt-5">
