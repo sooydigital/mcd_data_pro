@@ -139,11 +139,22 @@ def geomapa_detail(request, puesto_id=None):
 @login_required
 def geomapa_detail_by_leader(request, leader_id):
     context = {}
-    info_puesto = DataController.get_info_puesto_by_leader(leader_id)
+    info_puesto = DataController.get_info_puesto_by_leader(request, leader_id)
     context.update(info_puesto)
     return render(
         request,
         'geomapa_detail_by_leader.html',
+        context
+    )
+
+@login_required
+def leaders(request):
+    context = {}
+    info_puesto = DataController.get_all_leaders()
+    context.update(info_puesto)
+    return render(
+        request,
+        'leaders.html',
         context
     )
 

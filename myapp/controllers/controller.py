@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from django.urls import reverse
 
 from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage
 from myapp.models import Municipio, Barrio, Departamento, PuestoVotacion
@@ -182,19 +183,26 @@ class DataController():
 
     @staticmethod
     def get_summary_by_user(customer_user_id):
+        number_lideres = 0
         customer_user = CustomUser.objects.filter(user_id=customer_user_id).first()
         if customer_user:
             is_super_visor = not customer_user.super_visor_id
             if is_super_visor:
                 alimentadores = customer_user.customuser_set.all()
                 votantes = Votante.objects.filter(custom_user__in=alimentadores)
+                number_lideres = len(CustomLink.objects.filter(votante__custom_user__in=alimentadores).all())
+
             else:
                 votantes = Votante.objects.filter(custom_user=customer_user)
+                number_lideres = len(CustomLink.objects.filter(votante__custom_user=customer_user).all())
+
         else:
             votantes = Votante.objects
+            number_lideres = len(CustomLink.objects.all())
 
         today = datetime.today()
         return {
+            "num_lideres": number_lideres,
             "votante_error": len(votantes.filter(status="ERROR").all()),
             "votante_pending_proceess": len(votantes.filter(status="PENDING").all()),
             "votante_proceess": len(votantes.filter(status="PROCESSED").all()),
@@ -630,6 +638,7 @@ class DataController():
                 has_customlink = votante.customlink_set.first()
                 if has_customlink:
                     votante_data['is_leader'] = True
+                    votante_data['custom_link'] = has_customlink.sub_link
                 else:
                     votante_data['is_leader'] = False
 
@@ -645,15 +654,23 @@ class DataController():
         return data
 
     @staticmethod
-    def get_info_puesto_by_leader(leader_id):
+    def get_info_puesto_by_leader(request, leader_id):
         data = {
             "nombre": "",
+            "link": "",
             'intencion_voto': 0,
             'intencion_voto_percentage': 0
         }
         lider = Votante.objects.filter(id=leader_id).first()
         votantes_list = []
         if lider:
+            has_link = lider.customlink_set.first()
+            if has_link:
+
+                url = reverse("app:insert_votante_sub_link", args=[has_link.sub_link])
+                full_url = request.build_absolute_uri(url)
+                data["link"] = full_url
+
             votantes = lider.votante_set.all()
             for votante in votantes:
                 votante_profile = votante.votanteprofile_set.first()
@@ -665,6 +682,7 @@ class DataController():
                 has_customlink = votante.customlink_set.first()
                 if has_customlink:
                     votante_data['is_leader'] = True
+                    votante_data['custom_link'] = has_customlink.sub_link
                 else:
                     votante_data['is_leader'] = False
 
@@ -680,3 +698,35 @@ class DataController():
         data["nombre"] = lider.full_name()
 
         return data
+
+    @staticmethod
+    def get_all_leaders():
+        custom_links = CustomLink.objects.all()
+        votantes = []
+        for custom_link in custom_links:
+            votante = custom_link.votante
+            votante_profile = votante.votanteprofile_set.first()
+
+            votante_data = {
+                "id": votante.id,
+                "name": votante.full_name(),
+            }
+            has_customlink = votante.customlink_set.first()
+            if has_customlink:
+                votante_data['is_leader'] = True
+                votante_data['custom_link'] = has_customlink.sub_link
+            else:
+                votante_data['is_leader'] = False
+
+            if votante_profile:
+                votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                votante_data['age'] = votante_profile.age()
+
+            votantes.append(
+                votante_data
+            )
+
+
+        return {
+            "leaders": votantes
+        }
