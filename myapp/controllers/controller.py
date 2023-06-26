@@ -594,6 +594,11 @@ class DataController():
                     data["municipio"] = puesto.municipio.name
                     data["direccion"] = puesto.address
                     data["puesto"] = puesto.name
+            else:
+                votante_message = VotanteMessage.objects.filter(votante=votante).first()
+                if votante_message:
+                    data["message"] = votante_message.message     
+
         return data
 
     @staticmethod

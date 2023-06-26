@@ -1,5 +1,5 @@
-host = "http://miclickdigital.pythonanywhere.com"
-# host = "http://127.0.0.1:8000"
+# host = "http://miclickdigital.pythonanywhere.com"
+host = "http://127.0.0.1:8000"
 configuration_api = {
     "host": host,
     "user": "admin",
