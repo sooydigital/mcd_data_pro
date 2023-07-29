@@ -473,6 +473,17 @@ class DataController():
         return lista
 
     @staticmethod
+    def get_all_cc_by_municipio(municipio):
+        votantes_puesto = VotantePuestoVotacion.objects.filter(
+            puesto_votacion__municipio__name__iexact=municipio
+        ).all()
+
+        lista = [
+            votante_puesto.votante.document_id for votante_puesto in votantes_puesto
+        ]
+        return lista
+
+    @staticmethod
     def update_votantes_processsing(registro):
 
         document_id = registro.get("codigo")
@@ -594,10 +605,13 @@ class DataController():
                     data["municipio"] = puesto.municipio.name
                     data["direccion"] = puesto.address
                     data["puesto"] = puesto.name
+                profile = VotanteProfile.objects.filter(votante=votante).first()
+                if profile:
+                    data["name"] = profile.full_name()
             else:
                 votante_message = VotanteMessage.objects.filter(votante=votante).first()
                 if votante_message:
-                    data["message"] = votante_message.message     
+                    data["message"] = votante_message.message
 
         return data
 

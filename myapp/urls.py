@@ -33,6 +33,7 @@ urlpatterns = [
     path('api/update-multi-profile-votantes/', api_views.update_multi_profile_votantes, name='update_multi_profile_votantes'),
     path('api/get_all_cc_registered/', api_views.get_all_cc_registered, name='get_all_cc_registered'),
     path('api/get_all_cc_by_status/', api_views.get_all_cc_by_status, name='get_all_cc_by_status'),
+    path('api/get_all_cc_by_municipio/', api_views.get_all_cc_by_municipio, name='get_all_cc_by_municipio'),
     path('api/insert_only_cc_votante/', api_views.insert_only_cc_votante, name='insert_only_cc_votante'),
     path('api/get_puesto_votation_by_cc/', api_views.get_puesto_votation_by_cc, name='get_puesto_votation_by_cc'),
 
