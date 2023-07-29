@@ -86,6 +86,18 @@ def get_all_cc_by_status(request):
         }
         return JsonResponse(response)
 
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+def get_all_cc_by_municipio(request):
+    if request.method == 'GET':
+        municipio = request.query_params.get('municipio')
+        vontante_lista = DataController.get_all_cc_by_municipio(municipio)
+
+        response = {
+            "data": vontante_lista
+        }
+        return JsonResponse(response)
+
 
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])

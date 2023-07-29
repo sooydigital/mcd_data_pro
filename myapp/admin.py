@@ -132,7 +132,7 @@ class VotanteProfileAdmin(admin.ModelAdmin):
 class VotantePuestoVotacionAdmin(admin.ModelAdmin):
     list_display = ('votante', 'full_name', 'mesa', 'puesto_votacion')
     search_fields = ('votante__document_id', 'mesa')
-    list_filter = ('puesto_votacion__departamento', )
+    list_filter = ('puesto_votacion__departamento', 'puesto_votacion__municipio')
 
     def full_name(self, obj):
         return obj.votante.full_name()
