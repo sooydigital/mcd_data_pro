@@ -199,7 +199,7 @@ class DataController():
         else:
             votantes = Votante.objects
             number_lideres = len(CustomLink.objects.all())
-
+        votantes = votantes.filter(is_active=True)
         today = datetime.today()
         return {
             "num_lideres": number_lideres,
@@ -367,7 +367,7 @@ class DataController():
 
         puesto_votaciones = puesto_votaciones_query.all()
         for puesto_votacion in puesto_votaciones:
-            num_votantes = len(puesto_votacion.votantepuestovotacion_set.all())
+            num_votantes = len(puesto_votacion.votantepuestovotacion_set.filter(votante__is_active=True).all())
             intensidad = "0"
             if num_votantes:
                 log_10 = math.log2(num_votantes) * 2
@@ -406,7 +406,7 @@ class DataController():
 
         puesto_votaciones = puesto_votaciones_query.all()
         for puesto_votacion in puesto_votaciones:
-            num_votantes = len(puesto_votacion.votantepuestovotacion_set.all())
+            num_votantes = len(puesto_votacion.votantepuestovotacion_set.filter(votante__is_active=True).all())
             intensidad = "0"
             if num_votantes:
                 log_10 = math.log2(num_votantes) * 2
@@ -475,7 +475,7 @@ class DataController():
     @staticmethod
     def get_all_cc_by_municipio(municipio):
         votantes_puesto = VotantePuestoVotacion.objects.filter(
-            puesto_votacion__municipio__name__iexact=municipio
+            puesto_votacion__municipio__name__iexact=municipio, votante__is_active=True
         ).all()
 
         lista = [
@@ -627,7 +627,7 @@ class DataController():
         intencion_voto = puesto.inteciondevoto_set.first()
 
         if puesto:
-            num_puestos =  len(puesto.votantepuestovotacion_set.all())
+            num_puestos =  len(puesto.votantepuestovotacion_set.filter(votante__is_active=True).all())
             data["name"] = puesto.name
             data["departamento"] = puesto.departamento.name
             data["municipio"] = puesto.municipio.name
