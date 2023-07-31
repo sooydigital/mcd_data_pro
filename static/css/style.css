@@ -25,7 +25,7 @@ body {
 }
 
 .principal_color {
-    background-color: #F29727 !important;
+    background-color: #47B5FF !important;
 }
 
 .verde_color_b {
@@ -70,7 +70,7 @@ body {
 
 .home-action-btn {
 
-    background-color: #E57C23;
+    background-color: #0047BA;
     color: white;
     text-align: center;
     font-size: 30px;
@@ -89,13 +89,13 @@ body {
 
 
 .home-action-btn:hover {
-    background-color: #ea954b;
+    background-color: #0159e7;
     color: white;
 }
 
 .mapa-action-btn {
     cursor: pointer;
-    background-color: #9CA777;
+    background-color: #5d96f3;
     color: white;
     text-align: center;
     font-size: 30px;
@@ -113,11 +113,11 @@ body {
 }
 
 .mapa-action-btn-selected {
-        background-color: #667044;
+        background-color: #025ff8;
 }
 
 .mapa-action-btn:hover {
-    background-color: #c8d4a1;
+    background-color: #8fb6f5;
     color: white;
 }
 
