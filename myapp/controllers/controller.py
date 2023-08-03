@@ -352,7 +352,7 @@ class DataController():
             "pv_size": ["Size B"],
             "in_text": ["Votos"],
             "in_size": ["Size E"],
-            "center": {"lat": 7.070479, "lon": -73.106224} # Bucaramanga
+            "center": {"lat": 5.5368954, "lon": -73.3680772} # Tunja
         }
         puesto_votaciones_query = PuestoVotacion.objects
         if not municipio == "ALL":
@@ -399,7 +399,7 @@ class DataController():
             "pv_size": ["Size B"],
             "in_text": ["Votos"],
             "in_size": ["Size E"],
-            "center": {"lat": 7.070479, "lon": -73.106224} # Bucaramanga
+            "center": {"lat": 5.5368954, "lon": -73.3680772} # Tunja
         }
         puesto_votaciones_query = PuestoVotacion.objects
         puesto_votaciones_query = puesto_votaciones_query.filter(votantepuestovotacion__votante__lider_id=leader_id)

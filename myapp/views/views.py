@@ -88,7 +88,7 @@ def insert_votante(request):
             messages.error(request, respuesta)
         else:
             messages.success(request, 'el registro se a guardado exitosamente')
-        return redirect('app:home')
+        return redirect('app:insert_votante')
 
 
     return render(
@@ -105,7 +105,7 @@ def insert_votante_with_sub_link(request, sub_link):
             messages.error(request, respuesta)
         else:
             messages.success(request, 'el registro se a guardado exitosamente')
-        return redirect('app:insert_votante_confirm')
+        return redirect('./'+sub_link)
 
 
     return render(
