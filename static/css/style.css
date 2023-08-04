@@ -29,6 +29,11 @@ body {
     padding: 0px 5px;
 }
 
+.navbar-brand a:hover{
+    color: #d1e4f1;
+    text-decoration: none;
+}
+
 .principal_color {
     background-color: #47B5FF !important;
 }
