@@ -1,119 +1,111 @@
 {% load permissions_tags %} {% load static %}
 
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark principal_color">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark principal_color">
     <div class="container-fluid">
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+        <div class="navbar-brand title">
+            <a class="nav-link text-center " href="{% url 'app:home' %}">
+                <i class="fa fa-home fa-2x" aria-hidden="true">
+                    <h3>Inicio</h3>
+                </i>
+                <div class="separator">
+                    |
+                </div>
+                <h2>V-Data</h2>
+            </a>
+
+        </div>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        
+
+        <!-- COLAPSE BTN -->
         <div class="collapse navbar-collapse" id="mynavbar">
-            <!-- Centered link -->
-
-            <ul class="navbar-nav me-auto">
-
-                <li class="nav-item">
-                    <a class="nav-link text-center" href="{% url 'app:home' %}">
-                        <i class="fa fa-home fa-4x" aria-hidden="true"></i> <br>
-                        Inicio
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link text-center" href="#">
-                        <p class=" fa-4x" aria-hidden="true">
-                            |
-                        </p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link text-center" href="#">
-                        <p class=" fa-4x" aria-hidden="true">
-                            V-Data
-                        </p>
-                    </a>
-                </li>
-            </ul>
-
 
             {% if request.user|has_role:'ALIMENTADOR' %}
-                <ul class="navbar-nav me-auto">
-                    <a class="navbar-brand px-md-3" href="#">
-                        Candidato:
-                        <br>
-                        {{ request.user.customuser_set.first.super_visor.user.first_name }} {{ request.user.customuser_set.first.super_visor.user.last_name }}
-                    </a>
-                    <a class="navbar-brand px-md-3" href="#">
-                        Municipio:
-                        <br>
-                        {{ request.user.customuser_set.first.municipio.name }}
-                    </a>
-                    <a class="navbar-brand px-md-3" href="#">
-                        Lider:
-                        <br>{{ request.user.first_name }} {{ request.user.last_name }}</a>
-                </ul>
+            <ul class="navbar-nav">
+                <a class="navbar-brand" href="#">
+                    Candidato:
+                    <br>
+                    {{ request.user.customuser_set.first.super_visor.user.first_name }} {{
+                    request.user.customuser_set.first.super_visor.user.last_name }}
+                </a>
+                <a class="navbar-brand" href="#">
+                    Municipio:
+                    <br>
+                    {{ request.user.customuser_set.first.municipio.name }}
+                </a>
+                <a class="navbar-brand" href="#">
+                    Lider:
+                    <br>{{ request.user.first_name }} {{ request.user.last_name }}</a>
+            </ul>
 
             {% elif request.user|has_role:'SUPERVISOR' %}
-                <ul class="navbar-nav me-auto">
-                    <a class="navbar-brand px-md-3" href="#">
-                        Candidato:
-                        <br>
-                        {{ request.user.first_name }} {{ request.user.last_name }}</a>
-                    </a>
-                    <a class="navbar-brand px-md-3" href="#">
-                        Municipio:
-                        <br>
-                        {{ request.user.customuser_set.first.municipio.name }}
-                    </a>
-                </ul>
+            <ul class="navbar-nav me-auto">
+                <a class="navbar-brand" href="#">
+                    Candidato:
+                    <br>
+                    {{ request.user.first_name }} {{ request.user.last_name }}</a>
+                </a>
+                <a class="navbar-brand" href="#">
+                    Municipio:
+                    <br>
+                    {{ request.user.customuser_set.first.municipio.name }}
+                </a>
+            </ul>
 
             {% elif request.user|has_role:'SUPER_ADMIN' %}
-                <ul class="navbar-nav me-auto">
-                    <a class="navbar-brand px-md-3" href="#">
-                        Admin:
-                        <br>
-                        <div class="display-6">
+            <ul class="navbar-nav m-auto">
+                <a class="navbar-brand" href="#">
+                    Admin:
+                    <br>
+                    <div class="display-6">
                         {{ request.user.first_name }} {{ request.user.last_name }}
 
-                        </div>
-                    </a>
-                    </a>
-                </ul>
+                    </div>
+                </a>
+                </a>
+            </ul>
             {% endif %}
 
 
-            <div class=" ">
-                <ul class="navbar-nav me-auto">
+            <div class="">
+                <ul class="navbar-nav me-auto ">
 
                     {% if request.user|has_role:'SUPER_ADMIN' %}
-                        <li class="nav-item">
+                    <li class="nav-item rol-icon">
 
-                            <a class="nav-link text-center" href="{% url 'admin:index' %}">
-                                Admin <br> <i class="fa fa-4x fa-user-circle" aria-hidden="true"></i>
-                            </a>
-                        </li>
+                        <a class="nav-link text-center" href="{% url 'admin:index' %}">
+                            Admin <br> <i class="fa fa-3x fa-user-circle" aria-hidden="true"></i>
+                        </a>
+                    </li>
                     {% elif request.user|has_role:'SUPERVISOR' %}
-                        <li class="nav-item">
-                            <a class="nav-link text-center" href="#">
-                                Candidato <br> <i class="fa fa-4x fa-user-circle" aria-hidden="true"></i>
-                            </a>
-                        </li>
+                    <li class="nav-item rol-icon">
+                        <a class="nav-link text-center" href="#">
+                            Candidato <br> <i class="fa fa-3x fa-user-circle" aria-hidden="true"></i>
+                        </a>
+                    </li>
                     {% elif request.user|has_role:'ALIMENTADOR' %}
-                        <li class="nav-item">
-                            <a class="nav-link text-center" href="#">
-                                Lider <br> <i class="fa fa-4x fa-user-circle" aria-hidden="true"></i>
-                            </a>
-                        </li>
+                    <li class="nav-item rol-icon">
+                        <a class="nav-link text-center " href="#">
+                            Lider <br> <i class="fa fa-3x fa-user-circle" aria-hidden="true"></i>
+                        </a>
+                    </li>
                     {% endif %}
 
-                    <li class="nav-item">
+                    <li class="nav-item rol-icon">
                         <a class="nav-link text-center" href="{% url 'logout' %}">
-                            Salir <br> <i class="fa fa-4x fa-sign-out" aria-hidden="true"></i>
+                            Salir <br> <i class="fa fa-3x fa-sign-out" aria-hidden="true"></i>
                         </a>
                     </li>
                 </ul>
 
             </div>
         </div>
+
     </div>
 </nav>

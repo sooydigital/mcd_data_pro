@@ -18,38 +18,40 @@
     <title>{% block title %} Data Pro | MCD {% endblock %}</title>
 </head>
 
-{% include "base_nav.html" %}
+<header>
+    {% include "base_nav.html" %}
 
+</header>
 <body>
 
-<div class="container-fluid mt-3">
+    <div class="container my-5">
 
-{% if messages %}
-    {% for message in messages %}
-        <div
-            {% if message.tags %}
-                {% if message.tags == 'success' %}
-                    class="alert alert-success alert-dismissible"
-                {% elif message.tags == 'error' %}
-                    class="alert alert-danger alert-dismissible"
-                {% else %}
-                    class="alert alert-warning alert-dismissible"
-                {% endif %}
-            {% else %}
-                class="alert alert-info alert-dismissible"
-            {% endif %}
-        >
-             {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
+        {% if messages %}
+            {% for message in messages %}
+                <div
+                    {% if message.tags %}
+                        {% if message.tags == 'success' %}
+                            class="alert alert-success alert-dismissible"
+                        {% elif message.tags == 'error' %}
+                            class="alert alert-danger alert-dismissible"
+                        {% else %}
+                            class="alert alert-warning alert-dismissible"
+                        {% endif %}
+                    {% else %}
+                        class="alert alert-info alert-dismissible"
+                    {% endif %}
+                >
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
 
-    {% endfor %}
-{% endif %}
+            {% endfor %}
+        {% endif %}
 
 
-{% block content %}
-{% endblock %}
-</div>
+        {% block content %}
+        {% endblock %}
+    </div>
 
 </body>
 

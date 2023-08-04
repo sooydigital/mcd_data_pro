@@ -12,7 +12,8 @@ body {
 .font_poppins {
     font-family: 'poppins_font';
 }
-*{
+
+*{  
     font-family: 'poppins_font';
 }
 
@@ -22,6 +23,10 @@ body {
     margin-bottom: 10px;
     overflow: scroll;
     -webkit-overflow-scrolling: touch;
+}
+
+.navbar{
+    padding: 0px 5px;
 }
 
 .principal_color {
@@ -285,7 +290,11 @@ body {
     visibility: hidden;
 }
 
-#enviat_form{
+.nav-item{
+    font-weight: bolder;
+}
+
+#enviar_form{
     font-weight: bold;
     font-size: 18px;
 }
@@ -297,4 +306,27 @@ body {
     text-transform: uppercase;
     text-align: center;
     margin-top: 5px;
+}
+
+.title a {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.title a i h3{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.title a .separator{
+    font-size: 40px;
+    font-weight: bold;
+    margin: 0px 10px;
+}
+
+.title a h2{
+    font-size: 40px;
+    font-weight: bolder;
+    margin-top: 10px;
 }
