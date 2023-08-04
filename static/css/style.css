@@ -284,3 +284,17 @@ body {
     display: None;
     visibility: hidden;
 }
+
+#enviat_form{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.card-title{
+    color:white;
+    font-size: 20;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 5px;
+}
