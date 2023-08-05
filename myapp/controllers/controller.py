@@ -8,7 +8,37 @@ import math
 
 from myapp.serializers import BarrioSerializer
 
+import re
 
+
+def format_phone(str_phone, use_dash=True):
+    """
+    Format the phone int dash separated format
+    :param str_phone: String, phone to be formatted. Ex: 123456789
+    :return: String, formatted phone. Ex: 123-456-789
+    """
+    try:
+        if not str_phone:
+            return ""
+
+        formatted_number = (
+            re.sub("(\d)(?=(\d{3})+(?!\d))", r"\1-", "%s" % str_phone[:-1])
+            + str_phone[-1]
+        )
+
+        numbers = formatted_number.split("-")
+        return "{0} {1} {2}".format(numbers[0], numbers[1], numbers[2])
+
+    except Exception as e:
+        message = "Error while formatting phone: {}".format(e)
+        raise Exception(message)
+def format_number_with_spaces(number):
+    # Convierte el número a una cadena
+    number_str = str(number)
+
+    # Utiliza una expresión regular para agregar espacios cada tres dígitos
+    formatted_number = re.sub(r'\B(?=(\d{3})+(?!\d))', ' ', number_str)
+    return formatted_number
 def get_data_from_post(data_dict, name):
     data = ""
     if data_dict.get(name):
@@ -729,6 +759,8 @@ class DataController():
             votante_data = {
                 "id": votante.id,
                 "name": votante.full_name(),
+                "referrals": len(votante.votante_set.all()),
+                "document_id": votante.document_id
             }
             has_customlink = votante.customlink_set.first()
             if has_customlink:
@@ -738,8 +770,10 @@ class DataController():
                 votante_data['is_leader'] = False
 
             if votante_profile:
+                votante_data['show_mobile_phone'] = format_phone(votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
                 votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
                 votante_data['age'] = votante_profile.age()
+
 
             votantes.append(
                 votante_data
