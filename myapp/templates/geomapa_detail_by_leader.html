@@ -63,7 +63,7 @@
                                 {{ votante.mobile_phone }}
                             </spam>
                             &nbsp
-                            <a href="{% url 'app:geomapa_detail_by_votante' votante.id %}">
+                            <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}">
                                 <i class="fa fa-shield" aria-hidden="true"></i>
                             </a>
                             {% if votante.mobile_phone %}

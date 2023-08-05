@@ -10,6 +10,7 @@
 {% endblock %}
 {% block content %}
 
+{% if votantes %}
     <h1 class="text-center">
         {{ nombre }}
     </h1>
@@ -19,6 +20,14 @@
                 <i class="fa fa-shield" aria-hidden="true"></i>
             </a>
             Lider: {{ has_lider.full_name }}</p>
+    {% endif %}
+
+    {% if puesto %}
+        <p class=" text-end text-muted">
+            <a href="{% url 'app:geomapa_detail_id' puesto_id %}" >
+                <i class="fa fa-university" aria-hidden="true"></i>
+            </a>
+            Puesto de votaciósn: {{ puesto }}</p>
     {% endif %}
 
     <input type="hidden" id="mapa_votante_id" value={{ mapa_votante_id }}>
@@ -118,7 +127,11 @@
 
         </div>
     </div>
-
+    {% else %}
+    <h1 class="message_search_not_found">
+        El usuario no se encuentra registrado
+    </h1>
+    {% endif %}
 {% endblock %}
 
 {% block scriptcontent %}
@@ -228,7 +241,7 @@
         });
     };
 
-    const param = document.getElementById("mapa_votante_id").value
+    const param = document.getElementById("mapa_votante_id").value.replace('.', '')
     getInfoPuestos(getInfoPuestosSuccessCallback, getInfoPuestosErrorCallback, param)
 
 

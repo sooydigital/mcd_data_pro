@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from django.urls import reverse
+from django.shortcuts import render, get_object_or_404
 
 from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage
 from myapp.models import Municipio, Barrio, Departamento, PuestoVotacion
@@ -687,6 +688,7 @@ class DataController():
                 votante_profile = votante.votanteprofile_set.first()
                 votante_data = {
                         "id": votante.id,
+                        "document_id": votante.document_id,
                         "name": votante.full_name(),
                         "mesa": votante_puestovotacion.mesa,
                 }
@@ -732,6 +734,7 @@ class DataController():
                 votante_puestovotacion = votante.votantepuestovotacion_set.first()
                 votante_data = {
                         "id": votante.id,
+                        "document_id": votante.document_id,
                         "name": votante.full_name(),
                         "mesa": votante_puestovotacion.mesa if votante_puestovotacion else "",
                 }
@@ -756,19 +759,21 @@ class DataController():
         return data
 
     @staticmethod
-    def get_info_puesto_by_votante(request, votante_id):
+    def get_info_puesto_by_votante(request, votante_cc):
         data = {
             "mapa_votante_id": 1,
             "has_lider": None,
             "nombre": "",
             "link": "",
             'intencion_voto': 0,
-            'intencion_voto_percentage': 0
+            'intencion_voto_percentage': 0,
+            'puesto': ""
         }
-        votante = Votante.objects.filter(id=votante_id).first()
+        votante = Votante.objects.filter(document_id=votante_cc).first()
         votantes_list = []
         if votante:
-            data["mapa_votante_id"] = votante_id
+            data["nombre"] = votante.full_name()
+            data["mapa_votante_id"] = votante.id
 
             has_lider = votante.lider
             if has_lider:
@@ -776,10 +781,17 @@ class DataController():
 
             votante_profile = votante.votanteprofile_set.first()
             votante_puestovotacion = votante.votantepuestovotacion_set.first()
-            votante_data = {
-                    "name": votante.full_name(),
-                    "mesa": votante_puestovotacion.mesa if votante_puestovotacion else "",
-            }
+            if votante_puestovotacion:
+                puesto = votante_puestovotacion.puesto_votacion
+                if puesto:
+                    puesto_direccion = "{} - {}".format(puesto.name, puesto.address)
+                    votante_data = {
+                            "name": votante.full_name(),
+                            "mesa": votante_puestovotacion.mesa if votante_puestovotacion else "",
+                            "puesto": "{} - {}".format(puesto.name, puesto.address),
+                    }
+                    data["puesto"] = puesto_direccion
+                    data["puesto_id"] = puesto.id
             has_customlink = votante.customlink_set.first()
             if has_customlink:
                 votante_data['is_leader'] = True
@@ -795,7 +807,6 @@ class DataController():
                 votante_data
             )
         data["votantes"] = votantes_list
-        data["nombre"] = votante.full_name()
 
         return data
 

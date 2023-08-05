@@ -335,3 +335,8 @@ body {
     font-weight: bolder;
     margin-top: 10px;
 }
+
+.message_search_not_found {
+    color: #ff6969;
+    text-align: center;
+}

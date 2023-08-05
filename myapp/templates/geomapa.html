@@ -18,6 +18,10 @@
             </div>
         </div>
     </div>
+      <form id="searchForm">
+        <input type="text" id="searchInput" placeholder="Ingresa tu búsqueda">
+        <button type="submit" id="searchButton">Buscar</button>
+      </form>
     <br>
     <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
 {% endblock %}
@@ -146,5 +150,21 @@
                 } )
             }
         )
+
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+          event.preventDefault(); // Evita que el formulario se envíe por defecto
+
+          // Obtiene el término de búsqueda ingresado por el usuario
+          const searchTerm = document.getElementById('searchInput').value;
+
+          // Reemplaza los espacios en blanco en el término de búsqueda por el caracter '+'
+          const searchQuery = searchTerm.replace(/ /g, '+');
+
+          // Crea la URL que abrirá la búsqueda en un motor de búsqueda (por ejemplo, Google)
+          const searchURL = `/geomapa/detail_by_votante/${searchQuery}`;
+
+          // Abre la URL en una nueva pestaña
+          window.open(searchURL, '_blank');
+        });
     </script>
 {% endblock %}

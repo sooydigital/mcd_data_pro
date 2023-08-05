@@ -148,9 +148,9 @@ def geomapa_detail_by_leader(request, leader_id):
     )
 
 @login_required
-def geomapa_detail_by_votante(request, votante_id):
+def geomapa_detail_by_votante(request, votante_cc):
     context = {}
-    info_puesto = DataController.get_info_puesto_by_votante(request, votante_id)
+    info_puesto = DataController.get_info_puesto_by_votante(request, votante_cc)
     context.update(info_puesto)
     return render(
         request,
