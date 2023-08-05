@@ -20,7 +20,10 @@ def has_role(user, names):
 @login_required
 def home(request):
     context = {}
+    customer_user_id = request.user.id
+    summary = DataController.get_summary_by_user(customer_user_id)
 
+    context.update(summary) 
     return render(
         request,
         'home.html',
