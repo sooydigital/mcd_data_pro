@@ -98,7 +98,7 @@ def insert_votante(request):
     )
 
 def insert_votante_with_sub_link(request, sub_link):
-    context = {}
+    context = {'date':dateformat.format(timezone.now(),'Y-m-d')}
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user, sub_link=sub_link)
         if type(respuesta) == str:
