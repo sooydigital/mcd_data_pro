@@ -17,7 +17,7 @@
 
         </a>
     </h1>
-    <input type="hidden" id="mapa_leader_id" value="1">
+    <input type="hidden" id="mapa_leader_id" value={{ leader_id }}>
     <div class="container">
         <div class="row  mt-5">
             <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
@@ -40,11 +40,12 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col" class="w-40">Nombre</th>
+                    <th scope="col">Cédula</th>
                     <th scope="col">Contacto</th>
-                    <th scope="col" class="w-50">Nombre</th>
-                    <th scope="col" class="text-center">Edad</th>
-                    <th scope="col" class="text-center">Mesa</th>
-                    <th scope="col" class="text-center"></th>
+                    <th scope="col" class="text-center">Puesto de Votacion</th>
+                    <th scope="col"></th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -59,43 +60,72 @@
                         </th>
 
                         <td>
-                            <spam class="table-icon-text ">
-                                {{ votante.mobile_phone }}
-                            </spam>
-
-                            {% if votante.mobile_phone %}
-                                &nbsp
-                                <a class="text-decoration-none verde_color_t"
-                                   href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola%2C%20Mensaje%20de%20Prueba...%20">
-                                    <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
-                                </a>
-                                &nbsp
-                                <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
-                                    <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
-                                </a>
-
-                            {% endif %}
-
-
-                        </td>
-                        <td>
                             <spam class="table-icon-text">
 
                                 {{ votante.name|upper }}
                             </spam>
                         </td>
-                        <td class="text-center">
+
+                        <td>
                             <spam class="table-icon-text">
 
-                            {{ votante.age }}</td>
-                        </spam>
+                                {{ votante.document_id }}
+                            </spam>
+                        </td>
+                        <td>
 
-                        <td class="text-center">
-                            <spam class="table-icon-text">
+                            {% if votante.mobile_phone %}
+                                &nbsp
+                                <a class="text-decoration-none verde_color_t"
+                                   href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola!">
+                                    <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
+                                </a>
+                                                            <spam class="table-icon-text">
 
-                            {{ votante.mesa }}</td>
-                        </spam>
+                                    |
+                                                            </spam>
 
+                                <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
+                                    <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
+                                </a>
+&nbsp
+                            {% endif %}
+
+                            <spam class="table-icon-text ">
+                                {{ votante.show_mobile_phone }}
+                            </spam>
+
+
+                        </td>
+                            {% if votante.status == "ERROR" %}
+                                <td class="text-center">
+                                <i id="error_validation" class="fa  fa-2x fa-times-circle red_color_t"
+                                    aria-hidden="true"></i>
+                                </td>
+
+                            {% elif votante.status == "PENDING" %}
+                                                                <td class="text-center">
+                                <div id="loaing_validation" class="spinner-border text-info" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                                                                </td>
+
+                            {% endif %}
+
+                            {% if votante.puesto_id %}
+                                <td class="text-center">
+                                    <spam class="table-icon-text">
+                                        {{ votante.puesto_municipio }}
+                                        <a href="{% url 'app:geomapa_detail_id' votante.puesto_id %}">
+                                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                        </a>
+                                    </spam>
+                                </td>
+                            {% endif %}
+
+{#                        <td class="text-center">#}
+{#                            {{ votante.puesto_nombre }}#}
+{#                        </td>#}
                         <td class="text-center">
                             <spam class="table-icon-text">
                             {% if votante.is_leader %}
