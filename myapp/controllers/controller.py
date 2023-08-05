@@ -681,6 +681,7 @@ class DataController():
                 votante_profile = votante.votanteprofile_set.first()
                 votante_data = {
                         "id": votante.id,
+                        "document_id": votante.document_id,
                         "name": votante.full_name(),
                         "mesa": votante_puestovotacion.mesa,
                 }
@@ -690,8 +691,12 @@ class DataController():
                     votante_data['custom_link'] = has_customlink.sub_link
                 else:
                     votante_data['is_leader'] = False
+                    votante_data['lider_id'] = votante.lider_id
 
                 if votante_profile:
+
+                    votante_data['show_mobile_phone'] = format_phone(
+                        votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
                     votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
                     votante_data['age'] = votante_profile.age()
 

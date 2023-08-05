@@ -134,7 +134,7 @@ def geomapa_detail(request, puesto_id=None):
         request,
         'geomapa_detail.html',
         context
-    )\
+    )
 
 @login_required
 def geomapa_detail_by_leader(request, leader_id):
