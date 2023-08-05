@@ -681,6 +681,7 @@ class DataController():
                 votante_profile = votante.votanteprofile_set.first()
                 votante_data = {
                         "id": votante.id,
+                        "document_id": votante.document_id,
                         "name": votante.full_name(),
                         "mesa": votante_puestovotacion.mesa,
                 }
@@ -690,8 +691,12 @@ class DataController():
                     votante_data['custom_link'] = has_customlink.sub_link
                 else:
                     votante_data['is_leader'] = False
+                    votante_data['lider_id'] = votante.lider_id
 
                 if votante_profile:
+
+                    votante_data['show_mobile_phone'] = format_phone(
+                        votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
                     votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
                     votante_data['age'] = votante_profile.age()
 
@@ -705,6 +710,7 @@ class DataController():
     @staticmethod
     def get_info_puesto_by_leader(request, leader_id):
         data = {
+            "leader_id": leader_id,
             "nombre": "",
             "link": "",
             'intencion_voto': 0,
@@ -725,9 +731,21 @@ class DataController():
                 votante_profile = votante.votanteprofile_set.first()
                 votante_puestovotacion = votante.votantepuestovotacion_set.first()
                 votante_data = {
-                        "name": votante.full_name(),
-                        "mesa": votante_puestovotacion.mesa if votante_puestovotacion else "",
+                    "name": votante.full_name(),
+                    "document_id": votante.document_id,
+                    "mesa": "",
+                    "puesto_nombre": "",
+                    "puesto_municipio": "",
+                    "status": votante.status
                 }
+
+                if votante_puestovotacion:
+                    votante_data["mesa"] = votante_puestovotacion.mesa if votante_puestovotacion else ""
+                    puesto = votante_puestovotacion.puesto_votacion
+                    votante_data["puesto_id"] = puesto.id if puesto else ""
+                    votante_data["puesto_nombre"] = puesto.name if puesto else ""
+                    votante_data["puesto_municipio"] = puesto.municipio.name if puesto and puesto.municipio else ""
+
                 has_customlink = votante.customlink_set.first()
                 if has_customlink:
                     votante_data['is_leader'] = True
@@ -736,6 +754,8 @@ class DataController():
                     votante_data['is_leader'] = False
 
                 if votante_profile:
+                    votante_data['show_mobile_phone'] = format_phone(
+                        votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
                     votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
                     votante_data['age'] = votante_profile.age()
 
