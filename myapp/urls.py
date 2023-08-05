@@ -18,6 +18,7 @@ urlpatterns = [
     path('geomapa/detail/', views.geomapa_detail, name='geomapa_detail'),
     path('geomapa/detail/<str:puesto_id>', views.geomapa_detail, name='geomapa_detail_id'),
     path('geomapa/detail_by_leader/<str:leader_id>', views.geomapa_detail_by_leader, name='geomapa_detail_by_leader'),
+    path('geomapa/detail_by_votante/<str:votante_id>', views.geomapa_detail_by_votante, name='geomapa_detail_by_votante'),
 
     path('leaders', views.leaders, name='leaders'),
 

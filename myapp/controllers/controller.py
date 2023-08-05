@@ -425,6 +425,42 @@ class DataController():
             data["in_size"].append(intensidad)
 
         return data
+    @staticmethod
+    def get_puestos_votacion_to_plot_by_votante(votante_id):
+        data = {
+            "ids": ["ID"],
+            "lat": ["Lattitude"],
+            "lon": ["Longitude"],
+            "pv_text": [""],
+            "pv_size": ["Size B"],
+            "in_text": ["Votos"],
+            "in_size": ["Size E"],
+            "center": {"lat": 5.5368954, "lon": -73.3680772} # Tunja
+        }
+        puesto_votaciones_query = PuestoVotacion.objects
+        puesto_votaciones_query = puesto_votaciones_query.filter(votantepuestovotacion__votante_id=votante_id)
+
+        puesto_votaciones = puesto_votaciones_query.all()
+        for puesto_votacion in puesto_votaciones:
+            num_votantes = len(puesto_votacion.votantepuestovotacion_set.all())
+            intensidad = "0"
+            if num_votantes:
+                log_10 = math.log2(num_votantes) * 2
+                intensidad = str(10 + log_10)
+            else:
+                intensidad = "0"
+
+            data["ids"].append(puesto_votacion.id)
+
+            data["lat"].append(puesto_votacion.latitude)
+            data["lon"].append(puesto_votacion.longitude)
+            data["pv_text"].append(puesto_votacion.name)
+            data["pv_size"].append("10")
+
+            data["in_text"].append(str(num_votantes))
+            data["in_size"].append(intensidad)
+
+        return data
 
     @staticmethod
     def get_votante_info(document_id):
@@ -695,6 +731,7 @@ class DataController():
                 votante_profile = votante.votanteprofile_set.first()
                 votante_puestovotacion = votante.votantepuestovotacion_set.first()
                 votante_data = {
+                        "id": votante.id,
                         "name": votante.full_name(),
                         "mesa": votante_puestovotacion.mesa if votante_puestovotacion else "",
                 }
@@ -715,6 +752,50 @@ class DataController():
 
         data["votantes"] = votantes_list
         data["nombre"] = lider.full_name()
+
+        return data
+
+    @staticmethod
+    def get_info_puesto_by_votante(request, votante_id):
+        data = {
+            "mapa_votante_id": 1,
+            "has_lider": None,
+            "nombre": "",
+            "link": "",
+            'intencion_voto': 0,
+            'intencion_voto_percentage': 0
+        }
+        votante = Votante.objects.filter(id=votante_id).first()
+        votantes_list = []
+        if votante:
+            data["mapa_votante_id"] = votante_id
+
+            has_lider = votante.lider
+            if has_lider:
+                data['has_lider'] = has_lider
+
+            votante_profile = votante.votanteprofile_set.first()
+            votante_puestovotacion = votante.votantepuestovotacion_set.first()
+            votante_data = {
+                    "name": votante.full_name(),
+                    "mesa": votante_puestovotacion.mesa if votante_puestovotacion else "",
+            }
+            has_customlink = votante.customlink_set.first()
+            if has_customlink:
+                votante_data['is_leader'] = True
+                votante_data['custom_link'] = has_customlink.sub_link
+            else:
+                votante_data['is_leader'] = False
+
+            if votante_profile:
+                votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                votante_data['age'] = votante_profile.age()
+
+            votantes_list.append(
+                votante_data
+            )
+        data["votantes"] = votantes_list
+        data["nombre"] = votante.full_name()
 
         return data
 

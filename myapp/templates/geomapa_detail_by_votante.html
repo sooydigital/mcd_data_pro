@@ -12,12 +12,16 @@
 
     <h1 class="text-center">
         {{ nombre }}
-        <a href={{ link }}>
-        <i class="fa fa-external-link" aria-hidden="true"></i>
-
-        </a>
     </h1>
-    <input type="hidden" id="mapa_leader_id" value="1">
+    {% if has_lider %}
+        <p class=" text-end text-muted">
+            <a href="{% url 'app:geomapa_detail_by_leader' has_lider.id %}">
+                <i class="fa fa-shield" aria-hidden="true"></i>
+            </a>
+            Lider: {{ has_lider.full_name }}</p>
+    {% endif %}
+
+    <input type="hidden" id="mapa_votante_id" value={{ mapa_votante_id }}>
     <div class="container">
         <div class="row  mt-5">
             <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
@@ -52,7 +56,6 @@
                     <tr>
                         <th scope="row ">
                             <spam class="table-icon-text">
-
                                 {{ forloop.counter }}
                             </spam>
 
@@ -62,10 +65,7 @@
                             <spam class="table-icon-text ">
                                 {{ votante.mobile_phone }}
                             </spam>
-                            &nbsp
-                            <a href="{% url 'app:geomapa_detail_by_votante' votante.id %}">
-                                <i class="fa fa-shield" aria-hidden="true"></i>
-                            </a>
+
                             {% if votante.mobile_phone %}
                                 &nbsp
                                 <a class="text-decoration-none verde_color_t"
@@ -101,11 +101,11 @@
 
                         <td class="text-center">
                             <spam class="table-icon-text">
-                            {% if votante.is_leader %}
-                                <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}" >
-                                    <i class="fa fa-shield" aria-hidden="true"></i>
-                                </a>
-                            {% endif %}
+{#                            {% if votante.has_lider %}#}
+{#                                <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}" >#}
+{#                                    <i class="fa fa-shield" aria-hidden="true"></i>#}
+{#                                </a>#}
+{#                            {% endif %}#}
                         </td>
                         </spam>
 
@@ -219,7 +219,7 @@
     }
 
     var getInfoPuestos = (successCallback, errorCallback, param) => {
-        var url = `/api/mapa_puestos/?leader=${param}`
+        var url = `/api/mapa_puestos/?votante=${param}`
         $.ajax({
             type: 'GET',
             url,
@@ -228,7 +228,7 @@
         });
     };
 
-    const param = document.getElementById("mapa_leader_id").value
+    const param = document.getElementById("mapa_votante_id").value
     getInfoPuestos(getInfoPuestosSuccessCallback, getInfoPuestosErrorCallback, param)
 
 
