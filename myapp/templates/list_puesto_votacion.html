@@ -9,7 +9,7 @@
     <div class="container">
 
         <div class="row">
-            <p class=" text-end text-muted">Puestos de Votacion</p>
+            <p class=" text-end text-muted">Puestos de Votación</p>
         </div>
 
         <div>
@@ -22,8 +22,8 @@
                     <th scope="col">#</th>
                     <th scope="col" class="w-30">Nombre</th>
 {#                    <th scope="col" class="w-30">Dirección</th>#}
-                    <th scope="col" class="text-center">Municipio</th>
                     <th scope="col" class="text-center">Departamento</th>
+                    <th scope="col" class="text-center">Municipio</th>
                     <th scope="col" class="text-center"># Votantes</th>
                     <th scope="col" class="text-center">Ver</th>
                     <th scope="col"></th>
@@ -49,14 +49,15 @@
 {#                                {{ puesto.address }}#}
 {#                            </spam>#}
 {#                        </td>#}
+
                         <td>
                             <spam class="table-icon-text ">
-                                {{ puesto.municipio }}
+                                {{ puesto.departamento }}
                             </spam>
                         </td>
                         <td>
                             <spam class="table-icon-text ">
-                                {{ puesto.departamento }}
+                                {{ puesto.municipio }}
                             </spam>
                         </td>
                         <td class="text-center">
