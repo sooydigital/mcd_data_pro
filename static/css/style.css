@@ -15,6 +15,9 @@ body {
 
 *{  
     font-family: 'poppins_font';
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 
@@ -334,4 +337,33 @@ body {
     font-size: 40px;
     font-weight: bolder;
     margin-top: 10px;
+}
+
+.mail{
+    background-color: #47B5FF;
+    color: #fff;
+    font-size: 18px;
+}
+
+
+.wpp{
+    background-color: #47ff7e;
+}
+
+.wpp i{
+    color: #fff;
+    font-size: 19px;
+}
+
+.form-label{
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.lideres_btn a{
+    color: white;
+    text-decoration: none;
 }
