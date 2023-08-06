@@ -13,7 +13,7 @@ body {
     font-family: 'poppins_font';
 }
 
-*{  
+*{
     font-family: 'poppins_font';
     box-sizing: border-box;
     margin: 0;
@@ -347,7 +347,7 @@ body {
 
 
 .wpp{
-    background-color: #47ff7e;
+    background-color: #3b933f;
 }
 
 .wpp i{
@@ -368,6 +368,14 @@ body {
     text-decoration: none;
 }
 
+.text-left {
+  text-align: left;
+  /* Other styling rules can be added here */
+}
+.text-right {
+  text-align: right;
+  /* Other styling rules can be added here */
+}
 @media only screen and (max-width: 1200px) {
 
     .table-icon-text {
