@@ -11,6 +11,8 @@
 {% block content %}
 
     <h1 class="text-center">
+    <i class="fa fa-users" aria-hidden="true"></i>
+
         Líderes
     </h1>
     <input type="hidden" id="mapa_leader_id" value="1">
@@ -23,9 +25,9 @@
                     <th scope="col">#</th>
                     <th scope="col" class="w-30">Nombre</th>
                     <th scope="col" class="text-center">Cédula</th>
-                    <th scope="col">Contacto</th>
+                    <th scope="col" class="text-center">Contacto</th>
                     <th scope="col" class="text-center">Ref.</th>
-                    <th scope="col" class="text-center">Acciones</th>
+                    <th scope="col" class="text-center">Estructura</th>
                     <th scope="col" class="text-center"></th>
                 </tr>
                 </thead>
@@ -41,6 +43,8 @@
                         </th>
                         <td>
                             <spam class="table-icon-text">
+                                <a href="{% url 'app:geomapa_detail_by_votante' leader.document_id %}"><i class="fa fa-users" aria-hidden="true"></i></a>
+
                                 <b>{{ leader.name|upper }}</b>
                             </spam>
                         </td>
@@ -83,7 +87,7 @@
                         <td class="text-center">
                             <spam class="table-icon-text">
                                 {% if leader.is_leader %}
-                                    <a href="{% url 'app:geomapa_detail_by_leader' leader.id %}"><i class="fa fa-shield" aria-hidden="true"></i></a>
+                                    <a href="{% url 'app:geomapa_detail_by_leader' leader.id %}"><i class="fa fa-sitemap" aria-hidden="true"></i></a>
                                     |
                                     <a href="{% url 'app:insert_votante_sub_link' leader.custom_link %}">
                                         <i class="fa fa-external-link" aria-hidden="true"></i>
