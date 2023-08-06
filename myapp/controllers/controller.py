@@ -27,7 +27,7 @@ def format_phone(str_phone, use_dash=True):
         )
 
         numbers = formatted_number.split("-")
-        return "{0} {1} {2}".format(numbers[0], numbers[1], numbers[2])
+        return "{0}{1}{2}".format(numbers[0], numbers[1], numbers[2])
 
     except Exception as e:
         message = "Error while formatting phone: {}".format(e)
