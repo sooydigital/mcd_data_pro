@@ -803,3 +803,18 @@ class DataController():
         return {
             "leaders": votantes
         }
+
+    @staticmethod
+    def get_puestos_information():
+        puestos = PuestoVotacion.objects.order_by("municipio__name", "name").all()
+        lista_puestos = []
+        for p in puestos:
+            lista_puestos.append({
+                "id": p.id,
+                "name": p.name,
+                "address": p.address,
+                "municipio": p.municipio.name,
+                "departamento": p.municipio.departamento.name,
+                "num_votantes": len(p.votantepuestovotacion_set.all()),
+            })
+        return lista_puestos
