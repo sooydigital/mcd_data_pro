@@ -86,7 +86,7 @@ class IntecionDeVotoInline(admin.StackedInline):
 
 # Puesto Votacion y User
 class PuestoVotacionAdmin(admin.ModelAdmin):
-    list_display = ('departamento', 'municipio', 'name', 'address', 'longitude', 'latitude')
+    list_display = ('departamento', 'municipio', 'name', 'address', 'latitude', 'longitude')
     search_fields = ('name', 'address')
     list_filter = ('departamento', 'municipio')
     inlines = [IntecionDeVotoInline,]
@@ -121,7 +121,7 @@ class VotanteAdmin(admin.ModelAdmin):
         return obj.full_name()
 
 class VotanteProfileAdmin(admin.ModelAdmin):
-    list_display = ('votante', 'first_name', 'last_name', 'email', 'mobile_phone', 'age', 'birthday', 'gender', 'address', 'barrio', 'municipio' )
+    list_display = ('votante', 'first_name', 'last_name', 'email', 'mobile_phone', 'age', 'birthday', 'gender', 'address', 'barrio', 'municipio', 'latitude', 'longitude' )
     search_fields = ('votante__document_id', 'first_name', 'last_name')
     list_filter = (RangeDayListFilter, 'gender', 'municipio')
 
