@@ -888,14 +888,15 @@ class DataController():
                 votante_data
             )
 
-
+        votantes = sorted(votantes, key=lambda x: x["referrals"], reverse=True)
+        
         return {
             "leaders": votantes
         }
 
     @staticmethod
     def get_puestos_information():
-        puestos = PuestoVotacion.objects.order_by("municipio__name", "name").all()
+        puestos = PuestoVotacion.objects.order_by("name").all()
         lista_puestos = []
         for p in puestos:
             lista_puestos.append({
