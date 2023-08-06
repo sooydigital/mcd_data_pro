@@ -24,7 +24,7 @@ def home(request):
     customer_user_id = request.user.id
     summary = DataController.get_summary_by_user(customer_user_id)
 
-    context.update(summary) 
+    context.update(summary)
     return render(
         request,
         'home.html',
@@ -97,6 +97,17 @@ def insert_votante(request):
     return render(
         request,
         'insert_votante.html',
+        context
+    )
+# Create your views here.
+@login_required
+def lista_puesto_votacion(request):
+    context = {}
+    puestos = DataController.get_puestos_information()
+    context["puestos"] = puestos
+    return render(
+        request,
+        'list_puesto_votacion.html',
         context
     )
 
