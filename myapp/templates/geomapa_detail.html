@@ -107,12 +107,10 @@
 
                         <td>
                             <spam class="table-icon-text ">
+                                <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}"><i class="fa fa-shield" aria-hidden="true"></i></a>
                                 {{ votante.name }}
                             </spam>
-                            &nbsp
-                            <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}">
-                                <i class="fa fa-shield" aria-hidden="true"></i>
-                            </a>
+
                         </td>
                         <td class="text-center">
                             <spam class="table-icon-text">
@@ -124,12 +122,13 @@
                             <spam class="table-icon-text">
 
                                 {% if votante.mobile_phone %}
-                                    &nbsp
                                     <a class="text-decoration-none verde_color_t"
                                     href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola%2C%20Mensaje%20de%20Prueba...%20">
                                         <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
                                     </a>
-                                    &nbsp
+                                    <spam class="table-icon-text">
+                                        |
+                                    </spam>
                                     <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
                                         <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
                                     </a>
