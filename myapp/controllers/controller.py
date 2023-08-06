@@ -457,7 +457,7 @@ class DataController():
 
         return data
     @staticmethod
-    def get_puestos_votacion_to_plot_by_votante(votante_id):
+    def get_puestos_votacion_to_plot_by_votante(votante_id, get_direccion_votante=False):
         data = {
             "ids": ["ID"],
             "lat": ["Lattitude"],
@@ -468,6 +468,23 @@ class DataController():
             "in_size": ["Size E"],
             "center": {"lat": 5.5368954, "lon": -73.3680772} # Tunja
         }
+        if get_direccion_votante:
+            data["direccion_votantes"] = {
+                "ids": ["ID"],
+                "lat": ["Lattitude"],
+                "lon": ["Longitude"],
+                "address": ["Dirección"],
+            }
+            votante_profile = VotanteProfile.objects.filter(votante_id=votante_id).first()
+            if votante_profile:
+                lat = votante_profile.latitude
+                lon = votante_profile.longitude
+                if lat and lon:
+                    data["direccion_votantes"]["lat"].append(lat)
+                    data["direccion_votantes"]["lon"].append(lon)
+                    data["direccion_votantes"]["address"].append(votante_profile.address)
+
+
         puesto_votaciones_query = PuestoVotacion.objects
         puesto_votaciones_query = puesto_votaciones_query.filter(votantepuestovotacion__votante_id=votante_id)
 
@@ -889,7 +906,7 @@ class DataController():
             )
 
         votantes = sorted(votantes, key=lambda x: x["referrals"], reverse=True)
-        
+
         return {
             "leaders": votantes
         }
