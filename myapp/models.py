@@ -120,18 +120,18 @@ class PuestoVotacion(models.Model):
         blank=True,
         null=True,
     )
+    latitude = models.CharField(
+        max_length=1024,
+        verbose_name="latitude",
+        blank=True,
+        null=True,
+    )
     longitude = models.CharField(
         max_length=1024,
         verbose_name="longitude",
         blank=True,
         null=True,
 
-    )
-    latitude = models.CharField(
-        max_length=1024,
-        verbose_name="latitude",
-        blank=True,
-        null=True,
     )
 
     def __str__(self):
@@ -294,6 +294,21 @@ class VotanteProfile(models.Model):
         null=True,
     )
 
+    latitude = models.CharField(
+        max_length=1024,
+        verbose_name="latitude",
+        blank=True,
+        null=True,
+    )
+
+    longitude = models.CharField(
+        max_length=1024,
+        verbose_name="longitude",
+        blank=True,
+        null=True,
+
+    )
+    
     municipio = models.ForeignKey(
         Municipio,
         blank=True,
