@@ -376,6 +376,32 @@ body {
   text-align: right;
   /* Other styling rules can be added here */
 }
+
+#searchForm{
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+#searchForm .form-control{
+    font-weight: bold;
+}
+
+#searchButton{
+    max-width: 40px;
+    height: 35px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none ;
+}
+
+#searchButton i {
+    font-size: 20px;
+}
+
 @media only screen and (max-width: 1200px) {
 
     .table-icon-text {
@@ -460,4 +486,7 @@ body {
 
 }
 
-
+.message_search_not_found {
+    color: #ff6969;
+    text-align: center;
+}

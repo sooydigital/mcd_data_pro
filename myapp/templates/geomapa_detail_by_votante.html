@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %} {% load permissions_tags %}
+{% block headcontent %}
+<script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{% endblock %}
+{% block title %}
+Geo Mapa | MCD
+{% endblock %}
+{% block content %}
+
+{% if votantes %}
+    {% for votante in votantes %}
+
+    <div class="card">
+        <div class="card-header principal_color">
+            <h2 class="text-center card-title">
+                {{ nombre }}
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-2">
+                    <h3 class="h6"><b>Cedula:</b></h3>
+                    <p>{{ document }}</p>
+                </div>
+                <div class="col-lg-2">
+                    <h3 class="h6"><b>Contacto:</b></h3>
+                    {% if votante.mobile_phone %}
+                        <a class="text-decoration-none verde_color_t"
+                            href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola%2C%20Mensaje%20de%20Prueba...%20">
+                            <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
+                        </a>
+                        <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
+                            <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
+                        </a>
+                        {{ votante.mobile_phone }}
+                    {% endif %}
+                </div>
+                <div class="col-lg-1">
+                    <h3 class="h6"><b>Edad:</b></h3>
+                    {{ votante.age }}
+                </div>
+                <div class="col-lg-3">
+                    <h3 class="h6"><b>Puesto:</b></h3>
+                    {% if puesto %}
+                    <p class=" text-start">
+                        <a href="{% url 'app:geomapa_detail_id' puesto_id %}">
+                            <i class="fa fa-university" aria-hidden="true"></i>
+                        </a>
+                        -
+                        {{puesto}}
+                    </p>
+                    {% endif %}
+                </div>
+                <div class="col-lg-2">
+                    <h3 class="h6"><b>Lider:</b></h3>
+                    {% if has_lider %}
+                        <p class=" text-start">
+                            <a href="{% url 'app:geomapa_detail_by_leader' has_lider.id %}">
+                                <i class="fa fa-shield" aria-hidden="true"></i>
+                            </a>
+                            {{ has_lider.full_name }}
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+
+    
+
+    
+
+    <input type="hidden" id="mapa_votante_id" value={{ mapa_votante_id }}>
+    <div class="container">
+        <div class="row  mt-5">
+            <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
+        </div>
+        <div class="row">
+            <a href="{% url 'app:geomapa' %}"
+                class="text-decoration-none col col-sm-2 text-center d-flex justify-content-center align-items-center">
+                <i class="fa fa-2x fa-map-marker" aria-hidden="true"></i>
+                &nbsp
+                Mapa
+            </a>
+            <p class=" text-end text-muted">{{ nombre }}</p>
+        </div>
+    </div>
+
+    {% else %}
+    <h1 class="message_search_not_found">
+        El usuario no se encuentra registrado
+    </h1>
+{% endif %}
+{% endblock %}
+
+{% block scriptcontent %}
+
+<script type="text/javascript">
+
+    function pintarMapa(new_data) {
+        ids = new_data.ids
+        lat = new_data.lat
+        lon = new_data.lon
+        pv_text = new_data.pv_text
+        pv_size = new_data.pv_size
+
+        in_text = new_data.in_text
+        in_size = new_data.in_size
+
+        center = { "lat": 5.5388635, "lon": -73.3803948 }
+        if (new_data.center) {
+            center = new_data.center
+        }
+
+        var data = [
+            {
+                "mode": "markers",
+                "name": "Votos",
+                "type": "scattermapbox",
+                "id": ids,
+                "lat": lat,
+                "lon": lon,
+                "marker": {
+                    "meta": { "columnNames": { "size": "Intensidad, size" } },
+                    "sizeref": null,
+                    "size": in_size
+                },
+                "text": in_text,
+                "visible": true,
+                "hoverinfo": "text+name"
+            },
+            {
+                "mode": "markers",
+                "name": "Puesto de Votación",
+                "type": "scattermapbox",
+                "id": ids,
+                "lat": lat,
+                "lon": lon,
+                "marker": {
+                    "meta": { "columnNames": { "size": "Puesto de Votación, size" } },
+                    "sizeref": null,
+                    "size": pv_size
+                },
+                "text": pv_text,
+                "hoverinfo": "text+name"
+            }
+        ]
+
+        var layout = {
+            "title": { "text": "Geo Mapa" },
+            "height": 550,
+            "legend": { "x": 0, "y": 1 },
+            "mapbox": {
+                "zoom": 11,
+                "pitch": 2,
+                "center": center,
+                "bearing": 0
+            },
+            "margin": { "b": 40, "l": 40, "r": 40, "t": 40 },
+            "autosize": true,
+            "hovermode": "closest",
+            "showlegend": true
+        }
+        var config = {
+            "mapboxAccessToken": "pk.eyJ1IjoiY2hyaWRkeXAiLCJhIjoiY2lxMnVvdm5iMDA4dnhsbTQ5aHJzcGs0MyJ9.X9o_rzNLNesDxdra4neC_A"
+        }
+
+        Plotly.newPlot("myDiv_super_visor_map", data, layout, config = config);
+
+        var myPlot = document.getElementById('myDiv_super_visor_map')
+
+        myPlot.on('plotly_click', function (data) {
+            pointIndex = data.points[0].pointIndex
+            point = `${data.points[0].data.id[pointIndex]}`
+            url = "{% url 'app:geomapa_detail' %}"
+            new_url = `${url}${point}`
+            window.open(
+                new_url
+            )
+        });
+    }
+
+    function getInfoPuestosSuccessCallback(data) {
+
+        pintarMapa(data.data)
+    }
+
+    function getInfoPuestosErrorCallback() {
+        console.log('getInfoPuestosErrorCallback, error trayendo la info de  getInfoPuestos ')
+
+    }
+
+    var getInfoPuestos = (successCallback, errorCallback, param) => {
+        var url = `/api/mapa_puestos/?votante=${param}`
+        $.ajax({
+            type: 'GET',
+            url,
+            error: errorCallback,
+            success: successCallback
+        });
+    };
+
+    const param = document.getElementById("mapa_votante_id").value.replace('.', '')
+    getInfoPuestos(getInfoPuestosSuccessCallback, getInfoPuestosErrorCallback, param)
+
+
+</script>
+{% endblock %}

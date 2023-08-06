@@ -74,6 +74,10 @@
                         </td>
                         <td>
 
+                            &nbsp
+                            <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}">
+                                <i class="fa fa-shield" aria-hidden="true"></i>
+                            </a>
                             {% if votante.mobile_phone %}
                                 &nbsp
                                 <a class="text-decoration-none verde_color_t"

@@ -162,6 +162,17 @@ def geomapa_detail_by_leader(request, leader_id):
     )
 
 @login_required
+def geomapa_detail_by_votante(request, votante_cc):
+    context = {}
+    info_puesto = DataController.get_info_puesto_by_votante(request, votante_cc)
+    context.update(info_puesto)
+    return render(
+        request,
+        'geomapa_detail_by_votante.html',
+        context
+    )
+
+@login_required
 def leaders(request):
     context = {}
     info_puesto = DataController.get_all_leaders()
@@ -206,6 +217,10 @@ def get_mapa_puestos(request):
     leader = request.GET.get('leader')
     if leader:
         data = DataController.get_puestos_votacion_to_plot_by_leader(leader)
+
+    votante = request.GET.get('votante')
+    if votante:
+        data = DataController.get_puestos_votacion_to_plot_by_votante(votante)
 
 
     response = {
