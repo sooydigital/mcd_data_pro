@@ -107,33 +107,12 @@
 
                         <td>
                             <spam class="table-icon-text ">
-                                {{ votante.mobile_phone }}
+                                {{ votante.name }}
                             </spam>
                             &nbsp
                             <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}">
                                 <i class="fa fa-shield" aria-hidden="true"></i>
                             </a>
-
-                            {% if votante.mobile_phone %}
-                                &nbsp
-                                <a class="text-decoration-none verde_color_t"
-                                   href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola%2C%20Mensaje%20de%20Prueba...%20">
-                                    <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
-                                </a>
-                                &nbsp
-                                <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
-                                    <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
-                                </a>
-
-                            {% endif %}
-
-
-                        </td>
-                        <td>
-                            <spam class="table-icon-text">
-
-                                {{ votante.name|upper }}
-                            </spam>
                         </td>
                         <td class="text-center">
                             <spam class="table-icon-text">
@@ -141,36 +120,28 @@
                                 {{ votante.document_id }}
                             </spam>
                         </td>
-                        <td>
-                                                        {% if votante.mobile_phone %}
-                                &nbsp
-                                <a class="text-decoration-none verde_color_t"
-                                   href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola!">
-                                    <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
-                                </a>
-                                                            <spam class="table-icon-text">
+                        <td class="text-center">
+                            <spam class="table-icon-text">
 
-                                    |
-                                                            </spam>
-
-                                <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
-                                    <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
-                                </a>
-&nbsp
-                            {% endif %}
-                            <spam class="table-icon-text ">
-                                {{ votante.show_mobile_phone }}
+                                {% if votante.mobile_phone %}
+                                    &nbsp
+                                    <a class="text-decoration-none verde_color_t"
+                                    href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola%2C%20Mensaje%20de%20Prueba...%20">
+                                        <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
+                                    </a>
+                                    &nbsp
+                                    <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
+                                        <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
+                                    </a>
+                                    {{ votante.show_mobile_phone }}
+                                {% endif %}
                             </spam>
-
-
                         </td>
-
-
                         <td class="text-center">
                             <spam class="table-icon-text">
                             {{ votante.mesa }}</td>
                         </spam>
-
+                        
                         <td class="text-center">
                             <spam class="table-icon-text">
                             {% if votante.is_leader %}
