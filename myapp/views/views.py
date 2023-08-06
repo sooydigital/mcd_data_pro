@@ -166,6 +166,7 @@ def geomapa_detail_by_votante(request, votante_cc):
     context = {}
     info_puesto = DataController.get_info_puesto_by_votante(request, votante_cc)
     context.update(info_puesto)
+    context['v_id'] = votante_cc
     return render(
         request,
         'geomapa_detail_by_votante.html',

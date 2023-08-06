@@ -23,7 +23,7 @@ Geo Mapa | MCD
             <div class="row">
                 <div class="col-lg-2">
                     <h3 class="h6"><b>Cedula:</b></h3>
-                    <p>{{ votante.document_id }}</p>
+                    {{v_id}}
                 </div>
                 <div class="col-lg-2">
                     <h3 class="h6"><b>Contacto:</b></h3>
@@ -56,6 +56,10 @@ Geo Mapa | MCD
                         {{puesto}}
                     </p>
                     {% endif %}
+                </div>
+                <div class="col-lg-1">
+                    <h3 class="h6"><b>Mesa:</b></h3>
+                    {{votante.mesa}}
                 </div>
                 <div class="col-lg-2">
                     <h3 class="h6"><b>Lider:</b></h3>

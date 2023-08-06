@@ -821,7 +821,7 @@ class DataController():
         if votante:
             data["nombre"] = votante.full_name()
             data["mapa_votante_id"] = votante.id
-
+                
             has_lider = votante.lider
             if has_lider:
                 data['has_lider'] = has_lider
