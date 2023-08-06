@@ -111,7 +111,7 @@
                                     {% if votante.is_leader %}
                                         <i class="fa fa-users" aria-hidden="true"></i></a>
                                     {% else %}
-                                        <i class="fa fa-user" aria-hidden="true"></i></a> 
+                                        <i class="fa fa-user" aria-hidden="true"></i></a>
                                     {% endif %}
                                  &nbsp;{{ votante.name|upper  }}
                             </spam>
@@ -150,7 +150,7 @@
                             <spam class="table-icon-text">
                             {% if votante.is_leader %}
                                 <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}"><i class="fa fa-sitemap" aria-hidden="true"></i></a>
-                                    &nbsp;
+                                    &nbsp;|
                                 <a href="{% url 'app:insert_votante_sub_link' votante.custom_link %}">
                                     <i class="fa fa-external-link" aria-hidden="true"></i>
                                 </a>
