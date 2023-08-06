@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.utils import timezone, dateformat
 from django.contrib.auth.decorators import login_required
 from myapp.controllers.download_controller import DownloadController
 from myapp.controllers.controller import DataController
@@ -84,7 +85,7 @@ def summary(request):
 # Create your views here.
 @login_required
 def insert_votante(request):
-    context = {}
+    context = {'date':dateformat.format(timezone.now(),'Y-m-d')}
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user)
         if type(respuesta) == str:
@@ -93,7 +94,6 @@ def insert_votante(request):
             messages.success(request, 'el registro se a guardado exitosamente')
         return redirect('app:insert_votante')
 
-
     return render(
         request,
         'insert_votante.html',
@@ -101,7 +101,7 @@ def insert_votante(request):
     )
 
 def insert_votante_with_sub_link(request, sub_link):
-    context = {}
+    context = {'date':dateformat.format(timezone.now(),'Y-m-d')}
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user, sub_link=sub_link)
         if type(respuesta) == str:
