@@ -1,45 +1,68 @@
 {% extends 'base.html' %}
 {% load static %} {% load permissions_tags %}
 {% block content %}
-    <br><br>
-    <div class="container mt-3">
-        {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ALIMENTADOR' %}
+<br><br>
+<div class="container mt-3">
+    {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ALIMENTADOR' %}
 
-            <div class="row md-n3">
-            <div class=" d-md-none d-lg-block col-lg-2" ></div>
-                <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
-                    <a href="{% url 'app:insert_votante' %}" class="home-action-btn text-center ">
-                        Agregar Votante
-                    </a>
-                </div>
-                <div class=" col-md-2 d-lg-none" ></div>
+    <div class="row md-n3">
+        <div class=" d-md-none d-lg-block col-lg-2"></div>
 
-                <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
-                    <a href="{% url 'app:summary' %}" class="home-action-btn text-center ">
-                        Como Vamos
-                    </a>
-                </div>
-            <div class=" d-md-none d-lg-block col-lg-2" ></div>
+        <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+            <a href="{% url 'app:insert_votante' %}" class="home-action-btn text-center ">
+                <i class="fa fa-plus fa-3x "></i><br>
+                <h4 class="my-3">Agregar votante</h4>
+            </a>
+        </div>
+        <div class=" col-md-2 d-lg-none"></div>
 
-            </div>
-            <div class="row">
-            <div class=" d-md-none d-lg-block col-lg-2" ></div>
+        <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+            <a href="{% url 'app:geomapa' %}" class="home-action-btn text-center ">
+                <i class="fa fa-map-marker fa-3x"></i>
+                <h4 class="my-3">Geo mapa</h4>
+            </a>
+        </div>
 
-                <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
-                    <a href="{% url 'app:geomapa' %}" class="home-action-btn text-center ">
-                        Mapa
-                    </a>
-                </div>
-                <div class=" col-md-2 d-lg-none" ></div>
-                <div class="  col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
-                    <a href="{% url 'app:votantes_download' %}" class="home-action-btn text-center ">
-                        Descarga
-                    </a>
-                </div>
-            <div class=" d-md-none d-lg-block col-lg-2" ></div>
-
-            </div>
-        {% endif %}
+        <div class=" d-md-none d-lg-block col-lg-2"></div>
 
     </div>
+
+    <div class="row">
+        <div class=" d-md-none d-lg-block col-lg-2"></div>
+
+        <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+            <a href="{% url 'app:summary' %}" class="home-action-btn text-center ">
+                <i class="fa fa-database fa-3x"></i>
+                <h4 class="my-3">¿Cómo vamos?</h4>
+            </a>
+        </div>
+
+        <div class=" col-md-2 d-lg-none"></div>
+
+        <div class="col-md-5 col-lg-4 d-flex justify-content-center gy-3">
+            <a href="{% url 'app:leaders' %}" class="home-action-btn text-center">
+                <i class="fa fa-user-circle fa-3x"></i>
+                <h4 class="my-3">Líderes</h4>
+            </a>
+        </div>
+
+
+        <div class=" d-md-none d-lg-block col-lg-2"></div>
+
+    </div>
+
+    <div class="row">
+        <div class=" d-md-none d-lg-block col-lg-2"></div>
+        <div class="  col-md-10 col-lg-8 d-flex justify-content-center  gy-3">
+            <a href="{% url 'app:votantes_download' %}" class="home-action-btn text-center ">
+                <i class="fa fa-arrow-circle-down fa-3x"></i>
+                <h4 class="my-3">Descargar</h4>
+            </a>
+        </div>
+
+
+    </div>
+    {% endif %}
+
+</div>
 {% endblock %}

@@ -13,8 +13,11 @@ body {
     font-family: 'poppins_font';
 }
 
-*{  
+*{
     font-family: 'poppins_font';
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 
@@ -334,6 +337,127 @@ body {
     font-size: 40px;
     font-weight: bolder;
     margin-top: 10px;
+}
+
+.mail{
+    background-color: #47B5FF;
+    color: #fff;
+    font-size: 18px;
+}
+
+
+.wpp{
+    background-color: #3b933f;
+}
+
+.wpp i{
+    color: #fff;
+    font-size: 19px;
+}
+
+.form-label{
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.lideres_btn a{
+    color: white;
+    text-decoration: none;
+}
+
+.text-left {
+  text-align: left;
+  /* Other styling rules can be added here */
+}
+.text-right {
+  text-align: right;
+  /* Other styling rules can be added here */
+}
+@media only screen and (max-width: 1200px) {
+
+    .table-icon-text {
+        font-size: 18px !important;
+    }
+
+    .table th{
+        font-size: 20px !important;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+
+    .table-icon-text {
+        font-size: 16px !important;
+    }
+
+    .table th{
+        font-size: 18px !important;
+    }
+
+    .text-center{
+        padding: 0px !important;
+
+    }
+}
+
+@media only screen and (max-width: 991px) {
+
+    .table-icon-text {
+        font-size: 14px !important;
+    }
+
+    td{
+        padding: 0px !important;
+    }
+
+    .table th{
+        font-size: 16px !important;
+    }
+
+}
+
+@media only screen and (max-width: 769px) {
+
+    .table-icon-text {
+        font-size: 11px !important;
+    }
+
+    .table th{
+        font-size: 14px !important;
+        padding: 0;
+        text-align: center;
+    }
+
+    td{
+        padding: 3px !important;
+    }
+}
+
+@media only screen and (max-width: 555px) {
+
+    .table-icon-text {
+        font-size: 8px !important;
+    }
+
+    .table th{
+        font-size: 12px !important;
+    }
+
+}
+
+@media only screen and (max-width: 449px) {
+
+    .table-icon-text {
+        font-size: 8px !important;
+    }
+
+    .table th{
+        font-size: 8px !important;
+    }
+
 }
 
 .message_search_not_found {

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.utils import timezone, dateformat
 from django.contrib.auth.decorators import login_required
 from myapp.controllers.download_controller import DownloadController
 from myapp.controllers.controller import DataController
@@ -20,7 +21,10 @@ def has_role(user, names):
 @login_required
 def home(request):
     context = {}
+    customer_user_id = request.user.id
+    summary = DataController.get_summary_by_user(customer_user_id)
 
+    context.update(summary)
     return render(
         request,
         'home.html',
@@ -81,7 +85,7 @@ def summary(request):
 # Create your views here.
 @login_required
 def insert_votante(request):
-    context = {}
+    context = {'date':dateformat.format(timezone.now(),'Y-m-d')}
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user)
         if type(respuesta) == str:
@@ -90,15 +94,25 @@ def insert_votante(request):
             messages.success(request, 'el registro se a guardado exitosamente')
         return redirect('app:insert_votante')
 
-
     return render(
         request,
         'insert_votante.html',
         context
     )
+# Create your views here.
+@login_required
+def lista_puesto_votacion(request):
+    context = {}
+    puestos = DataController.get_puestos_information()
+    context["puestos"] = puestos
+    return render(
+        request,
+        'list_puesto_votacion.html',
+        context
+    )
 
 def insert_votante_with_sub_link(request, sub_link):
-    context = {}
+    context = {'date':dateformat.format(timezone.now(),'Y-m-d')}
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user, sub_link=sub_link)
         if type(respuesta) == str:
@@ -134,7 +148,7 @@ def geomapa_detail(request, puesto_id=None):
         request,
         'geomapa_detail.html',
         context
-    )\
+    )
 
 @login_required
 def geomapa_detail_by_leader(request, leader_id):

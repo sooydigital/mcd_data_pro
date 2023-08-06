@@ -13,6 +13,8 @@ urlpatterns = [
     path('insert_votante', views.insert_votante, name='insert_votante'),
     path('iv/<str:sub_link>', views.insert_votante_with_sub_link, name='insert_votante_sub_link'),
     path('iv_confirm', TemplateView.as_view(template_name='insert_votante_confirm.html'), name='insert_votante_confirm'),
+    path('lista_puesto_votacion', views.lista_puesto_votacion, name='lista_puesto_votacion'),
+
 
     path('geomapa', views.geomapa, name='geomapa'),
     path('geomapa/detail/', views.geomapa_detail, name='geomapa_detail'),

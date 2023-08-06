@@ -87,9 +87,9 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Contacto</th>
                     <th scope="col" class="w-50">Nombre</th>
-                    <th scope="col" class="text-center">Edad</th>
+                    <th scope="col" class="text-center">Cédula</th>
+                    <th scope="col">Contacto</th>
                     <th scope="col" class="text-center">Mesa</th>
                     <th scope="col" class="text-center"></th>
                 </tr>
@@ -138,8 +138,33 @@
                         <td class="text-center">
                             <spam class="table-icon-text">
 
-                            {{ votante.age }}</td>
-                        </spam>
+                                {{ votante.document_id }}
+                            </spam>
+                        </td>
+                        <td>
+                                                        {% if votante.mobile_phone %}
+                                &nbsp
+                                <a class="text-decoration-none verde_color_t"
+                                   href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola!">
+                                    <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
+                                </a>
+                                                            <spam class="table-icon-text">
+
+                                    |
+                                                            </spam>
+
+                                <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
+                                    <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
+                                </a>
+&nbsp
+                            {% endif %}
+                            <spam class="table-icon-text ">
+                                {{ votante.show_mobile_phone }}
+                            </spam>
+
+
+                        </td>
+
 
                         <td class="text-center">
                             <spam class="table-icon-text">
@@ -153,6 +178,10 @@
                                     &nbsp;
                                 <a href="{% url 'app:insert_votante_sub_link' votante.custom_link %}">
                                     <i class="fa fa-external-link" aria-hidden="true"></i>
+                                </a>
+                            {% elif votante.lider_id %}
+                                <a href="{% url 'app:geomapa_detail_by_leader' votante.lider_id %}">
+                                <i class="fa  fa-address-card" aria-hidden="true"></i>
                                 </a>
                             {% endif %}
                         </td>
@@ -205,9 +234,9 @@
                 "height": 550,
                 "legend": {"x": 0, "y": 1},
                 "mapbox": {
-                    "zoom": 11,
+                    "zoom": 14.25,
                     "pitch": 2,
-                    "center": {"lat": 5.5388635, "lon": -73.3803948},
+                    "center": {"lat": 5.5384615, "lon": -73.365181},
                     "bearing": 0
                 },
                 "margin": {"b": 40, "l": 40, "r": 40, "t": 40},
