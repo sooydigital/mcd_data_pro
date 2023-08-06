@@ -42,7 +42,7 @@
                     <th scope="col">#</th>
                     <th scope="col" class="w-40">Nombre</th>
                     <th scope="col" class="text-center">Cédula</th>
-                    <th scope="col">Contacto</th>
+                    <th scope="col" class="text-center">Contacto</th>
                     <th scope="col" class="text-center">Puesto de Votacion</th>
                     <th scope="col"></th>
 
@@ -61,7 +61,7 @@
 
                         <td>
                             <spam class="table-icon-text">
-                                <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}"><i class="fa fa-shield" aria-hidden="true"></i></a>
+                                <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}"><i class="fa fa-user" aria-hidden="true"></i></a>
                                 {{ votante.name|upper }}
                             </spam>
                         </td>
@@ -127,7 +127,7 @@
                             <spam class="table-icon-text">
                             {% if votante.is_leader %}
                                 <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}" >
-                                    <i class="fa fa-shield" aria-hidden="true"></i>
+                                    <i class="fa fa-users" aria-hidden="true"></i>
                                 </a>
                             {% endif %}
                         </td>
