@@ -1,34 +1,79 @@
 {% extends 'base.html' %}
 {% load static %} {% load permissions_tags %}
 {% block headcontent %}
-    <script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 {% endblock %}
 {% block title %}
-    Geo Mapa | MCD
+Geo Mapa | MCD
 {% endblock %}
 {% block content %}
 
 {% if votantes %}
-    <h1 class="text-center">
-        {{ nombre }}
-    </h1>
-    {% if has_lider %}
-        <p class=" text-end text-muted">
-            <a href="{% url 'app:geomapa_detail_by_leader' has_lider.id %}">
-                <i class="fa fa-shield" aria-hidden="true"></i>
-            </a>
-            Lider: {{ has_lider.full_name }}</p>
-    {% endif %}
+    {% for votante in votantes %}
 
-    {% if puesto %}
-        <p class=" text-end text-muted">
-            <a href="{% url 'app:geomapa_detail_id' puesto_id %}" >
-                <i class="fa fa-university" aria-hidden="true"></i>
-            </a>
-            Puesto de votaciósn: {{ puesto }}</p>
-    {% endif %}
+    <div class="card">
+        <div class="card-header principal_color">
+            <h2 class="text-center card-title">
+                {{ nombre }}
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-2">
+                    <h3 class="h6"><b>Cedula:</b></h3>
+                    <p>{{ document }}</p>
+                </div>
+                <div class="col-lg-2">
+                    <h3 class="h6"><b>Contacto:</b></h3>
+                    {% if votante.mobile_phone %}
+                        <a class="text-decoration-none verde_color_t"
+                            href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola%2C%20Mensaje%20de%20Prueba...%20">
+                            <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
+                        </a>
+                        <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
+                            <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
+                        </a>
+                        {{ votante.mobile_phone }}
+                    {% endif %}
+                </div>
+                <div class="col-lg-1">
+                    <h3 class="h6"><b>Edad:</b></h3>
+                    {{ votante.age }}
+                </div>
+                <div class="col-lg-3">
+                    <h3 class="h6"><b>Puesto:</b></h3>
+                    {% if puesto %}
+                    <p class=" text-start">
+                        <a href="{% url 'app:geomapa_detail_id' puesto_id %}">
+                            <i class="fa fa-university" aria-hidden="true"></i>
+                        </a>
+                        -
+                        {{puesto}}
+                    </p>
+                    {% endif %}
+                </div>
+                <div class="col-lg-2">
+                    <h3 class="h6"><b>Lider:</b></h3>
+                    {% if has_lider %}
+                        <p class=" text-start">
+                            <a href="{% url 'app:geomapa_detail_by_leader' has_lider.id %}">
+                                <i class="fa fa-shield" aria-hidden="true"></i>
+                            </a>
+                            {{ has_lider.full_name }}
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+
+    
+
+    
 
     <input type="hidden" id="mapa_votante_id" value={{ mapa_votante_id }}>
     <div class="container">
@@ -36,107 +81,26 @@
             <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
         </div>
         <div class="row">
-                    <a href="{% url 'app:geomapa' %}"
-               class="text-decoration-none col col-sm-2 text-center d-flex justify-content-center align-items-center">
+            <a href="{% url 'app:geomapa' %}"
+                class="text-decoration-none col col-sm-2 text-center d-flex justify-content-center align-items-center">
                 <i class="fa fa-2x fa-map-marker" aria-hidden="true"></i>
                 &nbsp
                 Mapa
-        </a>
+            </a>
             <p class=" text-end text-muted">{{ nombre }}</p>
         </div>
-
-        <div>
-
-        </div>
-        <div class="row mt-5">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Contacto</th>
-                    <th scope="col" class="w-50">Nombre</th>
-                    <th scope="col" class="text-center">Edad</th>
-                    <th scope="col" class="text-center">Mesa</th>
-                    <th scope="col" class="text-center"></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for votante in votantes %}
-                    <tr>
-                        <th scope="row ">
-                            <spam class="table-icon-text">
-                                {{ forloop.counter }}
-                            </spam>
-
-                        </th>
-
-                        <td>
-                            <spam class="table-icon-text ">
-                                {{ votante.mobile_phone }}
-                            </spam>
-
-                            {% if votante.mobile_phone %}
-                                &nbsp
-                                <a class="text-decoration-none verde_color_t"
-                                   href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola%2C%20Mensaje%20de%20Prueba...%20">
-                                    <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
-                                </a>
-                                &nbsp
-                                <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
-                                    <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
-                                </a>
-
-                            {% endif %}
-
-
-                        </td>
-                        <td>
-                            <spam class="table-icon-text">
-
-                                {{ votante.name|upper }}
-                            </spam>
-                        </td>
-                        <td class="text-center">
-                            <spam class="table-icon-text">
-
-                            {{ votante.age }}</td>
-                        </spam>
-
-                        <td class="text-center">
-                            <spam class="table-icon-text">
-
-                            {{ votante.mesa }}</td>
-                        </spam>
-
-                        <td class="text-center">
-                            <spam class="table-icon-text">
-{#                            {% if votante.has_lider %}#}
-{#                                <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}" >#}
-{#                                    <i class="fa fa-shield" aria-hidden="true"></i>#}
-{#                                </a>#}
-{#                            {% endif %}#}
-                        </td>
-                        </spam>
-
-                    </tr>
-                {% endfor %}
-                </tbody>
-
-            </table>
-
-
-        </div>
     </div>
+
     {% else %}
     <h1 class="message_search_not_found">
         El usuario no se encuentra registrado
     </h1>
-    {% endif %}
+{% endif %}
 {% endblock %}
 
 {% block scriptcontent %}
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     function pintarMapa(new_data) {
         ids = new_data.ids
@@ -148,7 +112,7 @@
         in_text = new_data.in_text
         in_size = new_data.in_size
 
-        center = {"lat": 5.5388635, "lon": -73.3803948}
+        center = { "lat": 5.5388635, "lon": -73.3803948 }
         if (new_data.center) {
             center = new_data.center
         }
@@ -162,7 +126,7 @@
                 "lat": lat,
                 "lon": lon,
                 "marker": {
-                    "meta": {"columnNames": {"size": "Intensidad, size"}},
+                    "meta": { "columnNames": { "size": "Intensidad, size" } },
                     "sizeref": null,
                     "size": in_size
                 },
@@ -178,7 +142,7 @@
                 "lat": lat,
                 "lon": lon,
                 "marker": {
-                    "meta": {"columnNames": {"size": "Puesto de Votación, size"}},
+                    "meta": { "columnNames": { "size": "Puesto de Votación, size" } },
                     "sizeref": null,
                     "size": pv_size
                 },
@@ -188,16 +152,16 @@
         ]
 
         var layout = {
-            "title": {"text": "Geo Mapa"},
+            "title": { "text": "Geo Mapa" },
             "height": 550,
-            "legend": {"x": 0, "y": 1},
+            "legend": { "x": 0, "y": 1 },
             "mapbox": {
                 "zoom": 11,
                 "pitch": 2,
                 "center": center,
                 "bearing": 0
             },
-            "margin": {"b": 40, "l": 40, "r": 40, "t": 40},
+            "margin": { "b": 40, "l": 40, "r": 40, "t": 40 },
             "autosize": true,
             "hovermode": "closest",
             "showlegend": true
