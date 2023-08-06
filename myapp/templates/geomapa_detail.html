@@ -89,9 +89,9 @@
                     <th scope="col">#</th>
                     <th scope="col" class="w-50">Nombre</th>
                     <th scope="col" class="text-center">Cédula</th>
-                    <th scope="col">Contacto</th>
+                    <th scope="col" class="text-center">Contacto</th>
                     <th scope="col" class="text-center">Mesa</th>
-                    <th scope="col" class="text-center"></th>
+                    <th scope="col" class="text-center">Estructura</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -107,8 +107,13 @@
 
                         <td>
                             <spam class="table-icon-text ">
-                                <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}"><i class="fa fa-shield" aria-hidden="true"></i></a>
-                                {{ votante.name }}
+                                <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}">
+                                    {% if votante.is_leader %}
+                                        <i class="fa fa-users" aria-hidden="true"></i></a>
+                                    {% else %}
+                                        <i class="fa fa-user" aria-hidden="true"></i></a> 
+                                    {% endif %}
+                                 &nbsp;{{ votante.name|upper  }}
                             </spam>
 
                         </td>
@@ -118,7 +123,7 @@
                                 {{ votante.document_id }}
                             </spam>
                         </td>
-                        <td class="text-center">
+                        <td>
                             <spam class="table-icon-text">
 
                                 {% if votante.mobile_phone %}
@@ -144,14 +149,14 @@
                         <td class="text-center">
                             <spam class="table-icon-text">
                             {% if votante.is_leader %}
-                                <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}"><i class="fa fa-shield" aria-hidden="true"></i></a>
+                                <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}"><i class="fa fa-sitemap" aria-hidden="true"></i></a>
                                     &nbsp;
                                 <a href="{% url 'app:insert_votante_sub_link' votante.custom_link %}">
                                     <i class="fa fa-external-link" aria-hidden="true"></i>
                                 </a>
                             {% elif votante.lider_id %}
                                 <a href="{% url 'app:geomapa_detail_by_leader' votante.lider_id %}">
-                                <i class="fa  fa-address-card" aria-hidden="true"></i>
+                                <i class="fa  fa-sitemap" aria-hidden="true"></i>
                                 </a>
                             {% endif %}
                         </td>
