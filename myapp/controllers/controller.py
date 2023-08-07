@@ -855,7 +855,11 @@ class DataController():
             "link": "",
             'intencion_voto': 0,
             'intencion_voto_percentage': 0,
-            'puesto': ""
+            'puesto': "",
+            'address': "",
+            'address_puesto': "",
+            'municipio': "",
+            'departamento': "",
         }
         votante = Votante.objects.filter(document_id=votante_cc).first()
         votantes_list = []
@@ -872,13 +876,15 @@ class DataController():
             if votante_puestovotacion:
                 puesto = votante_puestovotacion.puesto_votacion
                 if puesto:
-                    puesto_direccion = "{} - {}".format(puesto.name, puesto.address)
                     votante_data = {
                             "name": votante.full_name(),
                             "mesa": votante_puestovotacion.mesa if votante_puestovotacion else "",
                             "puesto": "{} - {}".format(puesto.name, puesto.address),
                     }
-                    data["puesto"] = puesto_direccion
+                    data["puesto"] = puesto.name
+                    data["address_puesto"] = puesto.address
+                    data["departamento"] = puesto.municipio.name
+                    data["municipio"] = puesto.municipio.departamento.name
                     data["puesto_id"] = puesto.id
             has_customlink = votante.customlink_set.first()
             if has_customlink:
@@ -889,7 +895,14 @@ class DataController():
 
             if votante_profile:
                 votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                votante_data['email'] = votante_profile.email or ""
+                votante_data['address'] = votante_profile.address or ""
+                votante_data['gender'] = votante_profile.gender or ""
+                votante_data['birthday'] = votante_profile.birthday or ""
                 votante_data['age'] = votante_profile.age()
+                votante_data['departamento'] = votante_profile.municipio.departamento.name
+                votante_data['municipio'] = votante_profile.municipio.name
+                votante_data['barrio'] = votante_profile.barrio.name
 
             votantes_list.append(
                 votante_data
