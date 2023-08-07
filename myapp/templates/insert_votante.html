@@ -12,26 +12,6 @@ Agregar Votante | MCD
 {% block content %}
 
 <!-- Modal -->
-<div class="show-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-primary">
-                <h5 class="modal-title text-center" id="exampleModalLabel">AUTORIZACIÓN PARA EL TRATAMIENTO DE DATOS
-                    PERSONALES </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body ">
-                En cumplimiento de las disposiciones de la Ley 1581 de 2012 que desarrolla el derecho de habeas data,
-                solicitamos su autorización para recopilar, almacenar, archivar, copiar, analizar, usar y consultar los
-                datos que se señalan a continuación.
-            </div>
-            <div class="modal-footer">
-                <button id="deny" type="button" class="btn btn-danger " data-bs-dismiss="modal">Negar</button>
-                <button id="accepte" type="button" class="btn btn-primary">Aceptar</button>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="card">
     <div class="card card-header p-2 principal_color">
         <h2 class="text-center card-title">Ingresar Votante</h2>
@@ -116,9 +96,20 @@ Agregar Votante | MCD
                 <input required type="text" class="form-control" placeholder="Dirección" name="address">
             </div>
 
+            <div class="form-check col-sm-12 my-2">
+                <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="flexCheckIndeterminate">
+                <label class="form-check-label" for="flexRadioDefault1">
+                    En cumplimiento de las disposiciones de la Ley 1581 de 2012 que desarrolla el derecho de habeas data,
+                    solicitamos su autorización para recopilar, almacenar, archivar, copiar, analizar, usar y consultar los
+                    datos que se señalan a continuación.
+                </label>
+              </div>
+
             <div class="d-flex justify-content-center my-5 ">
                 <button id="enviar_form" type="submit" class="btn btn-success disabled">Guardar</button>
             </div>
+
+            
         </div>
 
     </form>
@@ -129,10 +120,6 @@ Agregar Votante | MCD
 <script type="text/javascript">
     // MODAL
     const myModal = document.getElementById('exampleModal')
-    const denybtn = document.getElementById('deny')
-    const acceptebtn = document.getElementById('accepte')
-
-    let disclouser = false
 
     var DOM_IDS = {
         SELECT_MUNICIPIO: 'select_municipio',
@@ -144,23 +131,6 @@ Agregar Votante | MCD
     window.addEventListener('load', function () {
         myModal.classList.add('show-modal')
     });
-
-    denybtn.addEventListener('click', () => {
-        disclouser = false
-        myModal.classList.remove('show-modal')
-        myModal.style.visibility = "hidden"
-        myModal.classList.add('hide-modal')
-        return disclouser
-    })
-
-    accepte.addEventListener('click', () => {
-        disclouser = true
-        myModal.classList.remove('show-modal')
-        myModal.style.visibility = "hidden"
-        myModal.classList.add('hide-modal')
-
-        return disclouser
-    })
 
     $('#' + DOM_IDS.SELECT_MUNICIPIO).on("change", populate_barrios)
 
@@ -195,7 +165,7 @@ Agregar Votante | MCD
         element.html(options.join(''));
 
     }
-
+    
     function actualizarValidacion(validation) {
         add_hidden_class("loaing_validation")
         if (validation) {
@@ -253,11 +223,11 @@ Agregar Votante | MCD
         add_hidden_class("success_validation")
         add_hidden_class("error_validation")
         add_hidden_class("error_message_validation")
-
-        if(disclouser){
-            checkValidationDocumentId(document_id, validationDocumentIdSuccessCallback, validationDocumentIdErrorCallback)
-        }
+        
+        checkValidationDocumentId(document_id, validationDocumentIdSuccessCallback, validationDocumentIdErrorCallback)
     });
+
+    
 
     populate_barrios()
 
