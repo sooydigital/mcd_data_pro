@@ -402,6 +402,28 @@ body {
     font-size: 20px;
 }
 
+.modal-body{
+    text-align: justify;
+}
+
+.modal-header{
+    color: white;
+    font-weight: bold;
+}
+
+.show-modal{
+    transition: .5s;
+    display: block;
+    position: absolute;
+    z-index: 1;
+    right: 35%;
+}
+
+.hide-modal{
+    transition: .5s;
+    display: none;
+}
+
 @media only screen and (max-width: 1200px) {
 
     .table-icon-text {
