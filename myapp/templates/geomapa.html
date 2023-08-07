@@ -10,13 +10,15 @@
 {% endblock %}
 {% block content %}
     <div class="container">
-        
+
         <div class="row">
-            <div class="col">
-                <div data-param="TUNJA" class="btn_mapa mapa-action-btn mapa-action-btn-selected text-center ">
-                    Tunja
+            {% for municpio in municpios %}
+                   <div class="col">
+                <div data-param="{{ municpio.name }}" class="btn_mapa mapa-action-btn mapa-action-btn-selected text-center ">
+                    {{ municpio.name }}
                 </div>
             </div>
+            {% endfor %}
             <div class="col col-sm-1">
                 <a href="{% url 'app:lista_puesto_votacion' %}">
                     <div class="mapa-action-btn mapa-action-btn-selected text-center ">
@@ -27,7 +29,7 @@
 
         </div>
 
-        <form id="searchForm" class="col-sm-4 m-2">
+        <form id="searchForm" class="col-sm-4 m-2 ">
             <input type="text" id="searchInput" placeholder="Ingresa tu búsqueda" class="form-control">
             <button type="submit" id="searchButton" class="mapa-action-btn mapa-action-btn-selected text-center">
                 <i class="fa fa-search"></i>
@@ -35,8 +37,8 @@
         </form>
     </div>
 
-    
-    
+
+
     <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
 {% endblock %}
 
@@ -94,7 +96,7 @@
             ]
 
             var layout = {
-                "title": {"text": "Geo Mapa"},
+                "title": {"text": ""},
                 "height": 1000,
                 "legend": {"x": 0, "y": 1},
                 "mapbox": {

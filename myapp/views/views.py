@@ -20,6 +20,9 @@ def has_role(user, names):
 # Create your views here.
 @login_required
 def home(request):
+    if not request.session.get('color_principal'):
+        request.session['color_principal'] = DataController.get_current_campaing().color_principal
+        request.session['color_secondary'] = DataController.get_current_campaing().color_secondary
     context = {}
     customer_user_id = request.user.id
     summary = DataController.get_summary_by_user(customer_user_id)
@@ -91,7 +94,7 @@ def insert_votante(request):
         if type(respuesta) == str:
             messages.error(request, respuesta)
         else:
-            messages.success(request, 'el registro se a guardado exitosamente')
+            messages.success(request, 'El votante se ha registrado correctamente en V-Data.')
         return redirect('app:insert_votante')
 
     return render(
@@ -118,7 +121,7 @@ def insert_votante_with_sub_link(request, sub_link):
         if type(respuesta) == str:
             messages.error(request, respuesta)
         else:
-            messages.success(request, 'el registro se a guardado exitosamente')
+            messages.success(request, 'El votante se ha registrado correctamente en V-Data.')
         return redirect('./'+sub_link)
 
 
@@ -132,7 +135,8 @@ def insert_votante_with_sub_link(request, sub_link):
 @login_required
 def geomapa(request):
     context = {}
-
+    municpios = DataController.get_current_municipios()
+    context["municpios"] = municpios
     return render(
         request,
         'geomapa.html',
@@ -212,6 +216,7 @@ def get_barrio_by_municipio(request, municipio_id):
 @login_required
 def get_mapa_puestos(request):
     municipio = request.GET.get('municipio')
+    get_direccion_votante = request.GET.get('direccion_votante', False)
     data = []
     if municipio:
         data = DataController.get_puestos_votacion_to_plot(municipio)
@@ -221,7 +226,7 @@ def get_mapa_puestos(request):
 
     votante = request.GET.get('votante')
     if votante:
-        data = DataController.get_puestos_votacion_to_plot_by_votante(votante)
+        data = DataController.get_puestos_votacion_to_plot_by_votante(votante, get_direccion_votante)
 
 
     response = {

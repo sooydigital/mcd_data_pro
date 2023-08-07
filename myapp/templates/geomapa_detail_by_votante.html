@@ -22,84 +22,196 @@ Geo Mapa | MCD
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-2">
-                    <h3 class="h6"><b>Cedula:</b></h3>
+                    <h3 class="h6"><b>Cédula:</b></h3>
                     {{v_id}}
                 </div>
                 <div class="col-lg-2">
                     <h3 class="h6"><b>Contacto:</b></h3>
                     {% if votante.mobile_phone %}
-                        <a class="text-decoration-none verde_color_t"
-                            href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola%2C%20Mensaje%20de%20Prueba...%20">
-                            <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
+                         <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
+                            <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
                         </a>
                         <spam class="table-icon-text">
                             |
                         </spam>
-                        <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
-                            <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
+                       <a class="text-decoration-none verde_color_t"
+                            href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola%2C%20Mensaje%20de%20Prueba...%20">
+                            <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
                         </a>
                         {{ votante.mobile_phone }}
                     {% endif %}
                 </div>
                 <div class="col-lg-1">
+                <h3 class="h6"><b>Género:</b></h3>
+                    {% if votante.gender %}
+                        <p class="text-start">
+                            {{votante.gender}}
+                        </p>
+                    {% else %}
+                        <div id="loaing_validation" class="spinner-border text-info" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-lg-2 text-center">
+                    <h3 class="h6"><b>Fecha de nacimiento:</b></h3>
+                    {{ votante.birthday }}
+                </div>
+                <div class="col-lg-1 text-center">
                     <h3 class="h6"><b>Edad:</b></h3>
                     {{ votante.age }}
                 </div>
+                <div class="col-lg-4">
+                <h3 class="h6"><b>Correo Electrónico:</b></h3>
+                    {% if votante.email %}
+                        <p class="text-start">
+                            {{votante.email}}
+                        </p>
+                    {% else %}
+                        <div id="loaing_validation" class="spinner-border text-info" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+                    <hr>
+            <div class="row">
                 <div class="col-lg-3">
-                    <h3 class="h6"><b>Puesto:</b></h3>
+                    <h3 class="h6"><b>Departamento:</b></h3>
+                    {% if votante.address %}
+                        <p class="text-start">
+                            {{votante.departamento}}
+                        </p>
+                    {% else %}
+                        <div id="loaing_validation" class="spinner-border text-info" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-lg-3">
+                    <h3 class="h6"><b>Municipio:</b></h3>
+                    {% if votante.address %}
+                        <p class="text-start">
+                            {{votante.municipio}}
+                        </p>
+                    {% else %}
+                        <div id="loaing_validation" class="spinner-border text-info" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-lg-3">
+                    <h3 class="h6"><b>Barrio:</b></h3>
+                    {% if votante.barrio %}
+                        <p class="text-start">
+                            {{votante.barrio}}
+                        </p>
+                    {% else %}
+                        <div id="loaing_validation" class="spinner-border text-info" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-lg-3">
+                    <h3 class="h6"><b>Dirección:</b></h3>
+                    {% if votante.address %}
+                        <p class="text-start">
+                            {{votante.address}}
+                        </p>
+                    {% else %}
+                        <div id="loaing_validation" class="spinner-border text-info" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-lg-3">
+                    <h3 class="h6"><b>Puesto de Votación:</b></h3>
                     {% if puesto %}
                     <p class=" text-start">
                         <a href="{% url 'app:geomapa_detail_id' puesto_id %}">
                             <i class="fa fa-university" aria-hidden="true"></i></a>
-                        -
                         {{puesto}}
                     </p>
                     {% endif %}
                 </div>
-                <div class="col-lg-1">
+                <div class="col-lg-1 text-center">
                     <h3 class="h6"><b>Mesa:</b></h3>
                     {{votante.mesa}}
                 </div>
                 <div class="col-lg-2">
+                    <h3 class="h6"><b>Departamento:</b></h3>
+                    {% if departamento %}
+                        <p class="text-start">
+                            {{departamento}}
+                        </p>
+                    {% else %}
+                        <div id="loaing_validation" class="spinner-border text-info" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-lg-2">
+                    <h3 class="h6"><b>Municipio:</b></h3>
+                    {% if municipio %}
+                        <p class="text-start">
+                            {{municipio}}
+                        </p>
+                    {% else %}
+                        <div id="loaing_validation" class="spinner-border text-info" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-lg-3">
+                    <h3 class="h6"><b>Dirección:</b></h3>
+                    {% if address_puesto %}
+                        <p class="text-start">
+                            {{address_puesto}}
+                        </p>
+                    {% else %}
+                        <div id="loaing_validation" class="spinner-border text-info" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-lg-3">
                     {% if has_lider %}
 
-                        <h3 class="h6"><b>Lider:</b></h3>
+                        <h3 class="h6"><b>Líder:</b></h3>
                         <p class=" text-start">
                             <a href="{% url 'app:geomapa_detail_by_leader' has_lider.id %}">
-                                <i class="fa fa-shield" aria-hidden="true"></i></a>
+                                <i class="fa fa-users" aria-hidden="true"></i></a>
+
                             {{ has_lider.full_name }}
                         </p>
                     {% endif %}
                 </div>
             </div>
-
         </div>
     </div>
     {% endfor %}
 
-    
 
-    
+
+
 
     <input type="hidden" id="mapa_votante_id" value={{ mapa_votante_id }}>
     <div class="container">
         <div class="row  mt-5">
             <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
         </div>
-        <div class="row">
-            <a href="{% url 'app:geomapa' %}"
-                class="text-decoration-none col col-sm-2 text-center d-flex justify-content-center align-items-center">
-                <i class="fa fa-2x fa-map-marker" aria-hidden="true"></i>
-                &nbsp
-                Mapa
-            </a>
-        </div>
     </div>
 
     {% else %}
-    <h1 class="message_search_not_found">
-        El usuario no se encuentra registrado
-    </h1>
+    <h2 class="message_search_not_found">
+        El número de documento que intentas ingresar no se encuentra registrado en V-Data.
+    </h2>
 {% endif %}
 {% endblock %}
 
@@ -116,6 +228,7 @@ Geo Mapa | MCD
 
         in_text = new_data.in_text
         in_size = new_data.in_size
+        direccion_votantes = new_data.direccion_votantes
 
         center = { "lat": 5.5388635, "lon": -73.3803948 }
         if (new_data.center) {
@@ -153,11 +266,31 @@ Geo Mapa | MCD
                 },
                 "text": pv_text,
                 "hoverinfo": "text+name"
-            }
+            },
         ]
+        if (direccion_votantes) {
+            votante_lat = direccion_votantes.lat
+            votante_lon = direccion_votantes.lon
+            votante_text = direccion_votantes.address
+
+            data.push({
+                "mode": "markers",
+                "name": "Direccion Votante",
+                "type": "scattermapbox",
+                "lat": votante_lat,
+                "lon": votante_lon,
+                "marker": {
+                    "meta": { "columnNames": { "size": "Puesto de Votación, size" } },
+                    "sizeref": null,
+                    "size": pv_size
+                },
+                "text": votante_text,
+                "hoverinfo": "text+name"
+            },)
+        }
 
         var layout = {
-            "title": { "text": "Geo Mapa" },
+            "title": { "text": "" },
             "height": 550,
             "legend": { "x": 0, "y": 1 },
             "mapbox": {
@@ -201,7 +334,7 @@ Geo Mapa | MCD
     }
 
     var getInfoPuestos = (successCallback, errorCallback, param) => {
-        var url = `/api/mapa_puestos/?votante=${param}`
+        var url = `/api/mapa_puestos/?votante=${param}&direccion_votante=True`
         $.ajax({
             type: 'GET',
             url,

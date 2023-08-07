@@ -18,12 +18,12 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col" class="w-30">Nombre</th>
+                    <th scope="col" class="w-30"> <b>Nombre</b></th>
+                    <th scope="col" class="text-center"> <b># Votantes</b></th>
 {#                    <th scope="col" class="w-30">Dirección</th>#}
-                    <th scope="col" class="text-center">Departamento</th>
-                    <th scope="col" class="text-center">Municipio</th>
-                    <th scope="col" class="text-center"># Votantes</th>
-                    <th scope="col" class="text-center">Ver</th>
+                    <th scope="col" class="text-center"> <b>Departamento</b></th>
+                    <th scope="col" class="text-center"> <b>Municipio</b></th>
+                    <th scope="col" class="text-center"> <b>Ver</b></th>
                     <th scope="col"></th>
 
                 </tr>
@@ -33,7 +33,9 @@
                     <tr>
                         <th scope="row ">
                             <spam class="table-icon-text">
-                                {{ forloop.counter }}
+                               <b>
+                                   {{ forloop.counter }}
+                               </b>
                             </spam>
                         </th>
                         <td>
@@ -41,7 +43,11 @@
                                 {{ puesto.name|upper }}
                             </spam>
                         </td>
-
+                        <td class="text-center">
+                            <spam class="table-icon-text ">
+                                {{ puesto.num_votantes }}
+                            </spam>
+                        </td>
 {#                        <td>#}
 {#                            <spam class="table-icon-text">#}
 {#                                {{ puesto.address }}#}
@@ -58,11 +64,7 @@
                                 {{ puesto.municipio }}
                             </spam>
                         </td>
-                        <td class="text-center">
-                            <spam class="table-icon-text ">
-                                {{ puesto.num_votantes }}
-                            </spam>
-                        </td>
+
                         <td class="text-center">
                             <spam class="table-icon-text ">
                                  <spam class="table-icon-text">

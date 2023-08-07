@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage
 from myapp.models import Municipio, Barrio, Departamento, PuestoVotacion
 from myapp.models import CustomUser, CustomLink
+from myapp.models import Campaign
 import math
 
 from myapp.serializers import BarrioSerializer
@@ -57,6 +58,17 @@ def clena_data_cc(message):
 
 
 class DataController():
+    @staticmethod
+    def get_current_campaing():
+        campaign = Campaign.objects.filter(is_active=True).first()
+        return campaign
+
+    @staticmethod
+    def get_current_municipios():
+        campaign = DataController.get_current_campaing()
+        municipios = campaign.municipios.all()
+        return municipios
+
     @staticmethod
     def validate_document_id(document_id):
         votante_validation = Votante.objects.filter(document_id=document_id).exists()
@@ -375,6 +387,9 @@ class DataController():
 
     @staticmethod
     def get_puestos_votacion_to_plot(municipio):
+        current_campaing = DataController.get_current_campaing()
+        center = {"lat": current_campaing.latitude_principal, "lon": current_campaing.longitude_principal} # location
+
         data = {
             "ids": ["ID"],
             "lat": ["Lattitude"],
@@ -383,7 +398,7 @@ class DataController():
             "pv_size": ["Size B"],
             "in_text": ["Votos"],
             "in_size": ["Size E"],
-            "center": {"lat": 5.5368954, "lon": -73.3680772} # Tunja
+            "center": center
         }
         puesto_votaciones_query = PuestoVotacion.objects
         if not municipio == "ALL":
@@ -422,6 +437,9 @@ class DataController():
 
     @staticmethod
     def get_puestos_votacion_to_plot_by_leader(leader_id):
+
+        current_campaing = DataController.get_current_campaing()
+        center = {"lat": current_campaing.latitude_principal, "lon": current_campaing.longitude_principal} # location
         data = {
             "ids": ["ID"],
             "lat": ["Lattitude"],
@@ -430,7 +448,7 @@ class DataController():
             "pv_size": ["Size B"],
             "in_text": ["Votos"],
             "in_size": ["Size E"],
-            "center": {"lat": 5.5368954, "lon": -73.3680772} # Tunja
+            "center": center
         }
         puesto_votaciones_query = PuestoVotacion.objects
         puesto_votaciones_query = puesto_votaciones_query.filter(votantepuestovotacion__votante__lider_id=leader_id)
@@ -457,7 +475,10 @@ class DataController():
 
         return data
     @staticmethod
-    def get_puestos_votacion_to_plot_by_votante(votante_id):
+    def get_puestos_votacion_to_plot_by_votante(votante_id, get_direccion_votante=False):
+        current_campaing = DataController.get_current_campaing()
+        center = {"lat": current_campaing.latitude_principal, "lon": current_campaing.longitude_principal} # location
+
         data = {
             "ids": ["ID"],
             "lat": ["Lattitude"],
@@ -466,8 +487,25 @@ class DataController():
             "pv_size": ["Size B"],
             "in_text": ["Votos"],
             "in_size": ["Size E"],
-            "center": {"lat": 5.5368954, "lon": -73.3680772} # Tunja
+            "center": center
         }
+        if get_direccion_votante:
+            data["direccion_votantes"] = {
+                "ids": ["ID"],
+                "lat": ["Lattitude"],
+                "lon": ["Longitude"],
+                "address": ["Dirección"],
+            }
+            votante_profile = VotanteProfile.objects.filter(votante_id=votante_id).first()
+            if votante_profile:
+                lat = votante_profile.latitude
+                lon = votante_profile.longitude
+                if lat and lon:
+                    data["direccion_votantes"]["lat"].append(lat)
+                    data["direccion_votantes"]["lon"].append(lon)
+                    data["direccion_votantes"]["address"].append(votante_profile.address)
+
+
         puesto_votaciones_query = PuestoVotacion.objects
         puesto_votaciones_query = puesto_votaciones_query.filter(votantepuestovotacion__votante_id=votante_id)
 
@@ -799,6 +837,7 @@ class DataController():
                 votantes_list.append(
                     votante_data
                 )
+            votantes_list = sorted(votantes_list, key=lambda k: k['name'])
 
         data["votantes"] = votantes_list
         data["nombre"] = lider.full_name()
@@ -817,14 +856,18 @@ class DataController():
             "link": "",
             'intencion_voto': 0,
             'intencion_voto_percentage': 0,
-            'puesto': ""
+            'puesto': "",
+            'address': "",
+            'address_puesto': "",
+            'municipio': "",
+            'departamento': "",
         }
         votante = Votante.objects.filter(document_id=votante_cc).first()
         votantes_list = []
         if votante:
             data["nombre"] = votante.full_name()
             data["mapa_votante_id"] = votante.id
-                
+
             has_lider = votante.lider
             if has_lider:
                 data['has_lider'] = has_lider
@@ -834,13 +877,15 @@ class DataController():
             if votante_puestovotacion:
                 puesto = votante_puestovotacion.puesto_votacion
                 if puesto:
-                    puesto_direccion = "{} - {}".format(puesto.name, puesto.address)
                     votante_data = {
                             "name": votante.full_name(),
                             "mesa": votante_puestovotacion.mesa if votante_puestovotacion else "",
                             "puesto": "{} - {}".format(puesto.name, puesto.address),
                     }
-                    data["puesto"] = puesto_direccion
+                    data["puesto"] = puesto.name
+                    data["address_puesto"] = puesto.address
+                    data["departamento"] = puesto.municipio.name
+                    data["municipio"] = puesto.municipio.departamento.name
                     data["puesto_id"] = puesto.id
             has_customlink = votante.customlink_set.first()
             if has_customlink:
@@ -851,7 +896,14 @@ class DataController():
 
             if votante_profile:
                 votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                votante_data['email'] = votante_profile.email or ""
+                votante_data['address'] = votante_profile.address or ""
+                votante_data['gender'] = votante_profile.gender or ""
+                votante_data['birthday'] = votante_profile.birthday or ""
                 votante_data['age'] = votante_profile.age()
+                votante_data['departamento'] = votante_profile.municipio.departamento.name
+                votante_data['municipio'] = votante_profile.municipio.name
+                votante_data['barrio'] = votante_profile.barrio.name
 
             votantes_list.append(
                 votante_data
@@ -892,7 +944,7 @@ class DataController():
             )
 
         votantes = sorted(votantes, key=lambda x: x["referrals"], reverse=True)
-        
+
         return {
             "leaders": votantes
         }
