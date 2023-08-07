@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static %} {% load permissions_tags %}
 {% block content %}
-<br><br>
 <div class="container mt-3">
     {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ALIMENTADOR' %}
 
