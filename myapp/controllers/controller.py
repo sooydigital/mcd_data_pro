@@ -802,6 +802,9 @@ class DataController():
 
         data["votantes"] = votantes_list
         data["nombre"] = lider.full_name()
+        lider_profile = votante.votanteprofile_set.first()
+        if lider_profile:
+            data["mobile_phone"] = lider_profile.mobile_phone or ""
 
         return data
 
