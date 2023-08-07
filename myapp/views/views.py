@@ -212,6 +212,7 @@ def get_barrio_by_municipio(request, municipio_id):
 @login_required
 def get_mapa_puestos(request):
     municipio = request.GET.get('municipio')
+    get_direccion_votante = request.GET.get('direccion_votante', False)
     data = []
     if municipio:
         data = DataController.get_puestos_votacion_to_plot(municipio)
@@ -221,7 +222,7 @@ def get_mapa_puestos(request):
 
     votante = request.GET.get('votante')
     if votante:
-        data = DataController.get_puestos_votacion_to_plot_by_votante(votante)
+        data = DataController.get_puestos_votacion_to_plot_by_votante(votante, get_direccion_votante)
 
 
     response = {
