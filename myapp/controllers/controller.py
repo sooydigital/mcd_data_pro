@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
+from django.utils import timezone, dateformat
 
 from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage
 from myapp.models import Municipio, Barrio, Departamento, PuestoVotacion
@@ -196,6 +197,8 @@ class DataController():
         email = get_data_from_post(data, "email")
         mobile_phone = get_data_from_post(data, "mobile_phone")
         birthday = get_data_from_post(data, "birthday")
+        if birthday == "":
+            birthday = dateformat.format(timezone.now(),'Y-m-d')
         gender = get_data_from_post(data, "gender")
         address = get_data_from_post(data, "address")
         municipio = get_data_from_post(data, "municipio")
