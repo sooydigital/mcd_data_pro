@@ -76,12 +76,12 @@
 
                 <ul class="navbar-nav m-auto ">
 
-                    <span class="nav-link active text-center">
+                    <li class="nav-link active">
                         <br>
                         <b>
                             {{ request.user.first_name }} {{ request.user.last_name }}
                         </b>
-                    </span>
+                    </li>
                     {% if request.user|has_role:'SUPER_ADMIN' %}
                          {% if request.user.is_staff %}
                             <li class="nav-item rol-icon">
