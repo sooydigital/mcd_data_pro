@@ -478,7 +478,7 @@ class DataController():
     def get_puestos_votacion_to_plot_by_votante(votante_id, get_direccion_votante=False):
         current_campaing = DataController.get_current_campaing()
         center = {"lat": current_campaing.latitude_principal, "lon": current_campaing.longitude_principal} # location
-        
+
         data = {
             "ids": ["ID"],
             "lat": ["Lattitude"],
