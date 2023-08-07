@@ -819,6 +819,9 @@ class DataController():
 
         data["votantes"] = votantes_list
         data["nombre"] = lider.full_name()
+        lider_profile = lider.votanteprofile_set.first()
+        if lider_profile:
+            data["mobile_phone"] = lider_profile.mobile_phone or ""
 
         return data
 
@@ -838,11 +841,11 @@ class DataController():
         if votante:
             data["nombre"] = votante.full_name()
             data["mapa_votante_id"] = votante.id
-
+                
             has_lider = votante.lider
             if has_lider:
                 data['has_lider'] = has_lider
-
+            votante_data = {}
             votante_profile = votante.votanteprofile_set.first()
             votante_puestovotacion = votante.votantepuestovotacion_set.first()
             if votante_puestovotacion:
