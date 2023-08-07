@@ -19,11 +19,9 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar" aria-controls="mynavbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-
-        
-{##}
-{#        <!-- COLAPSE BTN -->#}
-{#        <div class="collapse navbar-collapse" id="mynavbar">#}
+    </span>
+        <!-- COLAPSE BTN -->
+        <div class="collapse navbar-collapse" id="mynavbar">
 {##}
 {#            {% if request.user|has_role:'ALIMENTADOR' %}#}
 {#            <ul class="navbar-nav">#}
@@ -76,7 +74,7 @@
 
                 <ul class="navbar-nav m-auto ">
 
-                    <li class="nav-link active">
+                    <li class="nav-link active  ">
                         <br>
                         <b>
                             {{ request.user.first_name }} {{ request.user.last_name }}
@@ -115,6 +113,4 @@
 
             </div>
         </div>
-
-    </div>
-</nav>
+    </nav>
