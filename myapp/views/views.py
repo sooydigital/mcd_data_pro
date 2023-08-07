@@ -132,7 +132,8 @@ def insert_votante_with_sub_link(request, sub_link):
 @login_required
 def geomapa(request):
     context = {}
-
+    municpios = DataController.get_current_municipios()
+    context["municpios"] = municpios
     return render(
         request,
         'geomapa.html',
