@@ -11,6 +11,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .principal_color {
+            background-color: {{ request.session.color_principal  }} !important
+        }
+        .home-action-btn {
+            background-color: {{ request.session.color_secondary  }} !important
+        }
+    </style>
 
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -63,4 +71,5 @@
 <!-- BOOTSTRAP SCRIPTS END -->
 {% block scriptcontent %}
 {% endblock %}
+
 </html>

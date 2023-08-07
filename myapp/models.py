@@ -308,7 +308,7 @@ class VotanteProfile(models.Model):
         null=True,
 
     )
-    
+
     municipio = models.ForeignKey(
         Municipio,
         blank=True,
@@ -420,3 +420,44 @@ class CustomLink(models.Model):
 
     def __str__(self):
         return '{} - {} #{}'.format(self.votante.document_id, self.sub_link, self.is_active)
+
+class Campaign(models.Model):
+    name = models.CharField(
+        max_length=1024,
+        verbose_name="nombre de la campaña"
+    )
+
+    url = models.CharField(
+        max_length=1024,
+        verbose_name="sub url de la campaña"
+    )
+
+    is_active = models.BooleanField(default=True)
+
+    color_principal = models.CharField(
+        max_length=10,
+        verbose_name="principal_color"
+    )
+    color_secondary = models.CharField(
+        max_length=10,
+        verbose_name="principal_color"
+    )
+
+    longitude_principal = models.CharField(
+        max_length=1024,
+        verbose_name="longitude",
+        blank=True,
+        null=True,
+
+    )
+    latitude_principal = models.CharField(
+        max_length=1024,
+        verbose_name="latitude",
+        blank=True,
+        null=True,
+    )
+
+    municipios = models.ManyToManyField(Municipio)
+
+    def __str__(self):
+        return '{} - {}'.format(self.name, self.is_active)
