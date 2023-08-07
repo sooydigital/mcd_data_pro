@@ -76,17 +76,22 @@
 
                 <ul class="navbar-nav m-auto ">
 
-                    <span class="nav-link active text-center">
+                    <li class="nav-link active">
                         <br>
-                        {{ request.user.first_name }} {{ request.user.last_name }}
-                    </span>
-                    {% if request.user|has_role:'SUPER_ADMIN' %}
-                    <li class="nav-item rol-icon">
-
-                        <a class="nav-link active" href="{% url 'admin:index' %}">
-                            Admin <br> <i class="fa fa-3x fa-user-circle" aria-hidden="true"></i>
-                        </a>
+                        <b>
+                            {{ request.user.first_name }} {{ request.user.last_name }}
+                        </b>
                     </li>
+                    {% if request.user|has_role:'SUPER_ADMIN' %}
+                         {% if request.user.is_staff %}
+                            <li class="nav-item rol-icon">
+
+                                <a class="nav-link active" href="{% url 'admin:index' %}">
+                                    Admin <br> <i class="fa fa-3x fa-user-circle" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                         {% endif %}
+
                     {% elif request.user|has_role:'SUPERVISOR' %}
                     <li class="nav-item rol-icon">
                         <a class="nav-link active" href="#">
