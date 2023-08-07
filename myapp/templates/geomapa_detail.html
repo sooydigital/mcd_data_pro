@@ -10,15 +10,13 @@
 {% endblock %}
 {% block content %}
 
-    <h1 class="text-center">
+    <h2 class="text-center">
+        <i class="fa fa-university" aria-hidden="true"></i>
         {{ name }}
-    </h1>
+    </h2>
 
     <div class="container">
-        <div class="row">
-            <div class="col col-sm-2 text-center d-flex justify-content-center align-items-center">
-
-            </div>
+        <div class="row mt-4">
             <div class="col text-center d-flex justify-content-center align-items-center">
                 Departamento
             </div>
@@ -26,17 +24,11 @@
                 Municipio
             </div>
             <div class="col text-center d-flex justify-content-center align-items-center">
-                Intención de Voto
+                Votantes Agregados
             </div>
         </div>
             <div class="row">
-            <a href="{% url 'app:geomapa' %}"
-               class="text-decoration-none col col-sm-2 text-center d-flex justify-content-center align-items-center">
-                <i class="fa fa-2x fa-map-marker" aria-hidden="true"></i>
-                &nbsp
-                Mapa
 
-            </a>
             <div class="col text-center d-flex justify-content-center align-items-center">
                 <i class="fa fa-2x fa-bookmark" aria-hidden="true"></i>
                 &nbsp
@@ -50,14 +42,14 @@
             <div class="col text-center d-flex justify-content-center align-items-center">
                 <i class="fa fa-2x fa-thumbs-up" aria-hidden="true"></i>
                 &nbsp
-                {{ num_puestos }}/ {{ intencion_voto }}
+                {{ num_puestos }}
             </div>
         </div>
-        <div class="row  mt-5">
+        <div class="row  mt-2">
             <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
         </div>
         <div class="row">
-            <p class=" text-end text-muted">{{ name }} - {{ address }} - {{ municipio }} - {{ departamento }}</p>
+            <p class=" text-end text-muted">{{ name }} - {{ departamento }} - {{ municipio }} - {{ address }}</p>
         </div>
 
         <div>
@@ -127,16 +119,17 @@
                             <spam class="table-icon-text">
 
                                 {% if votante.mobile_phone %}
-                                    <a class="text-decoration-none verde_color_t"
-                                    href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola%2C%20Mensaje%20de%20Prueba...%20">
-                                        <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
+                                 <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
+                                        <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
                                     </a>
                                     <spam class="table-icon-text">
                                         |
                                     </spam>
-                                    <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
-                                        <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
+                                       <a class="text-decoration-none verde_color_t"
+                                    href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola%2C%20Mensaje%20de%20Prueba...%20">
+                                        <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
                                     </a>
+
                                     {{ votante.show_mobile_phone }}
                                 {% endif %}
                             </spam>
@@ -205,7 +198,7 @@
             ]
 
             var layout = {
-                "title": {"text": "Geo Mapa"},
+                "title": {"text": ""},
                 "height": 550,
                 "legend": {"x": 0, "y": 1},
                 "mapbox": {

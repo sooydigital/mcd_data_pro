@@ -94,7 +94,7 @@ def insert_votante(request):
         if type(respuesta) == str:
             messages.error(request, respuesta)
         else:
-            messages.success(request, 'el registro se a guardado exitosamente')
+            messages.success(request, 'El votante se ha registrado correctamente en V-Data.')
         return redirect('app:insert_votante')
 
     return render(
@@ -121,7 +121,7 @@ def insert_votante_with_sub_link(request, sub_link):
         if type(respuesta) == str:
             messages.error(request, respuesta)
         else:
-            messages.success(request, 'el registro se a guardado exitosamente')
+            messages.success(request, 'El votante se ha registrado correctamente en V-Data.')
         return redirect('./'+sub_link)
 
 
