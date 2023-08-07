@@ -5,64 +5,66 @@
 {% endblock %}
 
 {% block content %}
-    <br><br>
     <div class="jumbotron">
-        <h1 class="display-4 text-center">  {{ request.user.first_name }} {{ request.user.last_name }}</h1>
-
-        <hr class="my-4">
+        <h2 class="display-4 text-center">
+            <i class="fa fa-bar-chart"></i>
+            Votantes agregados
+        </h2>
+        <br>
+        <hr class="my-6">
 
         <div class="container  text-center">
             <div class="row">
                 <div class="col">
-                    <i class="fa fa-tachometer fa-5x" aria-hidden="true"></i>
+                    <i class="fa fa-clock-o fa-5x" aria-hidden="true"></i>
+                </div>
+                 <div class="col">
+                    <i class="fa fa-bookmark fa-5x" aria-hidden="true"></i>
                 </div>
                 <div class="col">
                     <i class="fa fa-calendar fa-5x" aria-hidden="true"></i>
                 </div>
                 <div class="col">
-                    <i class="fa fa-bookmark fa-5x" aria-hidden="true"></i>
+                    <i class="fa fa-tachometer fa-5x" aria-hidden="true"></i>
                 </div>
-                <div class="col">
-                    <i class="fa fa-clock-o fa-5x" aria-hidden="true"></i>
-                </div>
-
             </div>
             <div class="row">
                 <div class="col fa-3x">
-                    {{ num_encuestas_total }}
-                </div>
-                <div class="col fa-3x">
-                    {{ num_encuestas_mes }}
+                    {{ num_encuestas_hoy }}
                 </div>
                 <div class="col fa-3x">
                     {{ num_encuestas_semana }}
                 </div>
                 <div class="col fa-3x">
-                    {{ num_encuestas_hoy }}
+                    {{ num_encuestas_mes }}
+                </div>
+                <div class="col fa-3x">
+                    {{ num_encuestas_total }}
                 </div>
             </div>
             <div class="row">
                 <div class="col fa-2x">
-                    Total
+                    Hoy
                 </div>
+
+                <div class="col fa-2x">
+                    Semana
+                </div>
+
                 <div class="col fa-2x">
                     Mes
                 </div>
                 <div class="col fa-2x">
-                    Semana
+                    Total
                 </div>
-                <div class="col fa-2x">
-                    Hoy
-                </div>
+
             </div>
         </div>
         <hr class="my-4">
 
         <div class="container  text-center">
             <div class="row">
-                <div class="col">
-                    <i class="fa fa-tachometer fa-5x" aria-hidden="true"></i>
-                </div>
+
                 <div class="col">
                     <i class="fa fa-check fa-5x" aria-hidden="true"></i>
                 </div>
@@ -75,9 +77,7 @@
 
             </div>
             <div class="row">
-                <div class="col fa-3x">
-                    {{ num_encuestas_total }}
-                </div>
+
                 <div class="col fa-3x">
                     {{ votante_proceess }}
                 </div>
@@ -90,16 +90,13 @@
             </div>
             <div class="row">
                 <div class="col fa-2x">
-                    Total
+                    Validos
                 </div>
                 <div class="col fa-2x">
-                    Procesadas
+                    No validos
                 </div>
                 <div class="col fa-2x">
-                    Error
-                </div>
-                <div class="col fa-2x">
-                    Pendiente Procesar
+                    Sin procesar
                 </div>
             </div>
         </div>
