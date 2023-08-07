@@ -20,6 +20,9 @@ def has_role(user, names):
 # Create your views here.
 @login_required
 def home(request):
+    if not request.session.get('color_principal'):
+        request.session['color_principal'] = DataController.get_current_campaing().color_principal
+        request.session['color_secondary'] = DataController.get_current_campaing().color_secondary
     context = {}
     customer_user_id = request.user.id
     summary = DataController.get_summary_by_user(customer_user_id)
@@ -132,7 +135,8 @@ def insert_votante_with_sub_link(request, sub_link):
 @login_required
 def geomapa(request):
     context = {}
-
+    municpios = DataController.get_current_municipios()
+    context["municpios"] = municpios
     return render(
         request,
         'geomapa.html',

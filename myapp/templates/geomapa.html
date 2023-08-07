@@ -10,13 +10,15 @@
 {% endblock %}
 {% block content %}
     <div class="container">
-        
+
         <div class="row">
-            <div class="col">
-                <div data-param="TUNJA" class="btn_mapa mapa-action-btn mapa-action-btn-selected text-center ">
-                    Tunja
+            {% for municpio in municpios %}
+                   <div class="col">
+                <div data-param="{{ municpio.name }}" class="btn_mapa mapa-action-btn mapa-action-btn-selected text-center ">
+                    {{ municpio.name }}
                 </div>
             </div>
+            {% endfor %}
             <div class="col col-sm-1">
                 <a href="{% url 'app:lista_puesto_votacion' %}">
                     <div class="mapa-action-btn mapa-action-btn-selected text-center ">
@@ -35,8 +37,8 @@
         </form>
     </div>
 
-    
-    
+
+
     <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
 {% endblock %}
 

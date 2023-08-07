@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage
 from myapp.models import Municipio, Barrio, Departamento, PuestoVotacion
 from myapp.models import CustomUser, CustomLink
+from myapp.models import Campaign
 import math
 
 from myapp.serializers import BarrioSerializer
@@ -57,6 +58,17 @@ def clena_data_cc(message):
 
 
 class DataController():
+    @staticmethod
+    def get_current_campaing():
+        campaign = Campaign.objects.filter(is_active=True).first()
+        return campaign
+
+    @staticmethod
+    def get_current_municipios():
+        campaign = DataController.get_current_campaing()
+        municipios = campaign.municipios.all()
+        return municipios
+
     @staticmethod
     def validate_document_id(document_id):
         votante_validation = Votante.objects.filter(document_id=document_id).exists()
@@ -375,6 +387,9 @@ class DataController():
 
     @staticmethod
     def get_puestos_votacion_to_plot(municipio):
+        current_campaing = DataController.get_current_campaing()
+        center = {"lat": current_campaing.latitude_principal, "lon": current_campaing.longitude_principal} # location
+
         data = {
             "ids": ["ID"],
             "lat": ["Lattitude"],
@@ -383,7 +398,7 @@ class DataController():
             "pv_size": ["Size B"],
             "in_text": ["Votos"],
             "in_size": ["Size E"],
-            "center": {"lat": 5.5368954, "lon": -73.3680772} # Tunja
+            "center": center
         }
         puesto_votaciones_query = PuestoVotacion.objects
         if not municipio == "ALL":
@@ -422,6 +437,9 @@ class DataController():
 
     @staticmethod
     def get_puestos_votacion_to_plot_by_leader(leader_id):
+
+        current_campaing = DataController.get_current_campaing()
+        center = {"lat": current_campaing.latitude_principal, "lon": current_campaing.longitude_principal} # location
         data = {
             "ids": ["ID"],
             "lat": ["Lattitude"],
@@ -430,7 +448,7 @@ class DataController():
             "pv_size": ["Size B"],
             "in_text": ["Votos"],
             "in_size": ["Size E"],
-            "center": {"lat": 5.5368954, "lon": -73.3680772} # Tunja
+            "center": center
         }
         puesto_votaciones_query = PuestoVotacion.objects
         puesto_votaciones_query = puesto_votaciones_query.filter(votantepuestovotacion__votante__lider_id=leader_id)
@@ -458,6 +476,9 @@ class DataController():
         return data
     @staticmethod
     def get_puestos_votacion_to_plot_by_votante(votante_id, get_direccion_votante=False):
+        current_campaing = DataController.get_current_campaing()
+        center = {"lat": current_campaing.latitude_principal, "lon": current_campaing.longitude_principal} # location
+
         data = {
             "ids": ["ID"],
             "lat": ["Lattitude"],
@@ -466,7 +487,7 @@ class DataController():
             "pv_size": ["Size B"],
             "in_text": ["Votos"],
             "in_size": ["Size E"],
-            "center": {"lat": 5.5368954, "lon": -73.3680772} # Tunja
+            "center": center
         }
         if get_direccion_votante:
             data["direccion_votantes"] = {
@@ -841,7 +862,7 @@ class DataController():
         if votante:
             data["nombre"] = votante.full_name()
             data["mapa_votante_id"] = votante.id
-                
+
             has_lider = votante.lider
             if has_lider:
                 data['has_lider'] = has_lider
