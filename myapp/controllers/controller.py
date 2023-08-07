@@ -828,7 +828,7 @@ class DataController():
             has_lider = votante.lider
             if has_lider:
                 data['has_lider'] = has_lider
-
+            votante_data = {}
             votante_profile = votante.votanteprofile_set.first()
             votante_puestovotacion = votante.votantepuestovotacion_set.first()
             if votante_puestovotacion:
