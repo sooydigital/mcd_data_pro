@@ -138,7 +138,7 @@
                             <spam class="table-icon-text">
                             {{ votante.mesa }}</td>
                         </spam>
-                        
+
                         <td class="text-center">
                             <spam class="table-icon-text">
                             {% if votante.is_leader %}
@@ -178,6 +178,13 @@
             pv_text = new_data.pv_text
             pv_size = new_data.pv_size
 
+            center = {"lat": 5.5384615, "lon": -73.365181}
+            {% if request.session.longitude_principal %}
+                center = {
+                    "lat": {{ request.session.latitude_principal }},
+                    "lon": {{ request.session.longitude_principal }}
+                }
+            {% endif %}
 
             var data = [
                 {
@@ -204,7 +211,7 @@
                 "mapbox": {
                     "zoom": 14.25,
                     "pitch": 2,
-                    "center": {"lat": 5.5384615, "lon": -73.365181},
+                    "center": center,
                     "bearing": 0
                 },
                 "margin": {"b": 40, "l": 40, "r": 40, "t": 40},

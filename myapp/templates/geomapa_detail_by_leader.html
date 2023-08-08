@@ -156,6 +156,13 @@
         center = {"lat": 5.5384615, "lon": -73.365181}
         if (new_data.center) {
             center = new_data.center
+        } else {
+            {% if request.session.longitude_principal %}
+                center = {
+                    "lat": {{ request.session.latitude_principal }},
+                    "lon": {{ request.session.longitude_principal }}
+                }
+            {% endif %}
         }
 
         var data = [
