@@ -975,20 +975,23 @@ class DataController():
                 votante_data['custom_link'] = has_customlink.sub_link
             else:
                 votante_data['is_leader'] = False
-
+            
             if votante_profile:
                 votante_data['municipio'] = votante_profile.municipio
                 votante_data['show_mobile_phone'] = format_phone(votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
                 votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
                 votante_data['age'] = votante_profile.age()
-
+            votante_puestovotacion = votante.votantepuestovotacion_set.first()
+            if votante_puestovotacion:
+                puesto = votante_puestovotacion.puesto_votacion
+                if puesto:
+                    votante_data['municipio'] = puesto.municipio.name
 
             votantes.append(
                 votante_data
             )
 
         votantes = sorted(votantes, key=lambda x: x["name"])
-        print(votantes)
         return {
             "votantes": votantes
         }
