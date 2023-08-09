@@ -192,6 +192,17 @@ def leaders(request):
         context
     )
 
+@login_required
+def list_votantes(request):
+    context = {}
+    votantes = DataController.get_all_votantes()
+    context.update(votantes)
+    return render(
+        request,
+        'show_votantes.html',
+        context
+    )
+
 
 @login_required
 def votantes_download(request):

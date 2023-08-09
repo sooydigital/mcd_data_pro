@@ -23,6 +23,8 @@ urlpatterns = [
     path('geomapa/detail_by_votante/<str:votante_cc>', views.geomapa_detail_by_votante, name='geomapa_detail_by_votante'),
 
     path('leaders', views.leaders, name='leaders'),
+    path('votantes', views.list_votantes, name='show_votantes'),
+
 
     path('api/validate_cc/<str:document_id>', views.validate_cc, name='validate_cc'),
     path('api/get_barrio_by_municipio/<str:municipio_id>', views.get_barrio_by_municipio, name='get_barrio_by_municipio'),
