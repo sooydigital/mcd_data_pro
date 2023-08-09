@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone, dateformat
 
-from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage
+from myapp.models import Etiqueta, Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage, EtiquetaVotante
 from myapp.models import Municipio, Barrio, Departamento, PuestoVotacion
 from myapp.models import CustomUser, CustomLink
 from myapp.models import Campaign
@@ -653,9 +653,14 @@ class DataController():
         address = registro.get("address")
         municipio = registro.get("municipio")
         barrio = registro.get("barrio")
+        etiqueta = registro.get("etiqueta")
+
 
         votante = Votante.objects.filter(document_id=document_id).first()
         if votante:
+            
+            
+            
             votante_profile = DataController.get_or_create_votante_profile(votante)
             if first_name:
                 votante_profile.first_name = first_name
@@ -690,6 +695,19 @@ class DataController():
 
             votante_profile.save()
 
+            if etiqueta != None and etiqueta != "none":
+                etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
+                print(etiqueta_instance)
+                etiqueta_v = EtiquetaVotante(
+                    votante = votante,
+                    etiqueta = etiqueta_instance
+                )
+                    
+                etiqueta_v.save()
+                
+            
+            
+
     @staticmethod
     def insert_only_cc_votante(document_id):
         status = "PENDING"
@@ -697,9 +715,11 @@ class DataController():
         if not Votante.objects.filter(document_id=document_id).exists():
             votante = Votante(
                 document_id=document_id,
-                status=status
+                status=status,
             )
+
             votante.save()
+
 
     @staticmethod
     def get_puesto_votation_by_cc(document_id):
@@ -978,7 +998,7 @@ class DataController():
             
             if votante_profile:
                 votante_data['municipio'] = votante_profile.municipio
-                votante_data['show_mobile_phone'] = format_phone(votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
+                votante_data['show_mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
                 votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
                 votante_data['age'] = votante_profile.age()
             votante_puestovotacion = votante.votantepuestovotacion_set.first()
