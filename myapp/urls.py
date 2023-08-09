@@ -24,6 +24,7 @@ urlpatterns = [
 
     path('leaders', views.leaders, name='leaders'),
     path('votantes', views.list_votantes, name='show_votantes'),
+    path('dinamizadores', views.list_dinamizadores, name='show_dinamizadores'),
 
 
     path('api/validate_cc/<str:document_id>', views.validate_cc, name='validate_cc'),

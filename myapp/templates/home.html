@@ -30,9 +30,9 @@
         <div class=" d-md-none d-lg-block col-lg-2"></div>
 
         <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
-            <a href="{% url 'app:show_votantes' %}" class="home-action-btn text-center ">
-                <i class="fa fa-user fa-3x"></i>
-                <h4 class="my-3">Votantes</h4>
+            <a href="{% url 'app:show_dinamizadores' %}" class="home-action-btn text-center ">
+                <i class="fa fa-star fa-3x"></i>
+                <h4 class="my-3">Dinamizadores</h4>
             </a>
         </div>
 
@@ -52,7 +52,13 @@
 
     <div class="row">
         <div class=" d-md-none d-lg-block col-lg-2"></div>
-
+        <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+            <a href="{% url 'app:show_votantes' %}" class="home-action-btn text-center ">
+                <i class="fa fa-user fa-3x"></i>
+                <h4 class="my-3">Votantes</h4>
+            </a>
+        </div>
+        <div class=" col-md-2 d-lg-none"></div>
         <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
             <a href="{% url 'app:summary' %}" class="home-action-btn text-center ">
                 <i class="fa fa-bar-chart fa-3x"></i>
@@ -60,6 +66,10 @@
             </a>
         </div>
 
+        <div class=" col-md-2 d-lg-none"></div>
+    </div>
+    <div class="row">
+        <div class=" d-md-none d-lg-block col-lg-2"></div>
         <div class=" col-md-2 d-lg-none"></div>
 
         <div class="col-md-5 col-lg-4 d-flex justify-content-center gy-3">

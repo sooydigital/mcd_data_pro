@@ -203,6 +203,17 @@ def list_votantes(request):
         context
     )
 
+@login_required
+def list_dinamizadores(request):
+    context = {}
+    votantes = DataController.get_all_dinamizadoress()
+    context.update(votantes)
+    return render(
+        request,
+        'show_dinamizadores.html',
+        context
+    )
+
 
 @login_required
 def votantes_download(request):

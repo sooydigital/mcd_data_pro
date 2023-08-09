@@ -23,7 +23,7 @@ def format_phone(str_phone, use_dash=True):
     try:
         if not str_phone:
             return ""
-        
+
         if len(str_phone) < 10:
             return str_phone
 
@@ -658,9 +658,9 @@ class DataController():
 
         votante = Votante.objects.filter(document_id=document_id).first()
         if votante:
-            
-            
-            
+
+
+
             votante_profile = DataController.get_or_create_votante_profile(votante)
             if first_name:
                 votante_profile.first_name = first_name
@@ -702,11 +702,11 @@ class DataController():
                     votante = votante,
                     etiqueta = etiqueta_instance
                 )
-                    
+
                 etiqueta_v.save()
-                
-            
-            
+
+
+
 
     @staticmethod
     def insert_only_cc_votante(document_id):
@@ -974,7 +974,7 @@ class DataController():
         return {
             "leaders": votantes
         }
-    
+
 
     @staticmethod
     def get_all_votantes():
@@ -992,15 +992,52 @@ class DataController():
             has_ticket = EtiquetaVotante.objects.filter(votante_id=votante.id).first()
             if has_ticket:
                     votante_data['ticket'] = has_ticket.etiqueta
-            else: 
+            else:
                 votante_data['ticket'] = 'VOTANTE'
 
-            
+
             if votante_profile:
                 votante_data['municipio'] = votante_profile.municipio
                 votante_data['show_mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
                 votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
                 votante_data['age'] = votante_profile.age()
+            votante_puestovotacion = votante.votantepuestovotacion_set.first()
+            if votante_puestovotacion:
+                puesto = votante_puestovotacion.puesto_votacion
+                if puesto:
+                    votante_data['municipio'] = puesto.municipio.name
+
+            votantes.append(
+                votante_data
+            )
+
+        votantes = sorted(votantes, key=lambda x: x["name"])
+        return {
+            "votantes": votantes
+        }
+
+    @staticmethod
+    def get_all_dinamizadoress():
+        all_votantes = Votante.objects.filter(etiquetavotante__etiqueta__name="DINAMIZADORES").all()
+        votantes = []
+        for votante in all_votantes:
+            votante_profile = votante.votanteprofile_set.first()
+
+            votante_data = {
+                "id": votante.id,
+                "name": votante.full_name().strip(),
+                "referrals": len(votante.votante_set.all()),
+                "document_id": votante.document_id,
+            }
+
+            votante_data['ticket'] = "DINAMIZADORES"
+
+            if votante_profile:
+                votante_data['municipio'] = votante_profile.municipio
+                votante_data['show_mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
+                votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                votante_data['age'] = votante_profile.age()
+
             votante_puestovotacion = votante.votantepuestovotacion_set.first()
             if votante_puestovotacion:
                 puesto = votante_puestovotacion.puesto_votacion
