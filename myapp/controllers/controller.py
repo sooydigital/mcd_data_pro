@@ -21,6 +21,7 @@ def format_phone(str_phone, use_dash=True):
     :return: String, formatted phone. Ex: 123-456-789
     """
     try:
+        return str_phone
         if not str_phone:
             return ""
 
