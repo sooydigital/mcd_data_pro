@@ -13,7 +13,7 @@
     <h1 class="text-center">
     <i class="fa fa-users" aria-hidden="true"></i>
 
-        Votantes
+        DINAMIZADORES - LIDERES Y VOTANTES
     </h1>
     <input type="hidden" id="mapa_leader_id" value="1">
     <div class="container">
@@ -26,6 +26,7 @@
                     <th scope="col" class="w-30">Nombre</th>
                     <th scope="col" class="text-center">Cédula</th>
                     <th scope="col" class="text-center">Contacto</th>
+                    <th scope="col" class="text-center">Etiqueta</th>
                     <th scope="col" class="text-center">Municipio de Votación</th>
                     <th scope="col" class="text-center"></th>
                 </tr>
@@ -73,6 +74,12 @@
                             </spam>
 
 
+                        </td>
+
+                        <td class="text-center">
+                            <spam class="table-icon-text">
+                                {{ votante.ticket }}
+                            </spam>
                         </td>
 
                         <td class="text-center">

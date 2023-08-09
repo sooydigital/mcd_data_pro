@@ -989,12 +989,12 @@ class DataController():
                 "referrals": len(votante.votante_set.all()),
                 "document_id": votante.document_id,
             }
-            has_customlink = votante.customlink_set.first()
-            if has_customlink:
-                votante_data['is_leader'] = True
-                votante_data['custom_link'] = has_customlink.sub_link
-            else:
-                votante_data['is_leader'] = False
+            has_ticket = EtiquetaVotante.objects.filter(votante_id=votante.id).first()
+            if has_ticket:
+                    votante_data['ticket'] = has_ticket.etiqueta
+            else: 
+                votante_data['ticket'] = 'VOTANTE'
+
             
             if votante_profile:
                 votante_data['municipio'] = votante_profile.municipio
