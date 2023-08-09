@@ -951,6 +951,45 @@ class DataController():
         return {
             "leaders": votantes
         }
+    
+
+    @staticmethod
+    def get_all_votantes():
+        all_votantes = Votante.objects.all()
+        votantes = []
+        for votante in all_votantes:
+            votante_profile = votante.votanteprofile_set.first()
+
+            votante_data = {
+                "id": votante.id,
+                "name": votante.full_name().strip(),
+                "referrals": len(votante.votante_set.all()),
+                "document_id": votante.document_id,
+            }
+            has_customlink = votante.customlink_set.first()
+            if has_customlink:
+                votante_data['is_leader'] = True
+                votante_data['custom_link'] = has_customlink.sub_link
+            else:
+                votante_data['is_leader'] = False
+
+            if votante_profile:
+                votante_data['municipio'] = votante_profile.municipio
+                votante_data['show_mobile_phone'] = format_phone(votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
+                votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                votante_data['age'] = votante_profile.age()
+
+
+            votantes.append(
+                votante_data
+            )
+
+        votantes = sorted(votantes, key=lambda x: x["name"])
+        print(votantes)
+        return {
+            "votantes": votantes
+        }
+
 
     @staticmethod
     def get_puestos_information():
