@@ -23,6 +23,9 @@ def format_phone(str_phone, use_dash=True):
     try:
         if not str_phone:
             return ""
+        
+        if len(str_phone) < 10:
+            return str_phone
 
         formatted_number = (
             re.sub("(\d)(?=(\d{3})+(?!\d))", r"\1-", "%s" % str_phone[:-1])
@@ -772,7 +775,7 @@ class DataController():
                     votante_data['lider_id'] = votante.lider_id
 
                 if votante_profile:
-
+                    print('votante_profile.mobile_phone', votante_profile.mobile_phone)
                     votante_data['show_mobile_phone'] = format_phone(
                         votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
                     votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
