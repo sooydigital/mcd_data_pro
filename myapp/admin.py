@@ -111,12 +111,17 @@ class EtiquetaVotanteInline(admin.StackedInline):
     model = EtiquetaVotante
     extra = 0
 
+class CustomLinkInline(admin.StackedInline):
+    model = CustomLink
+    extra = 0
+
+
 
 class VotanteAdmin(admin.ModelAdmin):
     list_display = ('document_id', 'full_name', 'status', 'custom_user')
     search_fields = ('document_id', )
     list_filter = ('status', 'custom_user')
-    inlines = [EtiquetaVotanteInline,]
+    inlines = [EtiquetaVotanteInline, CustomLinkInline]
 
     def full_name(self, obj):
         return obj.full_name()
