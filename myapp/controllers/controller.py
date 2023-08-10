@@ -75,12 +75,15 @@ class DataController():
             ev.votante = votante
             ev.etiqueta = etiqueta
             ev.save()
-
-        if role == 'LIDER':
             # hay que crear el enlace
             cl = CustomLink()
             cl.votante = votante
             ts = str(int(time.time()))
+            
+            if role == 'LIDER':
+                ts = "L_{}".format(ts)
+            elif role == "DINAMIZADORES":
+                ts = "D_{}".format(ts)
 
             cl.sub_link = ts
             cl.save()
@@ -1056,7 +1059,11 @@ class DataController():
                 "name": votante.full_name().strip(),
                 "referrals": len(votante.votante_set.all()),
                 "document_id": votante.document_id,
+                "custom_link": ""
             }
+            cl = votante.customlink_set.first()
+            if cl:
+                votante_data['custom_link'] = cl.sub_link
 
             votante_data['ticket'] = "DINAMIZADORES"
 

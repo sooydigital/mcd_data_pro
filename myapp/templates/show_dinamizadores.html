@@ -26,9 +26,8 @@
                     <th scope="col" class="w-30">Nombre</th>
                     <th scope="col" class="text-center">Cédula</th>
                     <th scope="col" class="text-center">Contacto</th>
-                    <th scope="col" class="text-center">Etiqueta</th>
                     <th scope="col" class="text-center">Municipio de Votación</th>
-                    <th scope="col" class="text-center"></th>
+                    <th scope="col" class="text-center">Estructura</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -78,18 +77,21 @@
 
                         <td class="text-center">
                             <spam class="table-icon-text">
-                                {{ votante.ticket }}
-                            </spam>
-                        </td>
-
-                        <td class="text-center">
-                            <spam class="table-icon-text">
                                 {{ votante.municipio }}
                                 <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}" >
                                     <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 </a>
                             </spam>
                         </td>
+                    <td>
+                        <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}"><i class="fa fa-sitemap" aria-hidden="true"></i></a>
+                        {% if votante.custom_link %}
+                            |
+                            <a href="{% url 'app:insert_votante_sub_link' votante.custom_link %}">
+                                <i class="fa fa-user-plus" aria-hidden="true"></i>
+                            </a>
+                        {% endif %}
+                    </td>
                     </tr>
                 {% endfor %}
                 </tbody>
