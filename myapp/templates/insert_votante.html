@@ -96,6 +96,15 @@ Agregar Votante | MCD
                 <input required type="text" class="form-control" placeholder="Dirección" name="address">
             </div>
 
+            <div class="col-sm-6 my-2">
+                <label for="inputRole" class="form-label">Rol</label>
+                <select required class="form-select" aria-label="Default select example" name="role">
+                    <option value="VOTANTE">Votante</option>
+                    <option value="LIDER">Lider</option>
+                    <option value="DINAMIZADORES">Dinamizador</option>
+                </select>
+            </div>
+
             <div class="form-check col-sm-12 my-2">
                 <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="flexCheckIndeterminate">
                 <label class="form-check-label" for="flexRadioDefault1">
@@ -103,13 +112,13 @@ Agregar Votante | MCD
                     solicitamos su autorización para recopilar, almacenar, archivar, copiar, analizar, usar y consultar los
                     datos que se señalan a continuación.
                 </label>
-              </div>
+            </div>
 
             <div class="d-flex justify-content-center my-5 ">
                 <button id="enviar_form" type="submit" class="btn btn-success disabled">Guardar</button>
             </div>
 
-            
+
         </div>
 
     </form>
@@ -165,7 +174,7 @@ Agregar Votante | MCD
         element.html(options.join(''));
 
     }
-    
+
     function actualizarValidacion(validation) {
         add_hidden_class("loaing_validation")
         if (validation) {
@@ -223,11 +232,11 @@ Agregar Votante | MCD
         add_hidden_class("success_validation")
         add_hidden_class("error_validation")
         add_hidden_class("error_message_validation")
-        
+
         checkValidationDocumentId(document_id, validationDocumentIdSuccessCallback, validationDocumentIdErrorCallback)
     });
 
-    
+
 
     populate_barrios()
 

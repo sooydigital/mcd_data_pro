@@ -8,6 +8,9 @@ from myapp.models import Municipio, Barrio, Departamento, PuestoVotacion
 from myapp.models import CustomUser, CustomLink
 from myapp.models import Campaign
 import math
+# using time module
+import time
+
 
 from myapp.serializers import BarrioSerializer
 
@@ -63,6 +66,25 @@ def clena_data_cc(message):
 
 
 class DataController():
+
+    @staticmethod
+    def add_layer_to_user(votante, role):
+        etiqueta = Etiqueta.objects.filter(name=role).first()
+        if etiqueta:
+            ev = EtiquetaVotante()
+            ev.votante = votante
+            ev.etiqueta = etiqueta
+            ev.save()
+
+        if role == 'LIDER':
+            # hay que crear el enlace
+            cl = CustomLink()
+            cl.votante = votante
+            ts = str(int(time.time()))
+
+            cl.sub_link = ts
+            cl.save()
+
     @staticmethod
     def get_current_campaing():
         campaign = Campaign.objects.filter(is_active=True).first()
@@ -207,6 +229,8 @@ class DataController():
         address = get_data_from_post(data, "address")
         municipio = get_data_from_post(data, "municipio")
         barrio = get_data_from_post(data, "barrio")
+        role = get_data_from_post(data, "role") # is a etiqueta.
+
         departamento_obj = Departamento.objects.first()
 
         municipio_obj = DataController.get_or_create_municipio(departamento_obj, municipio)
@@ -225,6 +249,9 @@ class DataController():
             barrio=barrio_obj,
         )
         votante_profile.save()
+
+        if role != "VOTANTE":
+            DataController.add_layer_to_user(votante, role)
 
         return {
             "votante": votante,
