@@ -79,7 +79,7 @@ class DataController():
             cl = CustomLink()
             cl.votante = votante
             ts = str(int(time.time()))
-            
+
             if role == 'LIDER':
                 ts = "L_{}".format(ts)
             elif role == "DINAMIZADORES":
@@ -863,6 +863,7 @@ class DataController():
                 votante_profile = votante.votanteprofile_set.first()
                 votante_puestovotacion = votante.votantepuestovotacion_set.first()
                 votante_data = {
+                    "id": votante.id,
                     "name": votante.full_name(),
                     "document_id": votante.document_id,
                     "mesa": "",
