@@ -96,6 +96,7 @@ Agregar Votante | MCD
                 <input required type="text" class="form-control" placeholder="Dirección" name="address">
             </div>
 
+            {% if request.user and request.user|has_role:'SUPER_ADMIN' %}
             <div class="col-sm-6 my-2">
                 <label for="inputRole" class="form-label">Rol</label>
                 <select required class="form-select" aria-label="Default select example" name="role">
@@ -104,6 +105,7 @@ Agregar Votante | MCD
                     <option value="DINAMIZADORES">Dinamizador</option>
                 </select>
             </div>
+            {% endif %}
 
             <div class="form-check col-sm-12 my-2">
                 <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="flexCheckIndeterminate">
