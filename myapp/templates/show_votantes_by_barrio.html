@@ -1,24 +1,26 @@
 {% extends 'base.html' %}
 {% load static %} {% load permissions_tags %}
 {% block headcontent %}
-    <script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 {% endblock %}
 
 {% block content %}
 
-    <h1 class="text-center">
+<h1 class="text-center">
     <i class="fa fa-users" aria-hidden="true"></i>
 
-        Votantes - Barrio 
-    </h1>
-    <input type="hidden" id="mapa_leader_id" value="1">
-    <div class="container">
-
-        <div class="row mt-5">
-            <table class="table table-hover">
-                <thead>
+    Votantes - Barrio
+</h1>
+<input type="hidden" id="mapa_leader_id" value="1">
+<div class="container">
+    <div class="row  mt-2">
+        <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>
+    </div>
+    <div class="row mt-2">
+        <table class="table table-hover">
+            <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col" class="w-30">Nombre</th>
@@ -27,69 +29,203 @@
                     <th scope="col" class="text-center">Municipio de Votación</th>
                     <th scope="col" class="text-center"></th>
                 </tr>
-                </thead>
-                <tbody>
+            </thead>
+            <tbody>
                 {% for votante in votantes %}
-                    <tr>
-                        <th scope="row ">
-                            <spam class="table-icon-text">
+                <tr>
+                    <th scope="row ">
+                        <spam class="table-icon-text">
 
-                                {{ forloop.counter }}
-                            </spam>
+                            {{ forloop.counter }}
+                        </spam>
 
-                        </th>
-                        <td>
-                            <spam class="table-icon-text">
-                                <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}"><i class="fa fa-user" aria-hidden="true"></i></a>
+                    </th>
+                    <td>
+                        <spam class="table-icon-text">
+                            <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}"><i
+                                    class="fa fa-user" aria-hidden="true"></i></a>
 
-                                <b>{{ votante.name|upper }}</b>
-                            </spam>
-                        </td>
+                            <b>{{ votante.name|upper }}</b>
+                        </spam>
+                    </td>
 
-                        <td class="text-center">
-                            <spam class="table-icon-text">
-                                {{ votante.document_id }}
-                            </spam>
-                        </td>
-                        <td>
+                    <td class="text-center">
+                        <spam class="table-icon-text">
+                            {{ votante.document_id }}
+                        </spam>
+                    </td>
+                    <td>
 
-                            {% if votante.mobile_phone %}
-                                <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
-                                    <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
-                                </a>
-                                <spam class="table-icon-text">
-                                    |
-                                </spam>
-                                <a class="text-decoration-none verde_color_t"
-                                   href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola!">
-                                    <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
-                                </a>
-                            {% endif %}
+                        {% if votante.mobile_phone %}
+                        <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
+                            <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
+                        </a>
+                        <spam class="table-icon-text">
+                            |
+                        </spam>
+                        <a class="text-decoration-none verde_color_t"
+                            href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola!">
+                            <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
+                        </a>
+                        {% endif %}
 
-                            <spam class="table-icon-text ">
-                                {{ votante.show_mobile_phone }}
-                            </spam>
+                        <spam class="table-icon-text ">
+                            {{ votante.show_mobile_phone }}
+                        </spam>
 
 
-                        </td>
+                    </td>
 
-                        <td class="text-center">
-                            <spam class="table-icon-text">
-                                {{ votante.municipio }}
-                                <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}" >
-                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                </a>
-                            </spam>
-                        </td>
-                    </tr>
+                    <td class="text-center">
+                        <spam class="table-icon-text">
+                            {{ votante.municipio }}
+                            <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            </a>
+                        </spam>
+                    </td>
+                </tr>
                 {% endfor %}
-                </tbody>
+            </tbody>
 
-            </table>
+        </table>
 
 
-        </div>
     </div>
+</div>
 
 {% endblock %}
+{% block scriptcontent %}
 
+<script type="text/javascript">
+
+    function pintarMapa(new_data) {
+        ids = new_data.ids
+        lat = new_data.lat
+        lon = new_data.lon
+        pv_text = new_data.pv_text
+        pv_size = new_data.pv_size
+
+        in_text = new_data.in_text
+        in_size = new_data.in_size
+        direccion_votantes = new_data.direccion_votantes
+
+        center = { "lat": 5.5388635, "lon": -73.3803948 }
+        if (new_data.center) {
+            center = new_data.center
+        }
+
+        var data = [
+            {
+                "mode": "markers",
+                "name": "Votos",
+                "type": "scattermapbox",
+                "id": ids,
+                "lat": lat,
+                "lon": lon,
+                "marker": {
+                    "meta": { "columnNames": { "size": "Intensidad, size" } },
+                    "sizeref": null,
+                    "size": in_size
+                },
+                "text": in_text,
+                "visible": true,
+                "hoverinfo": "text+name"
+            },
+            {
+                "mode": "markers",
+                "name": "Puesto de Votación",
+                "type": "scattermapbox",
+                "id": ids,
+                "lat": lat,
+                "lon": lon,
+                "marker": {
+                    "meta": { "columnNames": { "size": "Puesto de Votación, size" } },
+                    "sizeref": null,
+                    "size": pv_size
+                },
+                "text": pv_text,
+                "hoverinfo": "text+name"
+            },
+        ]
+        if (direccion_votantes) {
+            votante_lat = direccion_votantes.lat
+            votante_lon = direccion_votantes.lon
+            votante_text = direccion_votantes.address
+
+            data.push({
+                "mode": "markers",
+                "name": "Direccion Votante",
+                "type": "scattermapbox",
+                "lat": votante_lat,
+                "lon": votante_lon,
+                "marker": {
+                    "meta": { "columnNames": { "size": "Puesto de Votación, size" } },
+                    "sizeref": null,
+                    "size": pv_size
+                },
+                "text": votante_text,
+                "hoverinfo": "text+name"
+            },)
+        }
+
+        var layout = {
+            "title": { "text": "" },
+            "height": 550,
+            "legend": { "x": 0, "y": 1 },
+            "mapbox": {
+                "zoom": 11,
+                "pitch": 2,
+                "center": center,
+                "bearing": 0
+            },
+            "margin": { "b": 40, "l": 40, "r": 40, "t": 40 },
+            "autosize": true,
+            "hovermode": "closest",
+            "showlegend": true
+        }
+        var config = {
+            "mapboxAccessToken": "pk.eyJ1IjoiY2hyaWRkeXAiLCJhIjoiY2lxMnVvdm5iMDA4dnhsbTQ5aHJzcGs0MyJ9.X9o_rzNLNesDxdra4neC_A"
+        }
+
+        Plotly.newPlot("myDiv_super_visor_map", data, layout, config = config);
+
+        var myPlot = document.getElementById('myDiv_super_visor_map')
+
+        myPlot.on('plotly_click', function (data) {
+            pointIndex = data.points[0].pointIndex
+            point = `${data.points[0].data.id[pointIndex]}`
+            url = "{% url 'app:geomapa_detail' %}"
+            new_url = `${url}${point}`
+            window.open(
+                new_url
+            )
+        });
+    }
+
+    function getInfoPuestosSuccessCallback(data) {
+
+        pintarMapa(data.data)
+    }
+
+    function getInfoPuestosErrorCallback() {
+        console.log('getInfoPuestosErrorCallback, error trayendo la info de  getInfoPuestos ')
+
+    }
+
+    var getInfoPuestos = (successCallback, errorCallback, param) => {
+        var url = `/api/mapa_puestos/?votante=${param}&direccion_votante=True`
+        $.ajax({
+            type: 'GET',
+            url,
+            error: errorCallback,
+            success: successCallback
+        });
+    };
+
+    const param = document.getElementById("mapa_votante_id").value.replace('.', '')
+    getInfoPuestos(getInfoPuestosSuccessCallback, getInfoPuestosErrorCallback, param)
+
+
+</script>
+{% endblock %}

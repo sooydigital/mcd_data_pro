@@ -28,7 +28,9 @@
                     <tr>
                         <td >
                             <spam class="table-icon-text">
-                                <a href="{% url 'app:votantes_by_barrio' barrio.barrio %}"><i class="fa fa-map-marker" aria-hidden="true"></i></a>
+                                <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}" >
+                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                </a>
                                 <b>{{ barrio.barrio }}</b>
                             </spam>
                         </td>
