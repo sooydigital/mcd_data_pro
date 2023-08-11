@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %} {% load permissions_tags %}
+{% block headcontent %}
+    <script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="text-center">
+    <i class="fa fa-users" aria-hidden="true"></i>
+
+        Votantes - Barrio 
+    </h1>
+    <input type="hidden" id="mapa_leader_id" value="1">
+    <div class="container">
+
+        <div class="row mt-5">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" class="w-30">Nombre</th>
+                    <th scope="col" class="text-center">Cédula</th>
+                    <th scope="col" class="text-center">Contacto</th>
+                    <th scope="col" class="text-center">Municipio de Votación</th>
+                    <th scope="col" class="text-center"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for votante in votantes %}
+                    <tr>
+                        <th scope="row ">
+                            <spam class="table-icon-text">
+
+                                {{ forloop.counter }}
+                            </spam>
+
+                        </th>
+                        <td>
+                            <spam class="table-icon-text">
+                                <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}"><i class="fa fa-user" aria-hidden="true"></i></a>
+
+                                <b>{{ votante.name|upper }}</b>
+                            </spam>
+                        </td>
+
+                        <td class="text-center">
+                            <spam class="table-icon-text">
+                                {{ votante.document_id }}
+                            </spam>
+                        </td>
+                        <td>
+
+                            {% if votante.mobile_phone %}
+                                <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
+                                    <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
+                                </a>
+                                <spam class="table-icon-text">
+                                    |
+                                </spam>
+                                <a class="text-decoration-none verde_color_t"
+                                   href="https://api.whatsapp.com/send?phone=57{{ votante.mobile_phone }}&text=Hola!">
+                                    <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
+                                </a>
+                            {% endif %}
+
+                            <spam class="table-icon-text ">
+                                {{ votante.show_mobile_phone }}
+                            </spam>
+
+
+                        </td>
+
+                        <td class="text-center">
+                            <spam class="table-icon-text">
+                                {{ votante.municipio }}
+                                <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}" >
+                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                </a>
+                            </spam>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+
+
+        </div>
+    </div>
+
+{% endblock %}
+

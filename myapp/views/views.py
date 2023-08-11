@@ -203,6 +203,27 @@ def list_votantes(request):
         context
     )
 
+@login_required
+def list_barrios(request):
+    context = {}
+    data = DataController.get_barrio_votantes()
+    context.update(data)
+    return render(
+        request,
+        'show_barrios.html',
+        context
+    )
+
+def votantes_by_barrio(request, barrio):
+    context = {}
+    data = DataController.get_votantes_by_barrio(request, barrio)
+    context.update(data)
+    return render(
+        request,
+        'show_votantes_by_barrio.html',
+        context
+    )
+
 
 @login_required
 def votantes_download(request):

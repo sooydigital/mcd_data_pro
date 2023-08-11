@@ -1001,6 +1001,9 @@ class DataController():
                 votante_data['show_mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
                 votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
                 votante_data['age'] = votante_profile.age()
+                votante_data['barrio'] = votante_profile.barrio
+                #listar barrios
+
             votante_puestovotacion = votante.votantepuestovotacion_set.first()
             if votante_puestovotacion:
                 puesto = votante_puestovotacion.puesto_votacion
@@ -1013,9 +1016,81 @@ class DataController():
 
         votantes = sorted(votantes, key=lambda x: x["name"])
         return {
-            "votantes": votantes
+            "votantes": votantes,
         }
+    
+    @staticmethod
+    def get_barrio_votantes():
+        all_votantes = Votante.objects.all()
+        lista_barrios = []
+        cantidad = []
+        temp = []
+        counted_barrios = []
+        barrios_data = {}
+        for votante in all_votantes:
+            votante_profile = votante.votanteprofile_set.first()
+            
+            if votante_profile:
+                lista_barrios.append(str(votante_profile.barrio).upper().strip())
 
+        for barrio in lista_barrios:
+            cantidad.append(lista_barrios.count(barrio))
+
+        for barrio, cantidad in zip(lista_barrios, cantidad):
+            if barrio == '' or barrio == '.':
+                barrio == "default"
+            else:
+                barrios_data = {
+                    'barrio': barrio,
+                    'cantidad': cantidad
+                }
+                if barrio not in temp:
+                    temp.append(barrio)
+                    counted_barrios.append(barrios_data)
+        
+        counted_barrios = sorted(counted_barrios, key=lambda k: k['barrio'])
+
+
+        return {
+            'barrios' : counted_barrios
+        }
+    
+
+    @staticmethod
+    def get_votantes_by_barrio(request, barrio):
+        data = {}
+        votantes = Votante.objects.all()
+        votantes_list = []
+        for votante in votantes:
+            votante_profile = votante.votanteprofile_set.first()
+            if votante_profile:
+                if str(votante_profile.barrio).upper().strip() == barrio:
+                    votante_data = {
+                        "id": votante.id,
+                        "name": votante.full_name().strip(),
+                        "document_id": votante.document_id,
+                    }
+
+                    votante_data['show_mobile_phone'] = format_phone(
+                        votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
+                    votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                    votante_data['barrio'] = votante_profile.barrio
+                    votantes_list.append(
+                        votante_data
+                    )
+                    votante_puestovotacion = votante.votantepuestovotacion_set.first()
+                    if votante_puestovotacion:
+                        puesto = votante_puestovotacion.puesto_votacion
+                        if puesto:
+                            votante_data['municipio'] = puesto.municipio.name
+
+        votantes_list = sorted(votantes_list, key=lambda k: k['name'])
+
+        data["votantes"] = votantes_list
+
+
+        return data
+    
 
     @staticmethod
     def get_puestos_information():
