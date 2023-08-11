@@ -14,7 +14,14 @@ Agregar Votante | MCD
 <!-- Modal -->
 <div class="card">
     <div class="card card-header p-2 principal_color">
-        <h2 class="text-center card-title">Ingresar Votante</h2>
+        <h2 class="text-center card-title">
+            {% if custom_name %}
+                {{custom_name}}
+            {% else %}
+                Ingresar Votante
+
+            {% endif %}
+        </h2>
     </div>
     <form method="POST" class="card card-body">
         {% csrf_token %}
@@ -52,14 +59,6 @@ Agregar Votante | MCD
                 <input required type="text" class="form-control" placeholder="Apellido" name="last_name">
             </div>
 
-            <div class="col-12 my-2">
-                <label for="Email" class="form-label">Correo electrónico</label>
-                <div class="input-group has-validation">
-                    <span class="input-group-text mail">@</span>
-                    <input type="email" class="form-control" placeholder="Correo Electrónico" name="email">
-                </div>
-            </div>
-
             <div class="col-sm-6 my-2">
                 <label for="inputAddress" class="form-label">WhatsApp </label>
                 <div class="input-group has-validation">
@@ -89,12 +88,12 @@ Agregar Votante | MCD
 
             <div class="col-sm-6 my-2">
                 <label for="inputAddress" class="form-label">Barrio</label>
-                <input type="text" class="form-control" id='select_barrio' name="barrio" placeholder="Barrio">
+                <input type="text" class="form-control" id='select_barrio' name="barrio" placeholder="Indica solo el nombre de tu barrio">
             </div>
 
             <div class="col-sm-6 my-2">
                 <label for="inputAddress" class="form-label">Dirección</label>
-                <input required type="text" class="form-control" placeholder="Dirección" name="address">
+                <input required type="text" class="form-control" placeholder="Calle 12b #21-21" name="address">
             </div>
 
             <div class="form-check col-sm-12 my-2">

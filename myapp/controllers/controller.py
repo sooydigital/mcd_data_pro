@@ -197,7 +197,7 @@ class DataController():
 
         first_name = get_data_from_post(data, "first_name")
         last_name = get_data_from_post(data, "last_name")
-        email = get_data_from_post(data, "email")
+        email = "null"
         mobile_phone = get_data_from_post(data, "mobile_phone")
         birthday = get_data_from_post(data, "birthday")
         if birthday == "":
@@ -480,6 +480,8 @@ class DataController():
             data["in_size"].append(intensidad)
 
         return data
+    
+
     @staticmethod
     def get_puestos_votacion_to_plot_by_votante(votante_id, get_direccion_votante=False):
         current_campaing = DataController.get_current_campaing()
@@ -539,59 +541,35 @@ class DataController():
     
 
     @staticmethod
-    def get_votantes_to_plot_by_barrio( get_barrio=False):
+    def get_votantes_to_plot_by_barrio(request, barrio):
         current_campaing = DataController.get_current_campaing()
         center = {"lat": current_campaing.latitude_principal, "lon": current_campaing.longitude_principal} # location
 
+        
         data = {
-            "ids": ["ID"],
+            "center": center,
+            "pv_size": 12,
+        }
+        
+        
+        data["direccion_votantes"] = {
             "lat": ["Lattitude"],
             "lon": ["Longitude"],
-            "pv_text": [""],
-            "pv_size": ["Size B"],
-            "in_text": ["Votos"],
-            "in_size": ["Size E"],
-            "center": center
+            "address": ["Dirección"],
         }
-        if get_direccion_votante:
-            data["direccion_votantes"] = {
-                "ids": ["ID"],
-                "lat": ["Lattitude"],
-                "lon": ["Longitude"],
-                "address": ["Dirección"],
-            }
-            votante_profile = VotanteProfile.objects.filter(votante_id=votante_id).first()
+        votantes = Votante.objects.all()
+        for votante in votantes:
+            votante_profile = votante.votanteprofile_set.first()
             if votante_profile:
-                lat = votante_profile.latitude
-                lon = votante_profile.longitude
-                if lat and lon:
-                    data["direccion_votantes"]["lat"].append(lat)
-                    data["direccion_votantes"]["lon"].append(lon)
-                    data["direccion_votantes"]["address"].append(votante_profile.address)
+                if str(votante_profile.barrio).upper().strip().replace(' ', '') == barrio:
+                    lat = votante_profile.latitude
+                    lon = votante_profile.longitude
+                    if lat and lon:
+                        data["direccion_votantes"]["lat"].append(lat)
+                        data["direccion_votantes"]["lon"].append(lon)
+                        data["direccion_votantes"]["address"].append(votante_profile.address)
 
-
-        puesto_votaciones_query = PuestoVotacion.objects
-        puesto_votaciones_query = puesto_votaciones_query.filter(votantepuestovotacion__votante_id=votante_id)
-
-        puesto_votaciones = puesto_votaciones_query.all()
-        for puesto_votacion in puesto_votaciones:
-            num_votantes = len(puesto_votacion.votantepuestovotacion_set.all())
-            intensidad = "0"
-            if num_votantes:
-                log_10 = math.log2(num_votantes) * 2
-                intensidad = str(10 + log_10)
-            else:
-                intensidad = "0"
-
-            data["ids"].append(puesto_votacion.id)
-
-            data["lat"].append(puesto_votacion.latitude)
-            data["lon"].append(puesto_votacion.longitude)
-            data["pv_text"].append(puesto_votacion.name)
-            data["pv_size"].append("10")
-
-            data["in_text"].append(str(num_votantes))
-            data["in_size"].append(intensidad)
+                    
 
         return data
     
@@ -1101,7 +1079,8 @@ class DataController():
             else:
                 barrios_data = {
                     'barrio': barrio,
-                    'cantidad': cantidad
+                    'cantidad': cantidad,
+                    'clean_barrio': barrio.replace(' ', ''),
                 }
                 if barrio not in temp:
                     temp.append(barrio)

@@ -92,7 +92,14 @@ def summary(request):
 # Create your views here.
 @login_required
 def insert_votante(request):
-    context = {'date':dateformat.format(timezone.now(),'Y-m-d')}
+    context = {
+        'date':dateformat.format(timezone.now(),'Y-m-d')
+        
+    }
+    campaing_name = DataController.get_current_campaing().name
+    if campaing_name == 'cartagena_agosto':
+        context['custom_name'] = 'Profe Doria'
+    
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user)
         if type(respuesta) == str:
@@ -215,7 +222,10 @@ def list_barrios(request):
     )
 
 def votantes_by_barrio(request, barrio):
-    context = {}
+    context = {
+        'barrio':barrio,
+        'clean_barrio': barrio.replace(' ','')
+    }
     data = DataController.get_votantes_by_barrio(request, barrio)
     context.update(data)
     return render(
@@ -272,11 +282,9 @@ def get_mapa_puestos(request):
 
 
 @login_required
-def get_barrio_votantes(request):
-    get_direccion_votante = request.GET.get('direccion_votante', False)
-    votante = request.GET.get('votante')
-    if votante:
-        data = DataController.get_puestos_votacion_to_plot_by_votante(votante, get_direccion_votante)
+def get_barrio_votantes(request, barrio):
+    if barrio:
+        data = DataController.get_votantes_to_plot_by_barrio(request, barrio)
 
 
     response = {

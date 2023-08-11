@@ -33,6 +33,8 @@ urlpatterns = [
     path('api/get_barrio_by_municipio/<str:municipio_id>', views.get_barrio_by_municipio, name='get_barrio_by_municipio'),
     path('api/mapa_puestos/', views.get_mapa_puestos,
          name='mapa_puestos'),
+     path('api/mapa_barrio/<str:barrio>', views.get_barrio_votantes,
+         name='mapa_barrios'),
 
     # integracion para programa de Registraduria y WebWhatsapp
     path('api/whatsapp-response/', api_views.whatsapp_response, name='whatsapp_response'),
