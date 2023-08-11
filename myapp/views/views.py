@@ -269,3 +269,18 @@ def get_mapa_puestos(request):
         "data": data
     }
     return JsonResponse(response)
+
+
+@login_required
+def get_barrio_votantes(request):
+    get_direccion_votante = request.GET.get('direccion_votante', False)
+    votante = request.GET.get('votante')
+    if votante:
+        data = DataController.get_puestos_votacion_to_plot_by_votante(votante, get_direccion_votante)
+
+
+    response = {
+        "data": data
+    }
+    return JsonResponse(response)
+

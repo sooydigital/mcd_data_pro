@@ -276,8 +276,8 @@ class VotanteProfile(models.Model):
     )
 
     GENDER_CHOICES = [
-        ("HOMBRE", "HOMBRE"),
-        ("MUJER", "MUJER"),
+        ("MASCULINO", "MASCULINO"),
+        ("FEMENINO", "FEMENINO"),
         ("OTRO", "OTRO"),
     ]
 
