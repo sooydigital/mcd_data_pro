@@ -278,7 +278,7 @@ class VotanteProfile(models.Model):
     GENDER_CHOICES = [
         ("HOMBRE", "HOMBRE"),
         ("MUJER", "MUJER"),
-        ("Otro", "Otro"),
+        ("OTRO", "OTRO"),
     ]
 
     gender = models.CharField(
