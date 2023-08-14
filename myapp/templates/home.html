@@ -2,7 +2,33 @@
 {% load static %} {% load permissions_tags %}
 {% block content %}
 <div class="container mt-3">
-    {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ALIMENTADOR' %}
+
+    {% if is_defensor %}
+    <div class="row md-n3">
+        <div class=" d-md-none d-lg-block col-lg-2"></div>
+
+        <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+            <a href="/iv/defensoresdelagua" class="home-action-btn text-center ">
+                <i class="fa fa-plus fa-3x "></i><br>
+                <h4 class="my-3">Agregar votante</h4>
+            </a>
+        </div>
+        <div class=" col-md-2 d-lg-none"></div>
+
+        <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+            <a href="{% url 'app:show_votantes' %}" class="home-action-btn text-center ">
+                <i class="fa fa-user fa-3x"></i>
+                <h4 class="my-3">Votantes</h4>
+            </a>
+        </div>
+
+        <div class=" d-md-none d-lg-block col-lg-2"></div>
+
+    </div>
+
+    {% endif %}
+
+    {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ALIMENTADOR' and is_defensor == False %}
 
     <div class="row md-n3">
         <div class=" d-md-none d-lg-block col-lg-2"></div>
@@ -68,7 +94,8 @@
 
         <div class=" col-md-2 d-lg-none"></div>
     </div>
-    <div class="row">
+
+    <div class="row" hidden>
         <div class=" d-md-none d-lg-block col-lg-2"></div>
         <div class=" col-md-2 d-lg-none"></div>
 

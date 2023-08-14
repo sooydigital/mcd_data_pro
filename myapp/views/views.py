@@ -31,6 +31,11 @@ def home(request):
     customer_user_id = request.user.id
     summary = DataController.get_summary_by_user(customer_user_id)
 
+    if str(request.user) == 'defensoresdelagua':
+        context['is_defensor'] = True
+    else:
+        context['is_defensor'] = False
+
     context.update(summary)
     return render(
         request,
@@ -200,6 +205,15 @@ def list_votantes(request):
     context = {}
     votantes = DataController.get_all_votantes()
     context.update(votantes)
+    if str(request.user) == 'defensoresdelagua':
+        leader_id = '000006'
+        votantes = DataController.get_votantes_for_defensores(request, leader_id)
+        context.update(votantes)
+        return render(
+            request,
+            'geomapa_detail_by_leader.html',
+            context
+        )
     return render(
         request,
         'show_votantes.html',
