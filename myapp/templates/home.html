@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container mt-3">
 
-    {% if is_defensor %}
+    {% if request.user|has_role:'NORMAL_USER' %}
     <div class="row md-n3">
         <div class=" d-md-none d-lg-block col-lg-2"></div>
 
@@ -28,7 +28,7 @@
 
     {% endif %}
 
-    {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ALIMENTADOR' and is_defensor == False %}
+    {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ALIMENTADOR' %}
 
     <div class="row md-n3">
         <div class=" d-md-none d-lg-block col-lg-2"></div>
