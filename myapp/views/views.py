@@ -126,7 +126,13 @@ def lista_puesto_votacion(request):
     )
 
 def insert_votante_with_sub_link(request, sub_link):
-    context = {'date':dateformat.format(timezone.now(),'Y-m-d')}
+    context = {
+        'date':dateformat.format(timezone.now(),'Y-m-d')
+        
+    }
+    campaing_name = DataController.get_current_campaing().name
+    if campaing_name == 'cartagena_agosto':
+        context['custom_name'] = 'Profe Doria'
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user, sub_link=sub_link)
         if type(respuesta) == str:
