@@ -93,6 +93,9 @@ def summary(request):
 @login_required
 def insert_votante(request):
     context = {'date':dateformat.format(timezone.now(),'Y-m-d')}
+    if str(request.user) == 'Rene31':
+        context['can_add_roll'] = True
+
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user)
         if type(respuesta) == str:
