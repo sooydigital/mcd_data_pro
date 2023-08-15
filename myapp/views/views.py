@@ -93,8 +93,22 @@ def summary(request):
 @login_required
 def insert_votante(request):
     context = {
-        'date':dateformat.format(timezone.now(),'Y-m-d')
-        
+        'days': [d for d in range(1,32)],
+        'months': [
+            (1,'Enero'), 
+            (2,'Febrero'), 
+            (3,'Marzo'), 
+            (4,'Abril'), 
+            (5,'Mayo'), 
+            (6,'Junio'), 
+            (7,'Julio'), 
+            (8,'Agosto'), 
+            (9,'Septiembre'), 
+            (10,'Octubre'), 
+            (11,'Noviembre'), 
+            (12,'Diciembre'),
+        ],
+        'years': [str(y).replace('.','') for y in range(1900,2012)]
     }
     campaing_name = DataController.get_current_campaing().name
     if campaing_name == 'cartagena_agosto':
@@ -127,8 +141,22 @@ def lista_puesto_votacion(request):
 
 def insert_votante_with_sub_link(request, sub_link):
     context = {
-        'date':dateformat.format(timezone.now(),'Y-m-d')
-        
+        'days': [d for d in range(1,31)],
+        'months': [
+            'Enero', 
+            'Febrero', 
+            'Marzo', 
+            'Abril', 
+            'Mayo', 
+            'Junio', 
+            'Julio', 
+            'Agosto', 
+            'Septiembre', 
+            'Octubre', 
+            'Noviembre', 
+            'Diciembre'
+        ],
+        'years': [y for y in range(1900,2012)]
     }
     campaing_name = DataController.get_current_campaing().name
     if campaing_name == 'cartagena_agosto':

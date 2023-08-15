@@ -199,9 +199,10 @@ class DataController():
         last_name = get_data_from_post(data, "last_name")
         email = "null"
         mobile_phone = get_data_from_post(data, "mobile_phone")
-        birthday = get_data_from_post(data, "birthday")
-        if birthday == "":
-            birthday = dateformat.format(timezone.now(),'Y-m-d')
+        day = get_data_from_post(data, "day")
+        month = get_data_from_post(data, "month")
+        year = get_data_from_post(data, "year")
+        birthday = str(year+'-'+month+'-'+day)
         gender = get_data_from_post(data, "gender")
         address = get_data_from_post(data, "address")
         municipio = get_data_from_post(data, "municipio")
@@ -211,20 +212,24 @@ class DataController():
         municipio_obj = DataController.get_or_create_municipio(departamento_obj, municipio)
         barrio_obj = DataController.get_or_create_barrio(municipio_obj, barrio)
 
-        votante_profile = VotanteProfile(
-            votante=votante,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            mobile_phone=mobile_phone,
-            birthday=birthday,
-            gender=gender,
-            address=address,
-            municipio=municipio_obj,
-            barrio=barrio_obj,
-        )
-        votante_profile.save()
-
+        try:
+            votante_profile = VotanteProfile(
+                votante=votante,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                mobile_phone=mobile_phone,
+                birthday=birthday,
+                gender=gender,
+                address=address,
+                municipio=municipio_obj,
+                barrio=barrio_obj,
+            )
+            votante_profile.save()
+        except Exception as e:
+            return "Woops hubo un error, por favor verifica que estés enviando información correcta"
+        
+        
         return {
             "votante": votante,
             "votante_profile": votante_profile

@@ -59,22 +59,54 @@ Agregar Votante | MCD
                 <input required type="text" class="form-control" placeholder="Apellido" name="last_name">
             </div>
 
-            <div class="col-sm-6 my-2">
-                <label for="inputAddress" class="form-label">WhatsApp </label>
-                <div class="input-group has-validation">
-                    <span class="input-group-text wpp"><i class="fa fa-whatsapp"></i></span>
-                    <input required type="number" class="form-control" placeholder="WhatsApp" name="mobile_phone">
+            
+            
+            <div class="row">
+
+                <div class="col-sm-6 my-4">
+                    <label for="inputAddress" class="form-label">WhatsApp </label>
+                    <div class="input-group has-validation">
+                        <span class="input-group-text wpp"><i class="fa fa-whatsapp"></i></span>
+                        <input required type="number" class="form-control" placeholder="WhatsApp" name="mobile_phone">
+                    </div>
+                </div>
+                
+                <div class="col-sm-6">
+                    <label for="" class="form-label mx-2">Fecha de nacimiento</label>
+                    <div class="input-group">
+                        <div class="col-sm-2 mx-2">
+                            <label for="day" class="form-label">Dia</label>
+                            <select name="day" class="form-control" id="day">
+                                {% for day in days %}
+                                    <option value="{{day}}">{{day}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+            
+                        <div class="col-sm-2 mx-2">
+                            <label for="month" class="form-label">Mes</label>
+                            <select name="month" class="form-control" id="month">
+                                {% for value,month in months %}
+                                    <option value="{{value}}">{{month}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+            
+                        <div class="col-sm-2 mx-2">
+                            <label for="year" class="form-label">Año</label>
+                            <select name="year" class="form-control" id="year">
+                                {% for year in years %}
+                                    <option value="{{year}}">{{year}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="col-sm-6 my-2">
-                <label for="inputAddress" class="form-label">Fecha de nacimiento</label>
-                <input type="date" class="form-control" placeholder="DD/MM/AAAA" name="birthday" value="{{date}}">
-            </div>
-
-            <div class="col-sm-6 my-2">
-                <label for="inputAddress" class="form-label">Sexo</label>
-                <select required class="form-select" aria-label="Default select example" name="gender">
+                <label for="gender" class="form-label">Sexo</label>
+                <select required class="form-select" aria-label="Default select example" name="gender" id="gender">
                     <option value="MASCULINO">Masculino</option>
                     <option value="FEMENINO">Femenino</option>
                     <option value="OTRO">Otro</option>
