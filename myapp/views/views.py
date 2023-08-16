@@ -92,7 +92,24 @@ def summary(request):
 # Create your views here.
 @login_required
 def insert_votante(request):
-    context = {'date':dateformat.format(timezone.now(),'Y-m-d')}
+    context = {
+        'days': [d for d in range(1,32)],
+        'months': [
+            (1,'Enero'), 
+            (2,'Febrero'), 
+            (3,'Marzo'), 
+            (4,'Abril'), 
+            (5,'Mayo'), 
+            (6,'Junio'), 
+            (7,'Julio'), 
+            (8,'Agosto'), 
+            (9,'Septiembre'), 
+            (10,'Octubre'), 
+            (11,'Noviembre'), 
+            (12,'Diciembre'),
+        ],
+        'years': [str(y).replace('.','') for y in range(1900,2006)]
+    }
     if str(request.user) == 'Rene31':
         context['can_add_roll'] = True
 
@@ -122,10 +139,27 @@ def lista_puesto_votacion(request):
     )
 
 def insert_votante_with_sub_link(request, sub_link):
-    context = {'date':dateformat.format(timezone.now(),'Y-m-d')}
     if not request.session.get('color_principal'):
         request.session['color_principal'] = DataController.get_current_campaing().color_principal
         request.session['color_secondary'] = DataController.get_current_campaing().color_secondary
+    context = {
+        'days': [d for d in range(1,32)],
+        'months': [
+            (1,'Enero'), 
+            (2,'Febrero'), 
+            (3,'Marzo'), 
+            (4,'Abril'), 
+            (5,'Mayo'), 
+            (6,'Junio'), 
+            (7,'Julio'), 
+            (8,'Agosto'), 
+            (9,'Septiembre'), 
+            (10,'Octubre'), 
+            (11,'Noviembre'), 
+            (12,'Diciembre'),
+        ],
+        'years': [str(y).replace('.','') for y in range(1900,2006)]
+    }
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user, sub_link=sub_link)
         if type(respuesta) == str:
