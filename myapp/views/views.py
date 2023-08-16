@@ -326,3 +326,11 @@ def get_barrio_votantes(request, barrio):
     }
     return JsonResponse(response)
 
+
+@login_required
+def editar_votante(request, document_id):
+    context = {}
+    info_puesto = DataController.get_info_puesto_by_votante(request, document_id)
+    context.update(info_puesto)
+    context['v_id'] = document_id
+    return render(request, 'perfil_edit.html')

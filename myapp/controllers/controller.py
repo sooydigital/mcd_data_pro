@@ -1149,3 +1149,10 @@ class DataController():
                 "num_votantes": len(p.votantepuestovotacion_set.all()),
             })
         return lista_puestos
+
+
+    @staticmethod
+    def get_votante(request, votante_cc):
+        votante = Votante.objects.filter(document_id=votante_cc).first()
+        formulario = ()
+        return 
