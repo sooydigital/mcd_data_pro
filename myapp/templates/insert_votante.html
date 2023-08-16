@@ -74,27 +74,30 @@ Agregar Votante | MCD
                 <div class="col-sm-6">
                     <label for="" class="form-label mx-2">Fecha de nacimiento</label>
                     <div class="input-group">
-                        <div class="col-sm-2 mx-2">
+                        <div class="col-sm-3 mx-2">
                             <label for="day" class="form-label">Dia</label>
                             <select name="day" class="form-control" id="day">
+                                <option value="1">Seleccione...</option>
                                 {% for day in days %}
                                     <option value="{{day}}">{{day}}</option>
                                 {% endfor %}
                             </select>
                         </div>
             
-                        <div class="col-sm-2 mx-2">
+                        <div class="col-sm-3 mx-2">
                             <label for="month" class="form-label">Mes</label>
                             <select name="month" class="form-control" id="month">
+                                <option value="1">Seleccione...</option>
                                 {% for value,month in months %}
                                     <option value="{{value}}">{{month}}</option>
                                 {% endfor %}
                             </select>
                         </div>
             
-                        <div class="col-sm-2 mx-2">
+                        <div class="col-sm-3 mx-2">
                             <label for="year" class="form-label">Año</label>
                             <select name="year" class="form-control" id="year">
+                                <option value="2023">Seleccione...</option>
                                 {% for year in years %}
                                     <option value="{{year}}">{{year}}</option>
                                 {% endfor %}
