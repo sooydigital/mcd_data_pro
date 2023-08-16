@@ -108,7 +108,7 @@ def insert_votante(request):
             (11,'Noviembre'), 
             (12,'Diciembre'),
         ],
-        'years': [str(y).replace('.','') for y in range(1900,2012)]
+        'years': [str(y).replace('.','') for y in range(1900,2006)]
     }
     campaing_name = DataController.get_current_campaing().name
     if campaing_name == 'cartagena_agosto':
@@ -127,6 +127,8 @@ def insert_votante(request):
         'insert_votante.html',
         context
     )
+
+
 # Create your views here.
 @login_required
 def lista_puesto_votacion(request):
@@ -140,6 +142,9 @@ def lista_puesto_votacion(request):
     )
 
 def insert_votante_with_sub_link(request, sub_link):
+    if not request.session.get('color_principal'):
+        request.session['color_principal'] = DataController.get_current_campaing().color_principal
+        request.session['color_secondary'] = DataController.get_current_campaing().color_secondary
     context = {
         'days': [d for d in range(1,32)],
         'months': [
