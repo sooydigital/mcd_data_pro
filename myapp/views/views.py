@@ -31,11 +31,6 @@ def home(request):
     customer_user_id = request.user.id
     summary = DataController.get_summary_by_user(customer_user_id)
 
-    if str(request.user) == 'defensoresdelagua':
-        context['is_defensor'] = True
-    else:
-        context['is_defensor'] = False
-
     context.update(summary)
     return render(
         request,
@@ -128,6 +123,9 @@ def lista_puesto_votacion(request):
 
 def insert_votante_with_sub_link(request, sub_link):
     context = {'date':dateformat.format(timezone.now(),'Y-m-d')}
+    if not request.session.get('color_principal'):
+        request.session['color_principal'] = DataController.get_current_campaing().color_principal
+        request.session['color_secondary'] = DataController.get_current_campaing().color_secondary
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user, sub_link=sub_link)
         if type(respuesta) == str:
