@@ -949,8 +949,8 @@ class DataController():
                     }
                     data["puesto"] = puesto.name
                     data["address_puesto"] = puesto.address
-                    data["departamento"] = puesto.municipio.name
-                    data["municipio"] = puesto.municipio.departamento.name
+                    data["departamento"] = puesto.municipio.departamento.name
+                    data["municipio"] = puesto.municipio.name
                     data["puesto_id"] = puesto.id
             has_customlink = votante.customlink_set.first()
             if has_customlink:
