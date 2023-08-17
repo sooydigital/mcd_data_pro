@@ -24,7 +24,6 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col" class="w-30">Nombre</th>
-                    <th scope="col" class="text-center">Cédula</th>
                     <th scope="col" class="text-center">Contacto</th>
                     <th scope="col" class="text-center">Etiqueta</th>
                     <th scope="col" class="text-center">Municipio de Votación</th>
@@ -41,21 +40,18 @@
                             </spam>
 
                         </th>
-                        <td>
+                        
+                        <td class="text-left">
                             <spam class="table-icon-text">
                                 <a href="{% url 'app:geomapa_detail_by_votante' votante.document_id %}"><i class="fa fa-user" aria-hidden="true"></i></a>
 
                                 <b>{{ votante.name|upper }}</b>
-                                <a href="{% url 'app:editar_votante' votante.document_id %}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                <a href="{% url 'app:editar_votante' votante.document_id %}"><i class="fa fa-pencil" aria-hidden="true"></i></a> <br>
+                                <b>Documento: {{ votante.document_id }}</b>
                             </spam>
                         </td>
 
                         <td class="text-center">
-                            <spam class="table-icon-text">
-                                {{ votante.document_id }}
-                            </spam>
-                        </td>
-                        <td>
 
                             {% if votante.mobile_phone %}
                                 <a class="text-decoration-none" href="tel:{{ votante.mobile_phone }}">
