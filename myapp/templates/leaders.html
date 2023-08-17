@@ -56,7 +56,6 @@
                             </spam>
                         </td>
                         <td>
-
                             {% if leader.mobile_phone %}
                                 <a class="text-decoration-none" href="tel:{{ leader.mobile_phone }}">
                                     <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
@@ -65,7 +64,7 @@
                                     |
                                 </spam>
                                 <a class="text-decoration-none verde_color_t"
-                                   href="https://api.whatsapp.com/send?phone=57{{ leader.mobile_phone }}&text=Hola!">
+                                href="https://api.whatsapp.com/send?phone=57{{ leader.mobile_phone }}&text=Hola+L%C3%ADder%21+%0D%0A*{{ nombre }}*%20😁%0A%0AEstamos+encantados+de+tenerte+en+nuestra+organizaci%C3%B3n.+%0D%0A%0D%0APodr%C3%A1s+agregar+tus+votantes+en+el+siguiente+enlace:%0D%0A%0D%0A*{{campain_url}}/iv/{{ leader.custom_link }}*">
                                     <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
                                 </a>
                             {% endif %}

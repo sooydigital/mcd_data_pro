@@ -230,6 +230,7 @@ def geomapa_detail_by_votante(request, votante_cc):
 @login_required
 def leaders(request):
     context = {}
+    context['campain_url'] = DataController.get_current_campaing().url
     info_puesto = DataController.get_all_leaders()
     context.update(info_puesto)
     return render(
@@ -324,8 +325,6 @@ def get_mapa_puestos(request):
 def get_barrio_votantes(request, barrio):
     if barrio:
         data = DataController.get_votantes_to_plot_by_barrio(request, barrio)
-
-
     response = {
         "data": data
     }

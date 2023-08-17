@@ -1157,7 +1157,7 @@ class DataController():
         etiqueta_votante = EtiquetaVotante.objects.filter(votante=votante).first()
         etiqueta = "Seleccione..."
         if etiqueta_votante:
-            etiqueta = etiqueta_votante.etiqueta
+            etiqueta = str(etiqueta_votante.etiqueta)
 
         Custom_Link = CustomLink.objects.filter(votante=votante).first()
         link = ''
@@ -1275,24 +1275,32 @@ class DataController():
 
             try:
                 votante_profile.save()
+                campain_url = DataController.get_current_campaing().url
                 mensaje = f"Felicidades {first_name} {last_name} se ha actualizado correctamente"
                 if etiqueta:
                     if etiqueta != None and etiqueta != "none" and etiqueta != "Seleccione...":
                         etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
-                        etiqueta_v = EtiquetaVotante(
-                            votante = votante,
-                            etiqueta = etiqueta_instance
-                        )
-                        etiqueta_v.save()
+                        if not EtiquetaVotante.objects.filter(votante = votante).first():
+                            etiqueta_v = EtiquetaVotante(
+                                votante = votante,
+                                etiqueta = etiqueta_instance
+                            )
+                            etiqueta_v.save()
 
                         if link != None and link != "none":
-                            link_v = CustomLink(
-                                votante = votante,
-                                sub_link = link,
-                            )
-                            link_v.save()
-
-                            mensaje = f"Felicidades {first_name} {last_name} se ha convertido en lider correctamente, su link es: /iv/{link}"
+                            c_link = CustomLink.objects.filter(votante = votante).first()
+                            if c_link:
+                                c_link.sub_link = link
+                                c_link.save()
+                                mensaje = f"Felicidades el líder {first_name} {last_name} se ha actualizado correctamente, su link es: {campain_url}/iv/{link}"
+                            else:
+                                link_v = CustomLink(
+                                    votante = votante,
+                                    sub_link = link,
+                                )
+                                link_v.save()
+                                mensaje = f"Felicidades {first_name} {last_name} se ha convertido en lider correctamente, su link es: {campain_url}/iv/{link}"
+                            
                 return {"message":mensaje}
             except Exception as e:
                 print(e)
