@@ -76,21 +76,15 @@
                         </td>
 
                         <td class="text-center">
-                            <spam class="table-icon-text">
+                            <spam class="table-icon-text small-text">
                                 {{ votante.municipio }}
                                 <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}" >
                                     <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 </a>
                             </spam>
                         </td>
-                    <td>
-                        <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}"><i class="fa fa-sitemap" aria-hidden="true"></i></a>
-                        {% if votante.custom_link %}
-                            |
-                            <a href="{% url 'app:insert_votante_sub_link' votante.custom_link %}">
-                                <i class="fa fa-user-plus" aria-hidden="true"></i>
-                            </a>
-                        {% endif %}
+                    <td class="text-center">
+                        <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}"><i class="fa fa-sitemap table-icon-text" aria-hidden="true"></i></a>
                     </td>
                     </tr>
                 {% endfor %}

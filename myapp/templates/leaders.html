@@ -65,7 +65,7 @@
                                 </spam>
                                 <a class="text-decoration-none verde_color_t"
                                    href="https://api.whatsapp.com/send?phone=57{{ leader.mobile_phone }}&text=Hola!">
-                                    <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
+                                    <i class="fa  fa-whatsapp table-icon-text" aria-hidden="true"></i>
                                 </a>
                             {% endif %}
 
@@ -85,11 +85,7 @@
                         <td class="text-center">
                             <spam class="table-icon-text">
                                 {% if leader.is_leader %}
-                                    <a href="{% url 'app:geomapa_detail_by_leader' leader.id %}"><i class="fa fa-sitemap" aria-hidden="true"></i></a>
-                                    |
-                                    <a href="{% url 'app:insert_votante_sub_link' leader.custom_link %}">
-                                        <i class="fa fa-user-plus" aria-hidden="true"></i>
-                                    </a>
+                                    <a href="{% url 'app:geomapa_detail_by_leader' leader.id %}"><i class="fa fa-sitemap table-icon-text" aria-hidden="true"></i></a>
                                 {% endif %}
                             </spam>
                         </td>
