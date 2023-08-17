@@ -13,7 +13,7 @@
 
         <div class="row">
             {% for municpio in municpios %}
-                   <div class="col">
+            <div class="col">
                 <div data-param="{{ municpio.name }}" class="btn_mapa mapa-action-btn mapa-action-btn-selected text-center ">
                     {{ municpio.name }}
                 </div>
@@ -29,12 +29,21 @@
 
         </div>
 
-        <form id="searchForm" class="col-sm-4 m-2 ">
-            <input type="text" id="searchInput" placeholder="Ingresa tu búsqueda" class="form-control">
-            <button type="submit" id="searchButton" class="mapa-action-btn mapa-action-btn-selected text-center">
-                <i class="fa fa-search"></i>
-            </button>
-        </form>
+        <div class="row">
+            <form id="searchForm" class="col-sm-4 m-2 ">
+                <input type="text" id="searchInput" placeholder="Ingresa tu búsqueda" class="form-control">
+                <button type="submit" id="searchButton" class="mapa-action-btn mapa-action-btn-selected text-center">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+            <div class="col-sm-4 m-2">
+                <a href="{% url 'app:show_barrios' %}" style="text-decoration: none;">
+                    <div class="mapa-action-btn mapa-action-btn-selected text-center">
+                        Mostrar Barrios
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
 
 

@@ -161,7 +161,7 @@ def insert_votante_with_sub_link(request, sub_link):
             (11,'Noviembre'), 
             (12,'Diciembre'),
         ],
-        'years': [str(y).replace('.','') for y in range(1900,2012)]
+        'years': [str(y).replace('.','') for y in range(1900,2006)]
     }
     campaing_name = DataController.get_current_campaing().name
     if campaing_name == 'cartagena_agosto':
@@ -334,8 +334,35 @@ def get_barrio_votantes(request, barrio):
 
 @login_required
 def editar_votante(request, document_id):
-    context = {}
-    info_puesto = DataController.get_info_puesto_by_votante(request, document_id)
-    context.update(info_puesto)
-    context['v_id'] = document_id
-    return render(request, 'perfil_edit.html')
+    if not request.session.get('color_principal'):
+        request.session['color_principal'] = DataController.get_current_campaing().color_principal
+        request.session['color_secondary'] = DataController.get_current_campaing().color_secondary
+    context = {
+        'days': [d for d in range(1,32)],
+        'months': [
+            (1,'Enero'), 
+            (2,'Febrero'), 
+            (3,'Marzo'), 
+            (4,'Abril'), 
+            (5,'Mayo'), 
+            (6,'Junio'), 
+            (7,'Julio'), 
+            (8,'Agosto'), 
+            (9,'Septiembre'), 
+            (10,'Octubre'), 
+            (11,'Noviembre'), 
+            (12,'Diciembre'),
+        ],
+        'years': [str(y).replace('.','') for y in range(1900,2006)]
+    }
+    votante_data = DataController.get_votante_info_to_edit(document_id)
+    context.update(votante_data)
+    if request.method == 'POST':
+        respuesta = DataController.update_profile_votantes_custom(dict(request.POST), document_id)
+        print(respuesta)
+        if type(respuesta) == str:
+            messages.error(request, respuesta)
+        else:
+            messages.success(request, respuesta["message"])
+        return redirect('app:show_votantes')
+    return render(request, 'perfil_edit.html', context)
