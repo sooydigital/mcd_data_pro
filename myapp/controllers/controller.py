@@ -1153,6 +1153,19 @@ class DataController():
         votante = Votante.objects.filter(document_id=document_id).first()
         if not votante:
             return None
+        
+        etiqueta_votante = EtiquetaVotante.objects.filter(votante=votante).first()
+        etiqueta = "Seleccione..."
+        if etiqueta_votante:
+            etiqueta = etiqueta_votante.etiqueta
+
+        Custom_Link = CustomLink.objects.filter(votante=votante).first()
+
+        link = ''
+        if Custom_Link:
+            link = Custom_Link.sub_link
+
+        
         if votante.status == "PROCESSED":
             votante_perfil = votante.votanteprofile_set.first()
             if not votante_perfil:
@@ -1160,7 +1173,6 @@ class DataController():
             
             first_name = str(votante_perfil.first_name)
             last_name = str(votante_perfil.last_name)
-
             date = str(votante_perfil.birthday)
             day = {
                     'value':1,
@@ -1202,6 +1214,8 @@ class DataController():
                 "municipio": votante_perfil.municipio,
                 "barrio": votante_perfil.barrio,
                 "address": votante_perfil.address,
+                "etiqueta": etiqueta,
+                "link": link,
             }
 
             return data
@@ -1222,6 +1236,8 @@ class DataController():
         municipio = get_data_from_post(data, "municipio")
         barrio = get_data_from_post(data, "barrio")
         etiqueta = get_data_from_post(data,"etiqueta")
+        link = get_data_from_post(data,"link")
+
         departamento_obj = Departamento.objects.first()
 
         municipio_obj = DataController.get_or_create_municipio(departamento_obj, municipio)
@@ -1269,10 +1285,26 @@ class DataController():
                             votante = votante,
                             etiqueta = etiqueta_instance
                         )
-                            
                         etiqueta_v.save()
+
+                    if link != None and link != "none":
+                        link_v = CustomLink(
+                            votante = votante,
+                            sub_link = link,
+                        )
+                        link_v.save()
                 return {"message":f"Felicidades {first_name} {last_name} se ha actualizado correctamente"}
             except Exception as e:
+                print(e)
                 return f"Lo sentimos hubo un error al intentar actualizar a {first_name} {last_name}"
 
-            
+    
+    @staticmethod
+    def get_votante_to_delete(document_id):
+        votante = Votante.objects.filter(document_id=document_id).first()
+        try:
+            votante.delete()
+        except Exception as e:
+            return "Upss! Ocurrio un error inesperado al intentar eliminar este votante"
+        
+        return {"message": f"La persona identificada con cc: {document_id} se ha eliminado correctamente"}

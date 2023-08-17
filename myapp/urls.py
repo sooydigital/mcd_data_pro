@@ -25,6 +25,7 @@ urlpatterns = [
     path('leaders', views.leaders, name='leaders'),
     path('votantes', views.list_votantes, name='show_votantes'),
     path('votante/editar/<str:document_id>', views.editar_votante, name='editar_votante'),
+    path('votante/eliminar/<str:document_id>', views.eliminar_votante, name='eliminar_votante'),
     path('show_barrios', views.list_barrios, name='show_barrios'),
     path('show_barrios/votantes/<str:barrio>', views.votantes_by_barrio, name='votantes_by_barrio'),
 

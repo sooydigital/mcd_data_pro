@@ -46,6 +46,7 @@
                                 <a href="{% url 'app:geomapa_detail_by_votante' leader.document_id %}"><i class="fa fa-users" aria-hidden="true"></i></a>
 
                                 <b>{{ leader.name|upper }}</b>
+                                <a href="{% url 'app:editar_votante' leader.document_id %}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                             </spam>
                         </td>
 
@@ -86,10 +87,6 @@
                             <spam class="table-icon-text">
                                 {% if leader.is_leader %}
                                     <a href="{% url 'app:geomapa_detail_by_leader' leader.id %}"><i class="fa fa-sitemap" aria-hidden="true"></i></a>
-                                    |
-                                    <a href="{% url 'app:insert_votante_sub_link' leader.custom_link %}">
-                                        <i class="fa fa-user-plus" aria-hidden="true"></i>
-                                    </a>
                                 {% endif %}
                             </spam>
                         </td>

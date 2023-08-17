@@ -359,10 +359,20 @@ def editar_votante(request, document_id):
     context.update(votante_data)
     if request.method == 'POST':
         respuesta = DataController.update_profile_votantes_custom(dict(request.POST), document_id)
-        print(respuesta)
         if type(respuesta) == str:
             messages.error(request, respuesta)
         else:
             messages.success(request, respuesta["message"])
         return redirect('app:show_votantes')
     return render(request, 'perfil_edit.html', context)
+
+
+@login_required
+def eliminar_votante(request, document_id):
+    respuesta = DataController.get_votante_to_delete(document_id)
+    if type(respuesta) == str:
+        messages.error(request, respuesta)
+    else:
+        messages.success(request, respuesta["message"])
+    return redirect('app:show_votantes')
+        
