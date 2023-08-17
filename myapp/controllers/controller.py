@@ -225,9 +225,10 @@ class DataController():
         last_name = get_data_from_post(data, "last_name")
         email = get_data_from_post(data, "email")
         mobile_phone = get_data_from_post(data, "mobile_phone")
-        birthday = get_data_from_post(data, "birthday")
-        if birthday == "":
-            birthday = dateformat.format(timezone.now(),'Y-m-d')
+        day = get_data_from_post(data, "day")
+        month = get_data_from_post(data, "month")
+        year = get_data_from_post(data, "year")
+        birthday = str(year+'-'+month+'-'+day)
         gender = get_data_from_post(data, "gender")
         address = get_data_from_post(data, "address")
         municipio = get_data_from_post(data, "municipio")
@@ -239,19 +240,22 @@ class DataController():
         municipio_obj = DataController.get_or_create_municipio(departamento_obj, municipio)
         barrio_obj = DataController.get_or_create_barrio(municipio_obj, barrio)
 
-        votante_profile = VotanteProfile(
-            votante=votante,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            mobile_phone=mobile_phone,
-            birthday=birthday,
-            gender=gender,
-            address=address,
-            municipio=municipio_obj,
-            barrio=barrio_obj,
-        )
-        votante_profile.save()
+        try:
+            votante_profile = VotanteProfile(
+                votante=votante,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                mobile_phone=mobile_phone,
+                birthday=birthday,
+                gender=gender,
+                address=address,
+                municipio=municipio_obj,
+                barrio=barrio_obj,
+            )
+            votante_profile.save()
+        except Exception as e:
+            return "Woops hubo un error, por favor verifica que estés enviando información correcta"
 
         if role != "VOTANTE":
             DataController.add_layer_to_user(votante, role)
@@ -904,6 +908,74 @@ class DataController():
             data["mobile_phone"] = lider_profile.mobile_phone or ""
 
         return data
+    
+
+    @staticmethod
+    def get_votantes_for_defensores(request, leader_id):
+        data = {
+            "leader_id": leader_id,
+            "nombre": "",
+            "link": "",
+            'intencion_voto': 0,
+            'intencion_voto_percentage': 0
+        }
+        lider = Votante.objects.filter(document_id=leader_id).first()
+        votantes_list = []
+        if lider:
+            has_link = lider.customlink_set.first()
+            if has_link:
+
+                url = reverse("app:insert_votante_sub_link", args=[has_link.sub_link])
+                full_url = request.build_absolute_uri(url)
+                data["link"] = full_url
+
+            votantes = lider.votante_set.all()
+            for votante in votantes:
+                votante_profile = votante.votanteprofile_set.first()
+                votante_puestovotacion = votante.votantepuestovotacion_set.first()
+                votante_data = {
+                    "id": votante.id,
+                    "name": votante.full_name(),
+                    "document_id": votante.document_id,
+                    "mesa": "",
+                    "puesto_nombre": "",
+                    "puesto_municipio": "",
+                    "status": votante.status
+                }
+
+                if votante_puestovotacion:
+                    votante_data["mesa"] = votante_puestovotacion.mesa if votante_puestovotacion else ""
+                    puesto = votante_puestovotacion.puesto_votacion
+                    votante_data["puesto_id"] = puesto.id if puesto else ""
+                    votante_data["puesto_nombre"] = puesto.name if puesto else ""
+                    votante_data["puesto_municipio"] = puesto.municipio.name if puesto and puesto.municipio else ""
+
+                has_customlink = votante.customlink_set.first()
+                if has_customlink:
+                    votante_data['is_leader'] = True
+                    votante_data['custom_link'] = has_customlink.sub_link
+                else:
+                    votante_data['is_leader'] = False
+
+                if votante_profile:
+                    votante_data['show_mobile_phone'] = format_phone(
+                        votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
+                    votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                    votante_data['age'] = votante_profile.age()
+
+                votantes_list.append(
+                    votante_data
+                )
+            votantes_list = sorted(votantes_list, key=lambda k: k['name'])
+
+        data["votantes"] = votantes_list
+        data["nombre"] = lider.full_name()
+        lider_profile = lider.votanteprofile_set.first()
+        if lider_profile:
+            data["mobile_phone"] = lider_profile.mobile_phone or ""
+
+        return data
+    
 
     @staticmethod
     def get_info_puesto_by_votante(request, votante_cc):
@@ -1103,4 +1175,5 @@ class DataController():
                 "departamento": p.municipio.departamento.name,
                 "num_votantes": len(p.votantepuestovotacion_set.all()),
             })
+        lista_puestos = sorted(lista_puestos, key=lambda x: x["num_votantes"], reverse=True)
         return lista_puestos

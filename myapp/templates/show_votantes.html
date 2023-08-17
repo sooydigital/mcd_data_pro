@@ -13,7 +13,7 @@
     <h1 class="text-center">
     <i class="fa fa-users" aria-hidden="true"></i>
 
-        DINAMIZADORES - LIDERES Y VOTANTES
+        Dinamizadores - Líderes Y Votantes
     </h1>
     <input type="hidden" id="mapa_leader_id" value="1">
     <div class="container">
@@ -85,7 +85,7 @@
                         <td class="text-center">
                             <spam class="table-icon-text">
                                 {{ votante.municipio }}
-                                <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}" >
+                                <a href="{% url 'app:geomapa_detail_by_votante' votante.id %}" >
                                     <i class="fa fa-map-marker" aria-hidden="true"></i>
                                 </a>
                             </spam>

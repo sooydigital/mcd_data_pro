@@ -60,7 +60,7 @@ Agregar Votante | MCD
                 </div>
             </div>
 
-            <div class="col-sm-6 my-2">
+            <div class="col-sm-6 my-4">
                 <label for="inputAddress" class="form-label">WhatsApp </label>
                 <div class="input-group has-validation">
                     <span class="input-group-text wpp"><i class="fa fa-whatsapp"></i></span>
@@ -68,9 +68,39 @@ Agregar Votante | MCD
                 </div>
             </div>
 
-            <div class="col-sm-6 my-2">
-                <label for="inputAddress" class="form-label">Fecha de nacimiento</label>
-                <input type="date" class="form-control" placeholder="DD/MM/AAAA" name="birthday" value="{{date}}">
+            <div class="col-sm-6">
+                <label for="" class="form-label mx-2">Fecha de nacimiento</label>
+                <div class="input-group">
+                    <div class="col-sm-3 mx-2">
+                        <label for="day" class="form-label">Dia</label>
+                        <select name="day" class="form-control" id="day">
+                            <option value="1">Seleccione...</option>
+                            {% for day in days %}
+                            <option value="{{day}}">{{day}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+            
+                    <div class="col-sm-3 mx-2">
+                        <label for="month" class="form-label">Mes</label>
+                        <select name="month" class="form-control" id="month">
+                            <option value="1">Seleccione...</option>
+                            {% for value,month in months %}
+                            <option value="{{value}}">{{month}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+            
+                    <div class="col-sm-3 mx-2">
+                        <label for="year" class="form-label">Año</label>
+                        <select name="year" class="form-control" id="year">
+                            <option value="2023">Seleccione...</option>
+                            {% for year in years %}
+                            <option value="{{year}}">{{year}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div class="col-sm-6 my-2">
@@ -96,15 +126,15 @@ Agregar Votante | MCD
                 <input required type="text" class="form-control" placeholder="Dirección" name="address">
             </div>
 
-            {% if request.user and request.user|has_role:'SUPER_ADMIN' %}
-            <div class="col-sm-6 my-2">
-                <label for="inputRole" class="form-label">Rol</label>
-                <select required class="form-select" aria-label="Default select example" name="role">
-                    <option value="VOTANTE">Votante</option>
-                    <option value="LIDER">Lider</option>
-                    <option value="DINAMIZADORES">Dinamizador</option>
-                </select>
-            </div>
+            {% if request.user and request.user|has_role:'SUPER_ADMIN' and can_add_roll %}
+                <div class="col-sm-6 my-2">
+                    <label for="inputRole" class="form-label">Rol</label>
+                    <select required class="form-select" aria-label="Default select example" name="role">
+                        <option value="VOTANTE">Votante</option>
+                        <option value="LIDER">Lider</option>
+                        <option value="DINAMIZADORES">Dinamizador</option>
+                    </select>
+                </div>
             {% endif %}
 
             <div class="form-check col-sm-12 my-2">
