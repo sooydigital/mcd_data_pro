@@ -138,10 +138,18 @@ Editar Perfil | MCD
                         </select>
                     </div>
         
-                    <div class="col-sm-6 my-2">
-                        <label for="link" class="form-label">Link personalizado</label>
-                        <input type="text" class="form-control" id='link' name="link" placeholder="ej: 002" value="{{link}}">
-                    </div>
+                    {% if etiqueta == "LIDER" %}
+                        <div class="col-sm-6 my-2">
+                            <label for="link" class="form-label">Link personalizado</label>
+                            <input type="text" class="form-control" id='link' name="link" placeholder="ej: 002" value="{{link}}">
+                        </div>
+                    {% else %}
+                        <div class="col-sm-6 my-2">
+                            <label for="link" class="form-label">Link personalizado</label>
+                            <input type="text" class="form-control" id='link' name="link" placeholder="ej: 002" value="{{document_id}}">
+                        </div>
+                    {% endif %}
+
                 </div>
             {% endif %}
             

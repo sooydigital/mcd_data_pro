@@ -1160,65 +1160,62 @@ class DataController():
             etiqueta = etiqueta_votante.etiqueta
 
         Custom_Link = CustomLink.objects.filter(votante=votante).first()
-
         link = ''
         if Custom_Link:
             link = Custom_Link.sub_link
 
         
-        if votante.status == "PROCESSED":
-            votante_perfil = votante.votanteprofile_set.first()
-            if not votante_perfil:
-                return None
-            
-            first_name = str(votante_perfil.first_name)
-            last_name = str(votante_perfil.last_name)
-            date = str(votante_perfil.birthday)
-            day = {
-                    'value':1,
-                    'text':'Seleccione...',
-                }
-            month = {
+        
+        votante_perfil = votante.votanteprofile_set.first()
+        
+        first_name = str(votante_perfil.first_name)
+        last_name = str(votante_perfil.last_name)
+        date = str(votante_perfil.birthday)
+        day = {
                 'value':1,
                 'text':'Seleccione...',
             }
+        month = {
+            'value':1,
+            'text':'Seleccione...',
+        }
+        year = {
+            'value':2023,
+            'text':'Seleccione...',
+        }
+        if date != 'None':
+            date = date.split('-')
+            day = {
+                'value':date[2],
+                'text':date[2],
+            }
+            month = {
+                'value':date[1],
+                'text':date[1],
+            }
             year = {
-                'value':2023,
-                'text':'Seleccione...',
-            }
-            if date != 'None':
-                date = date.split('-')
-                day = {
-                    'value':date[2],
-                    'text':date[2],
-                }
-                month = {
-                    'value':date[1],
-                    'text':date[1],
-                }
-                year = {
-                    'value':date[0],
-                    'text':date[0],
-                }
-
-
-            data = {
-                "document_id": votante.document_id,
-                "first_name": first_name,
-                "last_name": last_name,
-                "mobile_phone": votante_perfil.mobile_phone,
-                "day": day,
-                "month": month,
-                "year": year,
-                "gender": votante_perfil.gender,
-                "municipio": votante_perfil.municipio,
-                "barrio": votante_perfil.barrio,
-                "address": votante_perfil.address,
-                "etiqueta": etiqueta,
-                "link": link,
+                'value':date[0],
+                'text':date[0],
             }
 
-            return data
+
+        data = {
+            "document_id": votante.document_id,
+            "first_name": first_name,
+            "last_name": last_name,
+            "mobile_phone": votante_perfil.mobile_phone,
+            "day": day,
+            "month": month,
+            "year": year,
+            "gender": votante_perfil.gender,
+            "municipio": votante_perfil.municipio,
+            "barrio": votante_perfil.barrio,
+            "address": votante_perfil.address,
+            "etiqueta": etiqueta,
+            "link": link,
+        }
+
+        return data
 
 
     @staticmethod
@@ -1278,8 +1275,9 @@ class DataController():
 
             try:
                 votante_profile.save()
+                mensaje = f"Felicidades {first_name} {last_name} se ha actualizado correctamente"
                 if etiqueta:
-                    if etiqueta != None and etiqueta != "none":
+                    if etiqueta != None and etiqueta != "none" and etiqueta != "Seleccione...":
                         etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
                         etiqueta_v = EtiquetaVotante(
                             votante = votante,
@@ -1287,13 +1285,15 @@ class DataController():
                         )
                         etiqueta_v.save()
 
-                    if link != None and link != "none":
-                        link_v = CustomLink(
-                            votante = votante,
-                            sub_link = link,
-                        )
-                        link_v.save()
-                return {"message":f"Felicidades {first_name} {last_name} se ha actualizado correctamente"}
+                        if link != None and link != "none":
+                            link_v = CustomLink(
+                                votante = votante,
+                                sub_link = link,
+                            )
+                            link_v.save()
+
+                            mensaje = f"Felicidades {first_name} {last_name} se ha convertido en lider correctamente, su link es: /iv/{link}"
+                return {"message":mensaje}
             except Exception as e:
                 print(e)
                 return f"Lo sentimos hubo un error al intentar actualizar a {first_name} {last_name}"
