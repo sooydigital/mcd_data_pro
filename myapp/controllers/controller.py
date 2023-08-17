@@ -1177,3 +1177,173 @@ class DataController():
             })
         lista_puestos = sorted(lista_puestos, key=lambda x: x["num_votantes"], reverse=True)
         return lista_puestos
+    
+
+    @staticmethod
+    def get_votante_info_to_edit(document_id):
+        votante = Votante.objects.filter(document_id=document_id).first()
+        if not votante:
+            return None
+        
+        etiqueta_votante = EtiquetaVotante.objects.filter(votante=votante).first()
+        etiqueta = "Seleccione..."
+        if etiqueta_votante:
+            etiqueta = str(etiqueta_votante.etiqueta)
+
+        Custom_Link = CustomLink.objects.filter(votante=votante).first()
+        link = ''
+        if Custom_Link:
+            link = Custom_Link.sub_link
+
+        
+        
+        votante_perfil = votante.votanteprofile_set.first()
+        
+        first_name = str(votante_perfil.first_name)
+        last_name = str(votante_perfil.last_name)
+        date = str(votante_perfil.birthday)
+        day = {
+                'value':1,
+                'text':'Seleccione...',
+            }
+        month = {
+            'value':1,
+            'text':'Seleccione...',
+        }
+        year = {
+            'value':2023,
+            'text':'Seleccione...',
+        }
+        if date != 'None':
+            date = date.split('-')
+            day = {
+                'value':date[2],
+                'text':date[2],
+            }
+            month = {
+                'value':date[1],
+                'text':date[1],
+            }
+            year = {
+                'value':date[0],
+                'text':date[0],
+            }
+
+
+        data = {
+            "document_id": votante.document_id,
+            "first_name": first_name,
+            "last_name": last_name,
+            "mobile_phone": votante_perfil.mobile_phone,
+            "day": day,
+            "month": month,
+            "year": year,
+            "gender": votante_perfil.gender,
+            "municipio": votante_perfil.municipio,
+            "barrio": votante_perfil.barrio,
+            "address": votante_perfil.address,
+            "etiqueta": etiqueta,
+            "link": link,
+        }
+
+        return data
+
+
+    @staticmethod
+    def update_profile_votantes_custom(data, document_id):
+        first_name = get_data_from_post(data, "first_name")
+        last_name = get_data_from_post(data, "last_name")
+        email = "null"
+        mobile_phone = get_data_from_post(data, "mobile_phone")
+        day = get_data_from_post(data, "day")
+        month = get_data_from_post(data, "month")
+        year = get_data_from_post(data, "year")
+        birthday = str(str(year).replace('.','')+'-'+month+'-'+day)
+        gender = get_data_from_post(data, "gender")
+        address = get_data_from_post(data, "address")
+        municipio = get_data_from_post(data, "municipio")
+        barrio = get_data_from_post(data, "barrio")
+        etiqueta = get_data_from_post(data,"etiqueta")
+        link = get_data_from_post(data,"link")
+
+        departamento_obj = Departamento.objects.first()
+
+        municipio_obj = DataController.get_or_create_municipio(departamento_obj, municipio)
+        barrio_obj = DataController.get_or_create_barrio(municipio_obj, barrio)
+
+
+        votante = Votante.objects.filter(document_id=document_id).first()
+        if votante:
+            
+            votante_profile = DataController.get_or_create_votante_profile(votante)
+            if first_name:
+                votante_profile.first_name = first_name
+
+            if last_name:
+                votante_profile.last_name = last_name
+
+            if email:
+                votante_profile.email = email
+
+            if mobile_phone:
+                votante_profile.mobile_phone = mobile_phone
+
+            if birthday:
+                votante_profile.birthday = birthday
+
+            if gender:
+                votante_profile.gender = gender
+
+            if address:
+                votante_profile.address = address
+            
+            if municipio:
+                votante_profile.municipio = municipio_obj
+
+            if barrio:
+                barrio = DataController.get_or_create_barrio(municipio_obj, barrio)
+                votante_profile.barrio = barrio_obj
+
+            try:
+                votante_profile.save()
+                campain_url = DataController.get_current_campaing().url
+                mensaje = f"Felicidades {first_name} {last_name} se ha actualizado correctamente"
+                if etiqueta:
+                    if etiqueta != None and etiqueta != "none" and etiqueta != "Seleccione...":
+                        etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
+                        if not EtiquetaVotante.objects.filter(votante = votante).first():
+                            etiqueta_v = EtiquetaVotante(
+                                votante = votante,
+                                etiqueta = etiqueta_instance
+                            )
+                            etiqueta_v.save()
+
+                        if link != None and link != "none":
+                            c_link = CustomLink.objects.filter(votante = votante).first()
+                            if c_link:
+                                c_link.sub_link = link
+                                c_link.save()
+                                mensaje = f"Felicidades el líder {first_name} {last_name} se ha actualizado correctamente, su link es: {campain_url}/iv/{link}"
+                            else:
+                                link_v = CustomLink(
+                                    votante = votante,
+                                    sub_link = link,
+                                )
+                                link_v.save()
+                                mensaje = f"Felicidades {first_name} {last_name} se ha convertido en lider correctamente, su link es: {campain_url}/iv/{link}"
+                            
+                return {"message":mensaje}
+            except Exception as e:
+                print(e)
+                return f"Lo sentimos hubo un error al intentar actualizar a {first_name} {last_name}"
+
+    
+    @staticmethod
+    def get_votante_to_delete(document_id):
+        votante = Votante.objects.filter(document_id=document_id).first()
+        try:
+            votante.delete()
+        except Exception as e:
+            return "Upss! Ocurrio un error inesperado al intentar eliminar este votante"
+        
+        return {"message": f"La persona identificada con cc: {document_id} se ha eliminado correctamente"}
