@@ -24,6 +24,8 @@ urlpatterns = [
 
     path('leaders', views.leaders, name='leaders'),
     path('votantes', views.list_votantes, name='show_votantes'),
+    path('votante/editar/<str:document_id>', views.editar_votante, name='editar_votante'),
+    path('votante/eliminar/<str:document_id>', views.eliminar_votante, name='eliminar_votante'),
     path('dinamizadores', views.list_dinamizadores, name='show_dinamizadores'),
 
 
