@@ -1158,8 +1158,10 @@ class DataController():
             if not votante_perfil:
                 return None
             
-            date = str(votante_perfil.birthday)
+            first_name = str(votante_perfil.first_name)
+            last_name = str(votante_perfil.last_name)
 
+            date = str(votante_perfil.birthday)
             day = {
                     'value':1,
                     'text':'Seleccione...',
@@ -1190,9 +1192,8 @@ class DataController():
 
             data = {
                 "document_id": votante.document_id,
-                "name": votante_perfil.full_name(),
-                "first_name": votante_perfil.first_name,
-                "last_name": votante_perfil.last_name,
+                "first_name": first_name,
+                "last_name": last_name,
                 "mobile_phone": votante_perfil.mobile_phone,
                 "day": day,
                 "month": month,
@@ -1201,7 +1202,6 @@ class DataController():
                 "municipio": votante_perfil.municipio,
                 "barrio": votante_perfil.barrio,
                 "address": votante_perfil.address,
-
             }
 
             return data
