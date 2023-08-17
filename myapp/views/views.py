@@ -110,9 +110,9 @@ def insert_votante(request):
         ],
         'years': [str(y).replace('.','') for y in range(1900,2006)]
     }
-    if str(request.user) == 'Rene31':
+    if str(request.user) == 'Rene31' or str(request.user) == 'AnaC':
         context['can_add_roll'] = True
-
+    print(request.user)
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user)
         if type(respuesta) == str:
@@ -160,6 +160,7 @@ def insert_votante_with_sub_link(request, sub_link):
         ],
         'years': [str(y).replace('.','') for y in range(1900,2006)]
     }
+    
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user, sub_link=sub_link)
         if type(respuesta) == str:
