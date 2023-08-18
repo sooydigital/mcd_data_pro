@@ -1205,6 +1205,7 @@ class DataController():
 
         data = {
             "document_id": votante.document_id,
+            "leader": votante.lider,
             "first_name": first_name,
             "last_name": last_name,
             "mobile_phone": votante_perfil.mobile_phone,
@@ -1238,6 +1239,7 @@ class DataController():
         barrio = get_data_from_post(data, "barrio")
         etiqueta = get_data_from_post(data,"etiqueta")
         link = get_data_from_post(data,"link")
+        lider = get_data_from_post(data,"lider")
 
         departamento_obj = Departamento.objects.first()
 
@@ -1247,6 +1249,10 @@ class DataController():
 
         votante = Votante.objects.filter(document_id=document_id).first()
         if votante:
+
+            if lider:
+                votante_instance = Votante.objects.filter(document_id=lider).first()
+                votante.lider = votante_instance
             
             votante_profile = DataController.get_or_create_votante_profile(votante)
             if first_name:
@@ -1278,6 +1284,7 @@ class DataController():
                 votante_profile.barrio = barrio_obj
 
             try:
+                votante.save()
                 votante_profile.save()
                 campain_url = DataController.get_current_campaing().url
                 mensaje = f"Felicidades {first_name} {last_name} se ha actualizado correctamente"
