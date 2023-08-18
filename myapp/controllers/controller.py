@@ -1303,14 +1303,14 @@ class DataController():
                             if c_link:
                                 c_link.sub_link = link
                                 c_link.save()
-                                mensaje = f"Felicidades el líder {first_name} {last_name} se ha actualizado correctamente, su link es: {campain_url}iv/{link}"
+                                mensaje = f"Felicidades el líder {first_name} {last_name} se ha actualizado correctamente, su link es: {campain_url}/iv/{link}"
                             else:
                                 link_v = CustomLink(
                                     votante = votante,
                                     sub_link = link,
                                 )
                                 link_v.save()
-                                mensaje = f"Felicidades {first_name} {last_name} se ha convertido en lider correctamente, su link es: {campain_url}iv/{link}"
+                                mensaje = f"Felicidades {first_name} {last_name} se ha convertido en lider correctamente, su link es: {campain_url}/iv/{link}"
                             
                 return {"message":mensaje}
             except Exception as e:
