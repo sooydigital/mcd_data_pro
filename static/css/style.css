@@ -285,7 +285,7 @@ body {
 }
 
 .table-icon-text {
-    font-size: 25px !important;
+    font-size: 20px !important;
 }
 
 
@@ -423,6 +423,56 @@ body {
     transition: .5s;
     display: none;
 }
+
+.ancla{
+    position: relative;
+}
+
+#loading_container{
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    left: 40%;
+    top: 100px;
+}
+
+.loading_text {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    border: 10px solid;
+    box-sizing: border-box;
+    animation: animloader 1s linear infinite alternate;
+  }
+  @keyframes animloader {
+    0% {
+      border-color: #202020 rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+    }
+    33% {
+      border-color: #202020 #202020 rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
+    }
+    66% {
+      border-color: #202020 #202020 #202020 rgba(255, 255, 255, 0);
+    }
+    100% {
+      border-color: #202020 #202020 #202020 #202020;
+    }
+  } 
+
+
 
 @media only screen and (max-width: 1200px) {
 

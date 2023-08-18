@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from django.urls import reverse
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone, dateformat
 
@@ -835,8 +836,7 @@ class DataController():
 
                 if votante_profile:
                     print('votante_profile.mobile_phone', votante_profile.mobile_phone)
-                    votante_data['show_mobile_phone'] = format_phone(
-                        votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
+                    votante_data['show_mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
                     votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
                     votante_data['age'] = votante_profile.age()
 
@@ -950,7 +950,7 @@ class DataController():
                     data["puesto"] = puesto.name
                     data["address_puesto"] = puesto.address
                     data["departamento"] = puesto.municipio.departamento.name
-                    data["municipio"] = puesto.municipio.name
+                    data["municipio"] = puesto.municipio.name or "none"
                     data["puesto_id"] = puesto.id
             has_customlink = votante.customlink_set.first()
             if has_customlink:
@@ -966,9 +966,15 @@ class DataController():
                 votante_data['gender'] = votante_profile.gender or ""
                 votante_data['birthday'] = votante_profile.birthday or ""
                 votante_data['age'] = votante_profile.age()
-                votante_data['departamento'] = votante_profile.municipio.departamento.name
-                votante_data['municipio'] = votante_profile.municipio.name
-                votante_data['barrio'] = votante_profile.barrio.name
+                votante_data['departamento'] = ""
+                if votante_profile.municipio:
+                    votante_data['departamento'] = votante_profile.municipio.departamento.name
+                votante_data['municipio'] = ""
+                if votante_profile.municipio:
+                    votante_data['municipio'] = votante_profile.municipio.name
+                votante_data['barrio'] = ""
+                if votante_profile.barrio:
+                    votante_data['barrio'] = votante_profile.barrio.name
 
             votantes_list.append(
                 votante_data
@@ -999,7 +1005,7 @@ class DataController():
                 votante_data['is_leader'] = False
 
             if votante_profile:
-                votante_data['show_mobile_phone'] = format_phone(votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
+                votante_data['show_mobile_phone'] = str(votante_profile.mobile_phone).replace(' ','') if votante_profile.mobile_phone else ""
                 votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
                 votante_data['age'] = votante_profile.age()
 
@@ -1016,7 +1022,7 @@ class DataController():
     
 
     @staticmethod
-    def get_all_votantes():
+    def get_all_votantes_api():
         all_votantes = Votante.objects.all()
         votantes = []
         for votante in all_votantes:
@@ -1025,7 +1031,6 @@ class DataController():
             votante_data = {
                 "id": votante.id,
                 "name": votante.full_name().strip(),
-                "referrals": len(votante.votante_set.all()),
                 "document_id": votante.document_id,
             }
             has_customlink = votante.customlink_set.first()
@@ -1036,27 +1041,26 @@ class DataController():
                 votante_data['is_leader'] = False
             
             if votante_profile:
-                votante_data['municipio'] = votante_profile.municipio
-                votante_data['show_mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
-                votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                votante_data['municipio'] = str(votante_profile.municipio)
+                votante_data['mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
                 votante_data['age'] = votante_profile.age()
-                votante_data['barrio'] = votante_profile.barrio
+                votante_data['barrio'] = str(votante_profile.barrio)
                 #listar barrios
 
             votante_puestovotacion = votante.votantepuestovotacion_set.first()
             if votante_puestovotacion:
                 puesto = votante_puestovotacion.puesto_votacion
                 if puesto:
-                    votante_data['municipio'] = puesto.municipio.name
+                    votante_data['municipio'] = str(puesto.municipio.name)
 
             votantes.append(
                 votante_data
             )
 
         votantes = sorted(votantes, key=lambda x: x["name"])
-        return {
-            "votantes": votantes,
-        }
+        
+        return votantes
+    
     
     @staticmethod
     def get_barrio_votantes():
@@ -1316,3 +1320,73 @@ class DataController():
             return "Upss! Ocurrio un error inesperado al intentar eliminar este votante"
         
         return {"message": f"La persona identificada con cc: {document_id} se ha eliminado correctamente"}
+    
+
+    @staticmethod
+    def store_votante_as_leader(data):
+
+        document_id = clena_data_cc(get_data_from_post(data, "document_id"))
+        if Votante.objects.filter(document_id=document_id).exists():
+            return "Esta cedula ya existe"
+
+        status = "PENDING"
+        votante = Votante(
+            document_id=document_id,
+            status=status,
+        )
+
+        votante.save()
+
+        first_name = get_data_from_post(data, "first_name")
+        last_name = get_data_from_post(data, "last_name")
+        email = "null"
+        mobile_phone = get_data_from_post(data, "mobile_phone")
+        day = get_data_from_post(data, "day")
+        month = get_data_from_post(data, "month")
+        year = get_data_from_post(data, "year")
+        birthday = str(year+'-'+month+'-'+day)
+        gender = get_data_from_post(data, "gender")
+        address = get_data_from_post(data, "address")
+        municipio = get_data_from_post(data, "municipio")
+        barrio = get_data_from_post(data, "barrio")
+        departamento_obj = Departamento.objects.first()
+        etiqueta = get_data_from_post(data,"etiqueta")
+        link = get_data_from_post(data,"link")
+
+        municipio_obj = DataController.get_or_create_municipio(departamento_obj, municipio)
+        barrio_obj = DataController.get_or_create_barrio(municipio_obj, barrio)
+
+        try:
+            votante_profile = VotanteProfile(
+                votante=votante,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                mobile_phone=mobile_phone,
+                birthday=birthday,
+                gender=gender,
+                address=address,
+                municipio=municipio_obj,
+                barrio=barrio_obj,
+            )
+            votante_profile.save()
+            campain_url = DataController.get_current_campaing().url
+            if etiqueta != None and etiqueta != "none" and etiqueta != "Seleccione...":
+                etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
+                etiqueta_v = EtiquetaVotante(
+                    votante = votante,
+                    etiqueta = etiqueta_instance
+                )
+                etiqueta_v.save()
+
+                if link != None and link != "none":
+                    link_v = CustomLink(
+                        votante = votante,
+                        sub_link = link,
+                    )
+                    link_v.save()
+                    mensaje = f"Felicidades {first_name} {last_name} se ha creado como lider correctamente, su link es: {campain_url}/iv/{link}"
+                            
+            return {"message":mensaje}
+        except Exception as e:
+            return "Woops hubo un error, por favor verifica que estés enviando información correcta"

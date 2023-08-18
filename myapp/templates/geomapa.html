@@ -14,14 +14,14 @@
         <div class="row">
             {% for municpio in municpios %}
             <div class="col">
-                <div data-param="{{ municpio.name }}" class="btn_mapa mapa-action-btn mapa-action-btn-selected text-center ">
+                <div data-param="{{ municpio.name }}" class=" mapa-action-btn mapa-action-btn-selected text-center" style="background-color:{{request.session.color_principal}}!important">
                     {{ municpio.name }}
                 </div>
             </div>
             {% endfor %}
             <div class="col col-sm-1">
                 <a href="{% url 'app:lista_puesto_votacion' %}">
-                    <div class="mapa-action-btn mapa-action-btn-selected text-center ">
+                    <div class="mapa-action-btn mapa-action-btn-selected text-center " style="background-color:{{request.session.color_principal}}!important">
                         <i class="fa fa-list" aria-hidden="true"></i>
                     </div>
                 </a>
@@ -32,13 +32,13 @@
         <div class="row">
             <form id="searchForm" class="col-sm-4 m-2 ">
                 <input type="text" id="searchInput" placeholder="Ingresa tu búsqueda" class="form-control">
-                <button type="submit" id="searchButton" class="mapa-action-btn mapa-action-btn-selected text-center">
+                <button type="submit" id="searchButton" class="mapa-action-btn mapa-action-btn-selected text-center " style="background-color:{{request.session.color_principal}}!important">
                     <i class="fa fa-search"></i>
                 </button>
             </form>
-            <div class="col-sm-4 m-2">
+            <div class="col-sm-4 m-2 ">
                 <a href="{% url 'app:show_barrios' %}" style="text-decoration: none;">
-                    <div class="mapa-action-btn mapa-action-btn-selected text-center">
+                    <div class="mapa-action-btn mapa-action-btn-selected text-center color_principal" style="background-color:{{request.session.color_principal}}!important">
                         Mostrar Barrios
                     </div>
                 </a>

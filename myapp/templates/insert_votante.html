@@ -17,6 +17,8 @@ Agregar Votante | MCD
         <h2 class="text-center card-title">
             {% if custom_name %}
                 {{custom_name}}
+            {% elif title %}
+                {{title}}
             {% else %}
                 Ingresar Votante
 
@@ -44,7 +46,8 @@ Agregar Votante | MCD
                         <i id="error_validation" class="fa  fa-2x fa-times-circle red_color_t invisible"
                             aria-hidden="true"></i>
                         <div id="error_message_validation" class="red_color_t invisible">
-                            El número de documento que intentas ingresar ya se encuentra registrado en V-Data.
+                            El número de documento que intentas ingresar ya se encuentra registrado en V-Data. <br>
+                            si ya registraste a tu lider como votante, edita el perfil y vuelvelo líder
                         </div>
                     </div>
                 </div>
@@ -131,7 +134,23 @@ Agregar Votante | MCD
                 <input required type="text" class="form-control" placeholder="Calle 12b #21-21" name="address">
             </div>
 
-            <div class="row">
+            {% if request.user|has_role:'SUPER_ADMIN' and title %}
+                <div class="row">
+                    <div class="col-sm-6 my-2">
+                        <label for="etiqueta" class="form-label">Etiqueta</label>
+                        <select required class="form-select" aria-label="Default select example" name="etiqueta" id="etiqueta">
+                            <option value="LIDER">Líder</option>
+                        </select>
+                    </div>
+        
+                    <div class="col-sm-6 my-2">
+                        <label for="link" class="form-label">Link personalizado</label>
+                        <input type="text" class="form-control" id='link' name="link" placeholder="ej: 002 evita usar links repetidos">
+                    </div>
+                </div>
+            {% endif %}
+            
+            <div class="row my-3">
                 <div class="form-check col-sm-2 my-2"></div>
                 <div class="form-check col-sm-8 my-2">
                     <input class="form-check-input" type="checkbox" name="flexRadioDefault" id="flexCheckIndeterminate">

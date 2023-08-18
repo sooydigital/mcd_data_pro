@@ -76,18 +76,7 @@ Geo Mapa | MCD
             </div>
                     <hr>
             <div class="row">
-                <div class="col-lg-3">
-                    <h3 class="h6"><b>Departamento:</b></h3>
-                    {% if votante.address %}
-                        <p class="text-start">
-                            {{votante.departamento}}
-                        </p>
-                    {% else %}
-                        <div id="loaing_validation" class="spinner-border text-info" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    {% endif %}
-                </div>
+                
                 <div class="col-lg-3">
                     <h3 class="h6"><b>Municipio:</b></h3>
                     {% if votante.address %}

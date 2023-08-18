@@ -10,11 +10,13 @@
 {% endblock %}
 {% block content %}
 
-    <h1 class="text-center">
+    <h2 class="text-center">
     <i class="fa fa-users" aria-hidden="true"></i>
-
-        Líderes
-    </h1>
+        <b>Líderes</b>
+    </h2>
+    <div class="col-ms-3">
+        <a href="{% url 'app:create_leader' %}" class="btn btn-sm btn-success" style="color: #fff;"><b>Crear Lider <i class="fa fa-plus" aria-hidden="true"></i></b></a>
+    </div>
     <input type="hidden" id="mapa_leader_id" value="1">
     <div class="container">
 

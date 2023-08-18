@@ -128,6 +128,45 @@ def insert_votante(request):
         context
     )
 
+@login_required
+def insert_votante_as_leader(request):
+    context = {
+        'days': [d for d in range(1,32)],
+        'months': [
+            (1,'Enero'), 
+            (2,'Febrero'), 
+            (3,'Marzo'), 
+            (4,'Abril'), 
+            (5,'Mayo'), 
+            (6,'Junio'), 
+            (7,'Julio'), 
+            (8,'Agosto'), 
+            (9,'Septiembre'), 
+            (10,'Octubre'), 
+            (11,'Noviembre'), 
+            (12,'Diciembre'),
+        ],
+        'years': [str(y).replace('.','') for y in range(1900,2006)],
+        'title': 'Crear Líder',
+    }
+    campaing_name = DataController.get_current_campaing().name
+    if campaing_name == 'cartagena_agosto':
+        context['custom_name'] = 'Profe Doria'
+    
+    if request.method == 'POST':
+        respuesta = DataController.store_votante_as_leader(dict(request.POST))
+        if type(respuesta) == str:
+            messages.error(request, respuesta)
+        else:
+            messages.success(request, respuesta["message"])
+        return redirect('app:leaders')
+
+    return render(
+        request,
+        'insert_votante.html',
+        context
+    )
+
 
 # Create your views here.
 @login_required
@@ -185,6 +224,9 @@ def insert_votante_with_sub_link(request, sub_link):
 @login_required
 def geomapa(request):
     context = {}
+    if not request.session.get('color_principal'):
+        request.session['color_principal'] = DataController.get_current_campaing().color_principal
+        request.session['color_secondary'] = DataController.get_current_campaing().color_secondary
     municpios = DataController.get_current_municipios()
     context["municpios"] = municpios
     return render(
@@ -241,14 +283,18 @@ def leaders(request):
 
 @login_required
 def list_votantes(request):
-    context = {}
-    votantes = DataController.get_all_votantes()
-    context.update(votantes)
-    return render(
-        request,
-        'show_votantes.html',
-        context
-    )
+    return render(request,'show_votantes.html',)
+
+
+@login_required
+def get_votantes_api(request):
+    votantes = list(DataController.get_all_votantes_api())
+    if len(votantes) > 0:
+        data = {"message": 'Success', 'votantes': votantes}
+    else:
+        data = {"message": 'Not found'}
+    return JsonResponse(data)
+
 
 @login_required
 def list_barrios(request):

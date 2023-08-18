@@ -23,6 +23,7 @@ urlpatterns = [
     path('geomapa/detail_by_votante/<str:votante_cc>', views.geomapa_detail_by_votante, name='geomapa_detail_by_votante'),
 
     path('leaders', views.leaders, name='leaders'),
+    path('leaders/create', views.insert_votante_as_leader, name='create_leader'),
     path('votantes', views.list_votantes, name='show_votantes'),
     path('votante/editar/<str:document_id>', views.editar_votante, name='editar_votante'),
     path('votante/eliminar/<str:document_id>', views.eliminar_votante, name='eliminar_votante'),
@@ -48,6 +49,8 @@ urlpatterns = [
     path('api/get_all_cc_by_municipio/', api_views.get_all_cc_by_municipio, name='get_all_cc_by_municipio'),
     path('api/insert_only_cc_votante/', api_views.insert_only_cc_votante, name='insert_only_cc_votante'),
     path('api/get_puesto_votation_by_cc/', api_views.get_puesto_votation_by_cc, name='get_puesto_votation_by_cc'),
+    path('api/get_all_votantes/', views.get_votantes_api, name='get_votantes'),
+
 
     path(
         route='acciones_bloque/votantes/download',
