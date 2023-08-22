@@ -1358,7 +1358,10 @@ class DataController():
         barrio = get_data_from_post(data, "barrio")
         departamento_obj = Departamento.objects.first()
         etiqueta = get_data_from_post(data,"etiqueta")
-        link = get_data_from_post(data,"link")
+        if get_data_from_post(data,"link"):
+            link = get_data_from_post(data,"link")
+        else:
+            link = document_id
 
         municipio_obj = DataController.get_or_create_municipio(departamento_obj, municipio)
         barrio_obj = DataController.get_or_create_barrio(municipio_obj, barrio)
@@ -1385,14 +1388,19 @@ class DataController():
                     etiqueta = etiqueta_instance
                 )
                 etiqueta_v.save()
-
                 if link != None and link != "none":
                     link_v = CustomLink(
                         votante = votante,
                         sub_link = link,
                     )
-                    link_v.save()
-                    mensaje = f"Felicidades {first_name} {last_name} se ha creado como lider correctamente, su link es: {campain_url}/iv/{link}"
+                elif link == '':
+                    link_v = CustomLink(
+                        votante = votante,
+                        sub_link = document_id,
+                    )
+                link_v.save()
+                
+                mensaje = f"Felicidades {first_name} {last_name} se ha creado como lider correctamente, su link es: {campain_url}/iv/{link}"
                             
             return {"message":mensaje}
         except Exception as e:

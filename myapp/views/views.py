@@ -159,7 +159,7 @@ def insert_votante_as_leader(request):
             messages.error(request, respuesta)
         else:
             messages.success(request, respuesta["message"])
-        return redirect('app:leaders')
+            return redirect('app:leaders')
 
     return render(
         request,
