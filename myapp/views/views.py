@@ -235,23 +235,17 @@ def leaders(request):
 
 @login_required
 def list_votantes(request):
-    context = {}
-    votantes = DataController.get_all_votantes()
-    context.update(votantes)
-    if str(request.user) == 'defensoresdelagua':
-        leader_id = '000006'
-        votantes = DataController.get_votantes_for_defensores(request, leader_id)
-        context.update(votantes)
-        return render(
-            request,
-            'geomapa_detail_by_leader.html',
-            context
-        )
-    return render(
-        request,
-        'show_votantes.html',
-        context
-    )
+    return render(request,'show_votantes.html',)
+
+
+@login_required
+def get_votantes_api(request):
+    votantes = list(DataController.get_all_votantes_api())
+    if len(votantes) > 0:
+        data = {"message": 'Success', 'votantes': votantes}
+    else:
+        data = {"message": 'Not found'}
+    return JsonResponse(data)
 
 @login_required
 def list_dinamizadores(request):

@@ -1081,7 +1081,7 @@ class DataController():
 
 
     @staticmethod
-    def get_all_votantes():
+    def get_all_votantes_api():
         all_votantes = Votante.objects.all()
         votantes = []
         for votante in all_votantes:
@@ -1090,35 +1090,35 @@ class DataController():
             votante_data = {
                 "id": votante.id,
                 "name": votante.full_name().strip(),
-                "referrals": len(votante.votante_set.all()),
                 "document_id": votante.document_id,
             }
-            has_ticket = EtiquetaVotante.objects.filter(votante_id=votante.id).first()
-            if has_ticket:
-                    votante_data['ticket'] = has_ticket.etiqueta
+            has_customlink = votante.customlink_set.first()
+            if has_customlink:
+                votante_data['is_leader'] = True
+                votante_data['custom_link'] = has_customlink.sub_link
             else:
-                votante_data['ticket'] = 'VOTANTE'
-
-
+                votante_data['is_leader'] = False
+            
             if votante_profile:
-                votante_data['municipio'] = votante_profile.municipio
-                votante_data['show_mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
-                votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                votante_data['municipio'] = str(votante_profile.municipio)
+                votante_data['mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
                 votante_data['age'] = votante_profile.age()
+                votante_data['barrio'] = str(votante_profile.barrio)
+                #listar barrios
+
             votante_puestovotacion = votante.votantepuestovotacion_set.first()
             if votante_puestovotacion:
                 puesto = votante_puestovotacion.puesto_votacion
                 if puesto:
-                    votante_data['municipio'] = puesto.municipio.name
+                    votante_data['municipio'] = str(puesto.municipio.name)
 
             votantes.append(
                 votante_data
             )
 
         votantes = sorted(votantes, key=lambda x: x["name"])
-        return {
-            "votantes": votantes
-        }
+        
+        return votantes
 
     @staticmethod
     def get_all_dinamizadoress():
