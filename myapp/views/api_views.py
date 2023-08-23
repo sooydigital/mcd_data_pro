@@ -99,7 +99,7 @@ def whatsapp_add_user(request):
         gender = data.get('query').get('gender', "")
         mobile_phone = data.get('query').get('mobile_phone', "")
         if len(mobile_phone) > 10:
-            mobile_phone = mobile_phone[2:]
+            mobile_phone = mobile_phone[-10:]
 
         # here is the magic
         document_id = clean_cc_data(document_id)
