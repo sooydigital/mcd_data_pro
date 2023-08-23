@@ -51,6 +51,7 @@ urlpatterns = [
     path('api/insert_only_cc_votante/', api_views.insert_only_cc_votante, name='insert_only_cc_votante'),
     path('api/get_puesto_votation_by_cc/', api_views.get_puesto_votation_by_cc, name='get_puesto_votation_by_cc'),
     path('api/get_all_votantes/', views.get_votantes_api, name='get_votantes'),
+    
 
 
     path(

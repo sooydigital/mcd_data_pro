@@ -247,6 +247,7 @@ def get_votantes_api(request):
         data = {"message": 'Not found'}
     return JsonResponse(data)
 
+
 @login_required
 def list_dinamizadores(request):
     context = {}
