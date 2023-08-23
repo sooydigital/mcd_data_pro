@@ -1071,8 +1071,10 @@ class DataController():
                 if votante_profile.municipio.departamento.name:
                     votante_data['departamento'] = votante_profile.municipio.departamento.name
                 votante_data['municipio'] = votante_profile.municipio.name
-                votante_data['barrio'] = votante_profile.barrio.name
-
+                votante_data['barrio'] = "Pending"
+                if votante_profile.barrio.name:
+                    votante_data['barrio'] = votante_profile.barrio.name
+                    
             votantes_list.append(
                 votante_data
             )
