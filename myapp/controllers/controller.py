@@ -623,11 +623,17 @@ class DataController():
                 return None
 
             puesto = votante_puesto.puesto_votacion
+            departamento = ""
+            municipio = ""
+            if votante_perfil and votante_perfil.municipio:
+                municipio = votante_perfil.municipio.name
+                if votante_perfil.municipio.departamento:
+                    departamento = votante_perfil.municipio.departamento.name
 
             data = {
                 "name": votante_perfil.full_name(),
-                "departamento": votante_perfil.municipio.departamento.name,
-                "municipio": votante_perfil.municipio.name,
+                "departamento": departamento,
+                "municipio": municipio,
                 "puesto": puesto.name,
                 "mesa": votante_puesto.mesa,
                 "direccion": puesto.address,
