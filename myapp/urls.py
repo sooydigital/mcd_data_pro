@@ -27,12 +27,16 @@ urlpatterns = [
     path('votante/editar/<str:document_id>', views.editar_votante, name='editar_votante'),
     path('votante/eliminar/<str:document_id>', views.eliminar_votante, name='eliminar_votante'),
     path('dinamizadores', views.list_dinamizadores, name='show_dinamizadores'),
+    path('show_barrios', views.list_barrios, name='show_barrios'),
+    path('show_barrios/votantes/<str:barrio>', views.votantes_by_barrio, name='votantes_by_barrio'),
 
 
     path('api/validate_cc/<str:document_id>', views.validate_cc, name='validate_cc'),
     path('api/get_barrio_by_municipio/<str:municipio_id>', views.get_barrio_by_municipio, name='get_barrio_by_municipio'),
     path('api/mapa_puestos/', views.get_mapa_puestos,
          name='mapa_puestos'),
+    path('api/mapa_barrio/<str:barrio>', views.get_barrio_votantes,
+        name='mapa_barrios'),
 
     # integracion para programa de Registraduria y WebWhatsapp
     path('api/whatsapp-response/', api_views.whatsapp_response, name='whatsapp_response'),
