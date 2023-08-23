@@ -1068,8 +1068,8 @@ class DataController():
                 votante_data['birthday'] = votante_profile.birthday or ""
                 votante_data['age'] = votante_profile.age()
                 votante_data['departamento'] = 'SANTANDER'
-                if votante_profile.municipio.departamento:
-                    if votante_profile.municipio.departamento.name:
+                if votante_profile.municipio:
+                    if votante_profile.municipio.departamento:
                         votante_data['departamento'] = votante_profile.municipio.departamento.name
                 votante_data['municipio'] = "PENDING"
                 if votante_profile.municipio:

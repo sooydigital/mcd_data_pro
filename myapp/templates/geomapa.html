@@ -13,7 +13,7 @@
 
         <div class="row">
             {% for municpio in municpios %}
-                   <div class="col">
+            <div class="col">
                 <div data-param="{{ municpio.name }}" class="btn_mapa mapa-action-btn mapa-action-btn-selected text-center ">
                     {{ municpio.name }}
                 </div>
@@ -26,8 +26,31 @@
                     </div>
                 </a>
             </div>
-
         </div>
+        
+        <div class="row">
+            <div class="col">
+                <div data-param="GIRON" class="btn_mapa mapa-action-btn mapa-action-btn-selected text-center" id="GIRON">
+                    GIRON
+                </div>
+            </div>
+            <div class="col">
+                <div data-param="FLORIDA" class="btn_mapa mapa-action-btn mapa-action-btn-selected text-center" id="FLORIDA">
+                    FLORIDA
+                </div>
+            </div>
+            <div class="col">
+                <div data-param="PIEDECUESTA" class="btn_mapa mapa-action-btn mapa-action-btn-selected text-center" id="PIEDECUESTA">
+                    PIEDECUESTA
+                </div>
+            </div>
+            <div class="col">
+                <div data-param="LEBRIJA" class="btn_mapa mapa-action-btn mapa-action-btn-selected text-center" id="LEBRIJA">
+                    LEBRIJA
+                </div>
+            </div>
+        </div>
+        
 
         <form id="searchForm" class="col-sm-4 m-2 ">
             <input type="text" id="searchInput" placeholder="Ingresa tu búsqueda" class="form-control">
