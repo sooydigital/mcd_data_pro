@@ -1067,9 +1067,16 @@ class DataController():
                 votante_data['gender'] = votante_profile.gender or ""
                 votante_data['birthday'] = votante_profile.birthday or ""
                 votante_data['age'] = votante_profile.age()
-                votante_data['departamento'] = votante_profile.municipio.departamento.name
-                votante_data['municipio'] = votante_profile.municipio.name
-                votante_data['barrio'] = votante_profile.barrio.name
+                votante_data['departamento'] = 'SANTANDER'
+                if votante_profile.municipio.departamento:
+                    if votante_profile.municipio.departamento.name:
+                        votante_data['departamento'] = votante_profile.municipio.departamento.name
+                votante_data['municipio'] = "PENDING"
+                if votante_profile.municipio:
+                    votante_data['municipio'] = votante_profile.municipio.name
+                votante_data['barrio'] = "Pending"
+                if votante_profile.barrio:
+                    votante_data['barrio'] = votante_profile.barrio.name
 
             votantes_list.append(
                 votante_data
