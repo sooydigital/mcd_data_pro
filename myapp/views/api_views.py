@@ -34,7 +34,7 @@ def whatsapp_response(request):
             mesa = vontante_info.get("mesa")
             direccion = vontante_info.get("direccion")
 
-            base_message = "*{name}* \n\n*LUGAR DE VOTACIÓN* 🗳️ \nDepartamento: \n*{departamento}* \nMunicipio: \n*{municipio}* \nPuesto: \n*{puesto}* \nMesa: \n*{mesa}* \nDirección: \n*{direccion}*<#>*Mi Click Digital* 🚀<#>Para consultar otra cédula escribe *0*".format(
+            base_message = "*{name}* \n\n*LUGAR DE VOTACIÓN* 🗳️ \nDepartamento: \n*{departamento}* \nMunicipio: \n*{municipio}* \nPuesto: \n*{puesto}* \nMesa: \n*{mesa}* \nDirección: \n*{direccion}*".format(
                 name=name.lstrip().rstrip(),
                 departamento=departamento,
                 municipio=municipio,
