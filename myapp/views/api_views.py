@@ -94,10 +94,10 @@ def whatsapp_add_user(request):
         data = json.loads(body)
 
         document_id = data.get('query').get('document_id')
-        first_name = data.get('query').get('first_name')
-        last_name = data.get('query').get('last_name')
-        gender = data.get('query').get('gender')
-        mobile_phone = data.get('query').get('mobile_phone')
+        first_name = data.get('query').get('first_name', "")
+        last_name = data.get('query').get('last_name', "")
+        gender = data.get('query').get('gender', "")
+        mobile_phone = data.get('query').get('mobile_phone', "")
 
         # here is the magic
         document_id = clean_cc_data(document_id)
