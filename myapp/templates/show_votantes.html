@@ -43,7 +43,7 @@
                 </tr>
                 </thead>
                 <tbody id="votantes_table">
-                    
+
                 </tbody>
 
             </table>
@@ -59,15 +59,15 @@
     <script type="text/javascript">
 
     // MOSTRAR VOTANTES DE FORMA ASINCRONA
-    
+
     let votantes = []
     let observador = new IntersectionObserver((entradas, observador) => {
 
-    }, { 
+    }, {
         rootMargin: '0px 0px 0px 0px',
         threshold: 1.0
     });
-    
+
     const listarVotantes = async () => {
         try{
             const response = await fetch('./api/get_all_votantes')
@@ -116,7 +116,7 @@
                     </td>
                     <td>
 
-                        
+
                     <a class="text-decoration-none" href="tel:${votante.mobile_phone}">
                         <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
                     </a>
@@ -124,7 +124,7 @@
                         |
                     </spam>
                     <a class="text-decoration-none verde_color_t"
-                        href="https://api.whatsapp.com/send?phone=57${votante.mobile_phone}&text=Hola!">
+                        href="https://api.whatsapp.com/send?phone=57${votante.mobile_phone}&text=${votante.message_wp}">
                         <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
                     </a>
 
@@ -155,7 +155,7 @@
             const filterVotantes = votantes.filter(votante => votante.document_id.includes(search.value))
             renderVotantes(filterVotantes)
         })
-        
+
         await listarVotantes()
 
     };

@@ -944,7 +944,7 @@ class DataController():
             data["mobile_phone"] = lider_profile.mobile_phone or ""
 
         return data
-    
+
 
     @staticmethod
     def get_votantes_for_defensores(request, leader_id):
@@ -1011,7 +1011,7 @@ class DataController():
             data["mobile_phone"] = lider_profile.mobile_phone or ""
 
         return data
-    
+
 
     @staticmethod
     def get_info_puesto_by_votante(request, votante_cc):
@@ -1134,6 +1134,7 @@ class DataController():
                 "id": votante.id,
                 "name": votante.full_name().strip(),
                 "document_id": votante.document_id,
+                "message_wp": "Hola",
             }
             has_customlink = votante.customlink_set.first()
             if has_customlink:
@@ -1141,7 +1142,7 @@ class DataController():
                 votante_data['custom_link'] = has_customlink.sub_link
             else:
                 votante_data['is_leader'] = False
-            
+
             if votante_profile:
                 votante_data['municipio'] = str(votante_profile.municipio)
                 votante_data['mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
@@ -1154,13 +1155,21 @@ class DataController():
                 puesto = votante_puestovotacion.puesto_votacion
                 if puesto:
                     votante_data['municipio'] = str(puesto.municipio.name)
+                    base_message = "*{name}*%0D%0A%0D%0A*LUGAR DE VOTACIÓN* 🗳️%0D%0ADepartamento:%0D%0A*{departamento}*%0D%0AMunicipio:%0D%0A*{municipio}*%0D%0APuesto:%0D%0A*{puesto}*%0D%0AMesa:%0D%0A*{mesa}*".format(
+                        name=votante.full_name().strip().upper(),
+                        departamento=str(puesto.municipio.departamento.name),
+                        municipio=str(puesto.municipio.name),
+                        puesto=puesto.name,
+                        mesa=votante_puestovotacion.mesa
+                    )
+                    votante_data['message_wp'] = base_message
 
             votantes.append(
                 votante_data
             )
 
         votantes = sorted(votantes, key=lambda x: x["name"])
-        
+
         return votantes
 
     @staticmethod
@@ -1220,14 +1229,14 @@ class DataController():
             })
         lista_puestos = sorted(lista_puestos, key=lambda x: x["num_votantes"], reverse=True)
         return lista_puestos
-    
+
 
     @staticmethod
     def get_votante_info_to_edit(document_id):
         votante = Votante.objects.filter(document_id=document_id).first()
         if not votante:
             return None
-        
+
         etiqueta_votante = EtiquetaVotante.objects.filter(votante=votante).first()
         etiqueta = "Seleccione..."
         if etiqueta_votante:
@@ -1238,10 +1247,10 @@ class DataController():
         if Custom_Link:
             link = Custom_Link.sub_link
 
-        
-        
+
+
         votante_perfil = votante.votanteprofile_set.first()
-        
+
         first_name = str(votante_perfil.first_name)
         last_name = str(votante_perfil.last_name)
         date = str(votante_perfil.birthday)
@@ -1317,7 +1326,7 @@ class DataController():
 
         votante = Votante.objects.filter(document_id=document_id).first()
         if votante:
-            
+
             votante_profile = DataController.get_or_create_votante_profile(votante)
             if first_name:
                 votante_profile.first_name = first_name
@@ -1339,7 +1348,7 @@ class DataController():
 
             if address:
                 votante_profile.address = address
-            
+
             if municipio:
                 votante_profile.municipio = municipio_obj
 
@@ -1374,13 +1383,13 @@ class DataController():
                                 )
                                 link_v.save()
                                 mensaje = f"Felicidades {first_name} {last_name} se ha convertido en lider correctamente, su link es: {campain_url}/iv/{link}"
-                            
+
                 return {"message":mensaje}
             except Exception as e:
                 print(e)
                 return f"Lo sentimos hubo un error al intentar actualizar a {first_name} {last_name}"
 
-    
+
     @staticmethod
     def get_votante_to_delete(document_id):
         votante = Votante.objects.filter(document_id=document_id).first()
@@ -1388,5 +1397,5 @@ class DataController():
             votante.delete()
         except Exception as e:
             return "Upss! Ocurrio un error inesperado al intentar eliminar este votante"
-        
+
         return {"message": f"La persona identificada con cc: {document_id} se ha eliminado correctamente"}
