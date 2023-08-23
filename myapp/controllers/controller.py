@@ -623,11 +623,17 @@ class DataController():
                 return None
 
             puesto = votante_puesto.puesto_votacion
+            departamento = ""
+            municipio = ""
+            if puesto and puesto.municipio:
+                municipio = puesto.municipio.name
+                if puesto.municipio.departamento:
+                    departamento = puesto.municipio.departamento.name
 
             data = {
                 "name": votante_perfil.full_name(),
-                "departamento": votante_perfil.municipio.departamento.name,
-                "municipio": votante_perfil.municipio.name,
+                "departamento": departamento,
+                "municipio": municipio,
                 "puesto": puesto.name,
                 "mesa": votante_puesto.mesa,
                 "direccion": puesto.address,
@@ -1399,7 +1405,7 @@ class DataController():
             return "Upss! Ocurrio un error inesperado al intentar eliminar este votante"
 
         return {"message": f"La persona identificada con cc: {document_id} se ha eliminado correctamente"}
-    
+
 
     @staticmethod
     def get_votantes_by_barrio(request, barrio):
@@ -1435,7 +1441,7 @@ class DataController():
 
 
         return data
-    
+
 
     @staticmethod
     def get_barrio_votantes():
@@ -1447,7 +1453,7 @@ class DataController():
         barrios_data = {}
         for votante in all_votantes:
             votante_profile = votante.votanteprofile_set.first()
-            
+
             if votante_profile:
                 lista_barrios.append(str(votante_profile.barrio).upper().strip())
 
@@ -1466,14 +1472,14 @@ class DataController():
                 if barrio not in temp:
                     temp.append(barrio)
                     counted_barrios.append(barrios_data)
-        
+
         counted_barrios = sorted(counted_barrios, key=lambda k: k['barrio'])
 
 
         return {
             'barrios' : counted_barrios
         }
-    
+
 
 
     @staticmethod
@@ -1481,13 +1487,13 @@ class DataController():
         current_campaing = DataController.get_current_campaing()
         center = {"lat": current_campaing.latitude_principal, "lon": current_campaing.longitude_principal} # location
 
-        
+
         data = {
             "center": center,
             "pv_size": 12,
         }
-        
-        
+
+
         data["direccion_votantes"] = {
             "lat": ["Lattitude"],
             "lon": ["Longitude"],
@@ -1505,6 +1511,6 @@ class DataController():
                         data["direccion_votantes"]["lon"].append(lon)
                         data["direccion_votantes"]["address"].append(votante_profile.address)
 
-                    
+
 
         return data

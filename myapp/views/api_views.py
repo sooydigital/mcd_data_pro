@@ -34,7 +34,7 @@ def whatsapp_response(request):
             mesa = vontante_info.get("mesa")
             direccion = vontante_info.get("direccion")
 
-            base_message = "*{name}*%0A%0A*LUGAR DE VOTACIÓN* 🗳%0ADepartamento: %0A*{departamento}* %0AMunicipio: %0A*{municipio}* %0APuesto: %0A*{puesto}* %0AMesa: %0A*{mesa}* %0ADirección: %0A*{direccion}*".format(
+            base_message = "*{name}* \n\n*LUGAR DE VOTACIÓN* 🗳️ \nDepartamento: \n*{departamento}* \nMunicipio: \n*{municipio}* \nPuesto: \n*{puesto}* \nMesa: \n*{mesa}* \nDirección: \n*{direccion}*".format(
                 name=name.lstrip().rstrip(),
                 departamento=departamento,
                 municipio=municipio,
@@ -53,7 +53,7 @@ def whatsapp_response(request):
             context = {
                 "replies": [
                     {
-                        "message": '"*{message}*" no se encuentra en base de datos 💾🔍<#>Escribe otro número de cédula. \n*Ej: 1095933743* - _sin espacios ni puntos._'.format(
+                        "message": '"*{message}*" Estamos consultando tu puesto de votación'.format(
                             message=current_message
                         ),
 
