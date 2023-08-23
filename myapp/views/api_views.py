@@ -79,7 +79,7 @@ def whatsapp_validate(request):
         vontante_info = DataController.validate_votante_exist(message, create)
 
         context = {
-            "message": vontante_info
+            "message": str(vontante_info)
         }
 
         return JsonResponse(context)
