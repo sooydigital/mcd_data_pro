@@ -77,10 +77,10 @@ class DataController():
         votante = Votante.objects.filter(document_id=document_id).first()
         vp = VotanteProfile.objects.filter(votante=votante).first()
         if not vp:
-            first_name = data.get('first_name')
-            last_name = data.get('last_name')
-            mobile_phone = data.get('mobile_phone')
-            gender = data.get('gender')
+            first_name = data.get('first_name', "")
+            last_name = data.get('last_name', "")
+            mobile_phone = data.get('mobile_phone', "")
+            gender = "MUJER" if data.get('gender', "").upper() == 'MUJER' else "HOMBRE"
 
             vp = VotanteProfile()
             vp.votante = votante
