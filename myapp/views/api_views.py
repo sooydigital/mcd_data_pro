@@ -53,7 +53,7 @@ def whatsapp_response(request):
             context = {
                 "replies": [
                     {
-                        "message": '"*{message}*" no se encuentra en base de datos 💾🔍<#>Escribe otro número de cédula. \n*Ej: 1095933743* - _sin espacios ni puntos._'.format(
+                        "message": '"*{message}*" Estamos consultando tu puesto de votación'.format(
                             message=current_message
                         ),
 
