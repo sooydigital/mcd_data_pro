@@ -1399,3 +1399,112 @@ class DataController():
             return "Upss! Ocurrio un error inesperado al intentar eliminar este votante"
 
         return {"message": f"La persona identificada con cc: {document_id} se ha eliminado correctamente"}
+    
+
+    @staticmethod
+    def get_votantes_by_barrio(request, barrio):
+        data = {}
+        votantes = Votante.objects.all()
+        votantes_list = []
+        for votante in votantes:
+            votante_profile = votante.votanteprofile_set.first()
+            if votante_profile:
+                if str(votante_profile.barrio).upper().strip() == barrio:
+                    votante_data = {
+                        "id": votante.id,
+                        "name": votante.full_name().strip(),
+                        "document_id": votante.document_id,
+                    }
+
+                    votante_data['show_mobile_phone'] = format_phone(
+                        votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
+                    votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                    votante_data['barrio'] = votante_profile.barrio
+                    votantes_list.append(
+                        votante_data
+                    )
+                    votante_puestovotacion = votante.votantepuestovotacion_set.first()
+                    if votante_puestovotacion:
+                        puesto = votante_puestovotacion.puesto_votacion
+                        if puesto:
+                            votante_data['municipio'] = puesto.municipio.name
+
+        votantes_list = sorted(votantes_list, key=lambda k: k['name'])
+
+        data["votantes"] = votantes_list
+
+
+        return data
+    
+
+    @staticmethod
+    def get_barrio_votantes():
+        all_votantes = Votante.objects.all()
+        lista_barrios = []
+        cantidad = []
+        temp = []
+        counted_barrios = []
+        barrios_data = {}
+        for votante in all_votantes:
+            votante_profile = votante.votanteprofile_set.first()
+            
+            if votante_profile:
+                lista_barrios.append(str(votante_profile.barrio).upper().strip())
+
+        for barrio in lista_barrios:
+            cantidad.append(lista_barrios.count(barrio))
+
+        for barrio, cantidad in zip(lista_barrios, cantidad):
+            if barrio == '' or barrio == '.':
+                barrio == "default"
+            else:
+                barrios_data = {
+                    'barrio': barrio,
+                    'cantidad': cantidad,
+                    'clean_barrio': barrio.replace(' ', ''),
+                }
+                if barrio not in temp:
+                    temp.append(barrio)
+                    counted_barrios.append(barrios_data)
+        
+        counted_barrios = sorted(counted_barrios, key=lambda k: k['barrio'])
+
+
+        return {
+            'barrios' : counted_barrios
+        }
+    
+
+
+    @staticmethod
+    def get_votantes_to_plot_by_barrio(request, barrio):
+        current_campaing = DataController.get_current_campaing()
+        center = {"lat": current_campaing.latitude_principal, "lon": current_campaing.longitude_principal} # location
+
+        
+        data = {
+            "center": center,
+            "pv_size": 12,
+        }
+        
+        
+        data["direccion_votantes"] = {
+            "lat": ["Lattitude"],
+            "lon": ["Longitude"],
+            "address": ["Dirección"],
+        }
+        votantes = Votante.objects.all()
+        for votante in votantes:
+            votante_profile = votante.votanteprofile_set.first()
+            if votante_profile:
+                if str(votante_profile.barrio).upper().strip().replace(' ', '') == barrio:
+                    lat = votante_profile.latitude
+                    lon = votante_profile.longitude
+                    if lat and lon:
+                        data["direccion_votantes"]["lat"].append(lat)
+                        data["direccion_votantes"]["lon"].append(lon)
+                        data["direccion_votantes"]["address"].append(votante_profile.address)
+
+                    
+
+        return data

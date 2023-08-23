@@ -348,3 +348,38 @@ def eliminar_votante(request, document_id):
     else:
         messages.success(request, respuesta["message"])
     return redirect('app:show_votantes')
+
+
+@login_required
+def list_barrios(request):
+    context = {}
+    data = DataController.get_barrio_votantes()
+    context.update(data)
+    return render(
+        request,
+        'show_barrios.html',
+        context
+    )
+
+def votantes_by_barrio(request, barrio):
+    context = {
+        'barrio':barrio,
+        'clean_barrio': barrio.replace(' ','')
+    }
+    data = DataController.get_votantes_by_barrio(request, barrio)
+    context.update(data)
+    return render(
+        request,
+        'show_votantes_by_barrio.html',
+        context
+    )
+
+
+@login_required
+def get_barrio_votantes(request, barrio):
+    if barrio:
+        data = DataController.get_votantes_to_plot_by_barrio(request, barrio)
+    response = {
+        "data": data
+    }
+    return JsonResponse(response)
