@@ -181,6 +181,9 @@ def insert_votante_with_sub_link(request, sub_link):
 def geomapa(request):
     context = {}
     municpios = DataController.get_current_municipios()
+    campaing = DataController.get_current_campaing()
+    if str(campaing.name) == "Santander_":
+        context['show'] = True
     context["municpios"] = municpios
     return render(
         request,
