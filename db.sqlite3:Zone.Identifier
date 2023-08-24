@@ -1,3 +1,4 @@
 [ZoneTransfer]
 ZoneId=3
-HostUrl=about:internet
+ReferrerUrl=https://www.pythonanywhere.com/user/CartagenaVData/files/home/CartagenaVData/cartagenavdata.pythonanywhere.com
+HostUrl=https://www.pythonanywhere.com/user/CartagenaVData/files/home/CartagenaVData/cartagenavdata.pythonanywhere.com/db.sqlite3

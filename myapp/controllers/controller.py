@@ -903,7 +903,6 @@ class DataController():
                     votante_data
                 )
             votantes_list = sorted(votantes_list, key=lambda k: k['name'])
-
         data["votantes"] = votantes_list
         data["nombre"] = lider.full_name()
         lider_profile = lider.votanteprofile_set.first()

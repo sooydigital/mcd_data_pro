@@ -120,7 +120,7 @@
                         <td class="text-center">
                             <spam class="table-icon-text">
                             {% if votante.is_leader %}
-                                <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}" >
+                                <a href="{% url 'app:geomapa_detail_by_leader' leader_id %}" >
                                     <i class="fa fa-users" aria-hidden="true"></i>
                                 </a>
                             {% endif %}
