@@ -214,8 +214,17 @@ class Votante(models.Model):
         verbose_name='supervisor'
     )
 
+    coordinador = models.ForeignKey(
+        "self",
+        related_name='Coordinador',
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+
     lider = models.ForeignKey(
         "self",
+        related_name='Leader',
         blank=True,
         null=True,
         on_delete=models.CASCADE

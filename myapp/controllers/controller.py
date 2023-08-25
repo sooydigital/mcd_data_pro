@@ -186,6 +186,7 @@ class DataController():
         )
 
         if votante_lider:
+            print('is leader')
             votante.lider = votante_lider
             custom_user = votante_lider.custom_user
             votante.custom_user = custom_user
@@ -847,6 +848,72 @@ class DataController():
             data["votantes"] = votantes
         return data
 
+
+    @staticmethod
+    def get_leaders_by_coordinador(request, coordinador_id):
+        data = {
+            "coordinador_id": coordinador_id,
+            "nombre": "",
+            "link": "",
+            'intencion_voto': 0,
+            'intencion_voto_percentage': 0
+        }
+        coordinador = Votante.objects.filter(id=coordinador_id).first()
+        votantes_list = []
+        if coordinador:
+            has_link = coordinador.customlink_set.first()
+            if has_link:
+
+                url = reverse("app:insert_votante_sub_link", args=[has_link.sub_link])
+                full_url = request.build_absolute_uri(url)
+                data["link"] = full_url
+
+            lideres = Votante.objects.filter(coordinador_id=coordinador_id)
+            for votante in lideres:
+                votante_profile = votante.votanteprofile_set.first()
+                votante_puestovotacion = votante.votantepuestovotacion_set.first()
+                votante_data = {
+                    "name": votante.full_name(),
+                    "document_id": votante.document_id,
+                    "mesa": "",
+                    "puesto_nombre": "",
+                    "puesto_municipio": "",
+                    "status": votante.status
+                }
+
+                if votante_puestovotacion:
+                    votante_data["mesa"] = votante_puestovotacion.mesa if votante_puestovotacion else ""
+                    puesto = votante_puestovotacion.puesto_votacion
+                    votante_data["puesto_id"] = puesto.id if puesto else ""
+                    votante_data["puesto_nombre"] = puesto.name if puesto else ""
+                    votante_data["puesto_municipio"] = puesto.municipio.name if puesto and puesto.municipio else ""
+
+                has_customlink = votante.customlink_set.first()
+                if has_customlink:
+                    votante_data['is_leader'] = True
+                    votante_data['custom_link'] = has_customlink.sub_link
+                else:
+                    votante_data['is_leader'] = False
+
+                if votante_profile:
+                    votante_data['show_mobile_phone'] = format_phone(
+                        votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
+                    votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                    votante_data['age'] = votante_profile.age()
+
+                votantes_list.append(
+                    votante_data
+                )
+            votantes_list = sorted(votantes_list, key=lambda k: k['name'])
+        data["votantes"] = votantes_list
+        data["nombre"] = coordinador.full_name()
+        lider_profile = coordinador.votanteprofile_set.first()
+        if lider_profile:
+            data["mobile_phone"] = lider_profile.mobile_phone or ""
+
+        return data
+
+
     @staticmethod
     def get_info_puesto_by_leader(request, leader_id):
         data = {
@@ -866,7 +933,7 @@ class DataController():
                 full_url = request.build_absolute_uri(url)
                 data["link"] = full_url
 
-            votantes = lider.votante_set.all()
+            votantes = Votante.objects.filter(lider_id=leader_id)
             for votante in votantes:
                 votante_profile = votante.votanteprofile_set.first()
                 votante_puestovotacion = votante.votantepuestovotacion_set.first()
@@ -910,6 +977,7 @@ class DataController():
             data["mobile_phone"] = lider_profile.mobile_phone or ""
 
         return data
+    
 
     @staticmethod
     def get_info_puesto_by_votante(request, votante_cc):
@@ -984,16 +1052,15 @@ class DataController():
 
     @staticmethod
     def get_all_leaders():
-        custom_links = CustomLink.objects.all()
+        etiquetas = EtiquetaVotante.objects.filter(etiqueta=1).all()
         votantes = []
-        for custom_link in custom_links:
-            votante = custom_link.votante
+        for etiqueta in etiquetas:
+            votante = etiqueta.votante
             votante_profile = votante.votanteprofile_set.first()
-
             votante_data = {
                 "id": votante.id,
                 "name": votante.full_name(),
-                "referrals": len(votante.votante_set.all()),
+                "referrals": len(Votante.objects.filter(lider_id=votante.id)),
                 "document_id": votante.document_id
             }
             has_customlink = votante.customlink_set.first()
@@ -1019,6 +1086,43 @@ class DataController():
             "leaders": votantes
         }
     
+
+    @staticmethod
+    def get_all_coordinadores():
+        etiquetas = EtiquetaVotante.objects.filter(etiqueta=3).all()
+        votantes = []
+        for etiqueta in etiquetas:
+            votante = etiqueta.votante
+            votante_profile = votante.votanteprofile_set.first()
+            votante_data = {
+                "id": votante.id,
+                "name": votante.full_name(),
+                "referrals": len(Votante.objects.filter(coordinador_id=votante.id)),
+                "document_id": votante.document_id
+            }
+            has_customlink = votante.customlink_set.first()
+            if has_customlink:
+                votante_data['is_coordinador'] = True
+                votante_data['custom_link'] = has_customlink.sub_link
+            else:
+                votante_data['is_coordinador'] = False
+
+            if votante_profile:
+                votante_data['show_mobile_phone'] = str(votante_profile.mobile_phone).replace(' ','') if votante_profile.mobile_phone else ""
+                votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                votante_data['age'] = votante_profile.age()
+
+
+            votantes.append(
+                votante_data
+            )
+
+        votantes = sorted(votantes, key=lambda x: x["referrals"], reverse=True)
+
+        return {
+            "coordinadores": votantes
+        }
+
 
     @staticmethod
     def get_all_votantes_api():
@@ -1332,6 +1436,7 @@ class DataController():
     def store_votante_as_leader(data):
 
         document_id = clena_data_cc(get_data_from_post(data, "document_id"))
+
         if Votante.objects.filter(document_id=document_id).exists():
             return "Esta cedula ya existe"
 
@@ -1380,7 +1485,7 @@ class DataController():
             )
             votante_profile.save()
             campain_url = DataController.get_current_campaing().url
-            if etiqueta != None and etiqueta != "none" and etiqueta != "Seleccione...":
+            if etiqueta != None and etiqueta != "none":
                 etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
                 etiqueta_v = EtiquetaVotante(
                     votante = votante,
@@ -1400,6 +1505,85 @@ class DataController():
                 link_v.save()
                 
                 mensaje = f"Felicidades {first_name} {last_name} se ha creado como lider correctamente, su link es: {campain_url}/iv/{link}"
+                            
+            return {"message":mensaje}
+        except Exception as e:
+            return "Woops hubo un error, por favor verifica que estés enviando información correcta"
+        
+
+    @staticmethod
+    def store_votante_as_coordinador(data):
+
+        document_id = clena_data_cc(get_data_from_post(data, "document_id"))
+        
+        if Votante.objects.filter(document_id=document_id).exists():
+            return "Esta cedula ya existe"
+
+        status = "PENDING"
+        votante = Votante(
+            document_id=document_id,
+            status=status,
+        )
+
+        votante.save()
+
+        first_name = get_data_from_post(data, "first_name")
+        last_name = get_data_from_post(data, "last_name")
+        email = "null"
+        mobile_phone = get_data_from_post(data, "mobile_phone")
+        day = get_data_from_post(data, "day")
+        month = get_data_from_post(data, "month")
+        year = get_data_from_post(data, "year")
+        birthday = str(year+'-'+month+'-'+day)
+        gender = get_data_from_post(data, "gender")
+        address = get_data_from_post(data, "address")
+        municipio = get_data_from_post(data, "municipio")
+        barrio = get_data_from_post(data, "barrio")
+        departamento_obj = Departamento.objects.first()
+        etiqueta = get_data_from_post(data,"etiqueta")
+        if get_data_from_post(data,"link"):
+            link = get_data_from_post(data,"link")
+        else:
+            link = document_id
+
+        municipio_obj = DataController.get_or_create_municipio(departamento_obj, municipio)
+        barrio_obj = DataController.get_or_create_barrio(municipio_obj, barrio)
+
+        try:
+            votante_profile = VotanteProfile(
+                votante=votante,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                mobile_phone=mobile_phone,
+                birthday=birthday,
+                gender=gender,
+                address=address,
+                municipio=municipio_obj,
+                barrio=barrio_obj,
+            )
+            votante_profile.save()
+            campain_url = DataController.get_current_campaing().url
+            if etiqueta != None and etiqueta != "none":
+                etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
+                etiqueta_v = EtiquetaVotante(
+                    votante = votante,
+                    etiqueta = etiqueta_instance
+                )
+                etiqueta_v.save()
+                if link != None and link != "none":
+                    link_v = CustomLink(
+                        votante = votante,
+                        sub_link = link,
+                    )
+                elif link == '':
+                    link_v = CustomLink(
+                        votante = votante,
+                        sub_link = document_id,
+                    )
+                link_v.save()
+                
+                mensaje = f"Felicidades {first_name} {last_name} se ha creado como Coordinador correctamente, su link es: {campain_url}/iv/{link}"
                             
             return {"message":mensaje}
         except Exception as e:

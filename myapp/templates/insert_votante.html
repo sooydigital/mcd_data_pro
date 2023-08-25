@@ -135,18 +135,20 @@ Agregar Votante | MCD
             </div>
 
             {% if request.user|has_role:'SUPER_ADMIN' and title %}
-                <div class="row">
-                    <div class="col-sm-6 my-2">
-                        <label for="etiqueta" class="form-label">Etiqueta</label>
-                        <select required class="form-select" aria-label="Default select example" name="etiqueta" id="etiqueta">
+                <div class="col-sm-6 my-2">
+                    <label for="etiqueta" class="form-label">Etiqueta</label>
+                    <select required class="form-select" aria-label="Default select example" name="etiqueta" id="etiqueta">
+                        {% if is_leader %}
                             <option value="LIDER">Líder</option>
-                        </select>
-                    </div>
-        
-                    <div class="col-sm-6 my-2">
-                        <label for="link" class="form-label">Link personalizado</label>
-                        <input type="text" class="form-control" id='link' name="link" placeholder="ej: 002 evita usar links repetidos">
-                    </div>
+                        {% elif is_coordinador %}
+                            <option value="COORDINADOR">Coordinador</option>
+                        {% endif %}
+                    </select>
+                </div>
+    
+                <div class="col-sm-6 my-2">
+                    <label for="link" class="form-label">Link personalizado</label>
+                    <input type="text" class="form-control" id='link' name="link" placeholder="ej: 002 evita usar links repetidos">
                 </div>
             {% endif %}
             

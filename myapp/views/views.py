@@ -148,10 +148,46 @@ def insert_votante_as_leader(request):
         ],
         'years': [str(y).replace('.','') for y in range(1900,2006)],
         'title': 'Crear Líder',
+        'is_leader': True,
+
     }
-    campaing_name = DataController.get_current_campaing().name
-    if campaing_name == 'cartagena_agosto':
-        context['custom_name'] = 'Profe Doria'
+    if request.method == 'POST':
+        respuesta = DataController.store_votante_as_leader(dict(request.POST))
+        if type(respuesta) == str:
+            messages.error(request, respuesta)
+        else:
+            messages.success(request, respuesta["message"])
+            return redirect('app:leaders')
+
+    return render(
+        request,
+        'insert_votante.html',
+        context
+    )
+
+
+@login_required
+def insert_votante_as_coordinador(request):
+    context = {
+        'days': [d for d in range(1,32)],
+        'months': [
+            (1,'Enero'), 
+            (2,'Febrero'), 
+            (3,'Marzo'), 
+            (4,'Abril'), 
+            (5,'Mayo'), 
+            (6,'Junio'), 
+            (7,'Julio'), 
+            (8,'Agosto'), 
+            (9,'Septiembre'), 
+            (10,'Octubre'), 
+            (11,'Noviembre'), 
+            (12,'Diciembre'),
+        ],
+        'years': [str(y).replace('.','') for y in range(1900,2006)],
+        'title': 'Crear Coordinador',
+        'is_coordinador': True,
+    }
     
     if request.method == 'POST':
         respuesta = DataController.store_votante_as_leader(dict(request.POST))
@@ -205,6 +241,7 @@ def insert_votante_with_sub_link(request, sub_link):
     campaing_name = DataController.get_current_campaing().name
     if campaing_name == 'cartagena_agosto':
         context['custom_name'] = 'Profe Doria'
+
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user, sub_link=sub_link)
         if type(respuesta) == str:
@@ -220,7 +257,87 @@ def insert_votante_with_sub_link(request, sub_link):
         context
     )
 
-# Create your views here.
+
+#LISTS
+
+@login_required
+def list_leaders(request):
+    context = {}
+    context['campain_url'] = DataController.get_current_campaing().url
+    info_puesto = DataController.get_all_leaders()
+    context.update(info_puesto)
+    return render(
+        request,
+        'leaders.html',
+        context
+    )
+
+
+@login_required
+def list_coordinadores(request):
+    context = {}
+    context['campain_url'] = DataController.get_current_campaing().url
+    info_puesto = DataController.get_all_coordinadores()
+    context.update(info_puesto)
+    return render(
+        request,
+        'coordinadores.html',
+        context
+    )
+
+
+@login_required
+def list_leaders_by_coordinador(request, coordinador_id):
+    context = {}
+    leaders = DataController.get_leaders_by_coordinador(request, coordinador_id)
+    context.update(leaders)
+    return render(
+        request,
+        'detail_by_coordinador.html',
+        context
+    )
+
+
+@login_required
+def list_votantes(request):
+    return render(request,'show_votantes.html',)
+
+
+@login_required
+def get_votantes_api(request):
+    votantes = list(DataController.get_all_votantes_api())
+    if len(votantes) > 0:
+        data = {"message": 'Success', 'votantes': votantes}
+    else:
+        data = {"message": 'Not found'}
+    return JsonResponse(data)
+
+
+@login_required
+def list_barrios(request):
+    context = {}
+    data = DataController.get_barrio_votantes()
+    context.update(data)
+    return render(
+        request,
+        'show_barrios.html',
+        context
+    )
+
+def votantes_by_barrio(request, barrio):
+    context = {
+        'barrio':barrio,
+        'clean_barrio': barrio.replace(' ','')
+    }
+    data = DataController.get_votantes_by_barrio(request, barrio)
+    context.update(data)
+    return render(
+        request,
+        'show_votantes_by_barrio.html',
+        context
+    )
+
+# GEOMAPA
 @login_required
 def geomapa(request):
     context = {}
@@ -269,58 +386,8 @@ def geomapa_detail_by_votante(request, votante_cc):
         context
     )
 
-@login_required
-def leaders(request):
-    context = {}
-    context['campain_url'] = DataController.get_current_campaing().url
-    info_puesto = DataController.get_all_leaders()
-    context.update(info_puesto)
-    return render(
-        request,
-        'leaders.html',
-        context
-    )
 
-@login_required
-def list_votantes(request):
-    return render(request,'show_votantes.html',)
-
-
-@login_required
-def get_votantes_api(request):
-    votantes = list(DataController.get_all_votantes_api())
-    if len(votantes) > 0:
-        data = {"message": 'Success', 'votantes': votantes}
-    else:
-        data = {"message": 'Not found'}
-    return JsonResponse(data)
-
-
-@login_required
-def list_barrios(request):
-    context = {}
-    data = DataController.get_barrio_votantes()
-    context.update(data)
-    return render(
-        request,
-        'show_barrios.html',
-        context
-    )
-
-def votantes_by_barrio(request, barrio):
-    context = {
-        'barrio':barrio,
-        'clean_barrio': barrio.replace(' ','')
-    }
-    data = DataController.get_votantes_by_barrio(request, barrio)
-    context.update(data)
-    return render(
-        request,
-        'show_votantes_by_barrio.html',
-        context
-    )
-
-
+# OTHERS
 @login_required
 def votantes_download(request):
     response = DownloadController.document_download()
