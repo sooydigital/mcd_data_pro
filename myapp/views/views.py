@@ -95,20 +95,20 @@ def insert_votante(request):
     context = {
         'days': [d for d in range(1,32)],
         'months': [
-            (1,'Enero'), 
-            (2,'Febrero'), 
-            (3,'Marzo'), 
-            (4,'Abril'), 
-            (5,'Mayo'), 
-            (6,'Junio'), 
-            (7,'Julio'), 
-            (8,'Agosto'), 
-            (9,'Septiembre'), 
-            (10,'Octubre'), 
-            (11,'Noviembre'), 
+            (1,'Enero'),
+            (2,'Febrero'),
+            (3,'Marzo'),
+            (4,'Abril'),
+            (5,'Mayo'),
+            (6,'Junio'),
+            (7,'Julio'),
+            (8,'Agosto'),
+            (9,'Septiembre'),
+            (10,'Octubre'),
+            (11,'Noviembre'),
             (12,'Diciembre'),
         ],
-        'years': [str(y).replace('.','') for y in range(1900,2006)]
+        'years': [str(y).replace('.','') for y in range(1993,2006)]
     }
     if str(request.user) == 'Rene31' or str(request.user) == 'AnaC':
         context['can_add_roll'] = True
@@ -145,22 +145,22 @@ def insert_votante_with_sub_link(request, sub_link):
     context = {
         'days': [d for d in range(1,32)],
         'months': [
-            (1,'Enero'), 
-            (2,'Febrero'), 
-            (3,'Marzo'), 
-            (4,'Abril'), 
-            (5,'Mayo'), 
-            (6,'Junio'), 
-            (7,'Julio'), 
-            (8,'Agosto'), 
-            (9,'Septiembre'), 
-            (10,'Octubre'), 
-            (11,'Noviembre'), 
+            (1,'Enero'),
+            (2,'Febrero'),
+            (3,'Marzo'),
+            (4,'Abril'),
+            (5,'Mayo'),
+            (6,'Junio'),
+            (7,'Julio'),
+            (8,'Agosto'),
+            (9,'Septiembre'),
+            (10,'Octubre'),
+            (11,'Noviembre'),
             (12,'Diciembre'),
         ],
-        'years': [str(y).replace('.','') for y in range(1900,2006)]
+        'years': [str(y).replace('.','') for y in range(1993,2006)]
     }
-    
+
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user, sub_link=sub_link)
         if type(respuesta) == str:
@@ -317,20 +317,20 @@ def editar_votante(request, document_id):
     context = {
         'days': [d for d in range(1,32)],
         'months': [
-            (1,'Enero'), 
-            (2,'Febrero'), 
-            (3,'Marzo'), 
-            (4,'Abril'), 
-            (5,'Mayo'), 
-            (6,'Junio'), 
-            (7,'Julio'), 
-            (8,'Agosto'), 
-            (9,'Septiembre'), 
-            (10,'Octubre'), 
-            (11,'Noviembre'), 
+            (1,'Enero'),
+            (2,'Febrero'),
+            (3,'Marzo'),
+            (4,'Abril'),
+            (5,'Mayo'),
+            (6,'Junio'),
+            (7,'Julio'),
+            (8,'Agosto'),
+            (9,'Septiembre'),
+            (10,'Octubre'),
+            (11,'Noviembre'),
             (12,'Diciembre'),
         ],
-        'years': [str(y).replace('.','') for y in range(1900,2006)]
+        'years': [str(y).replace('.','') for y in range(1993,2006)]
     }
     votante_data = DataController.get_votante_info_to_edit(document_id)
     context.update(votante_data)
