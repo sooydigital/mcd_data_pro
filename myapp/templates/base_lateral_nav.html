@@ -1,0 +1,84 @@
+{% load permissions_tags %} {% load static %}
+
+<div class="lateral-nav bg-dark" id="lateral">
+    <div class="user__content">
+        <i class="fa fa-3x fa-user-circle" aria-hidden="true"></i>
+        <h4>{{ request.user.first_name }}<br /> {{ request.user.last_name }}</h4>
+    </div>
+
+    <div class="navigation">
+        <ul>
+            <li>
+                <a href="{% url 'app:chart' %}">
+                    <span>Inicio</span>
+                    <i class="fa fa-bar-chart"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'app:geomapa' %}">
+                    <span>Mapa</span>
+                    <i class="fa fa-map-marker "></i>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'app:insert_votante' %}">
+                    <span>Agregar</span>
+                    <i class="fa fa-plus" id="arrow"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'app:coordinadores' %}">
+                    <span>Capitanes</span>
+                    <i class="fa fa-certificate"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'app:leaders' %}">
+                    <span>Lideres</span>
+                    <i class="fa fa-users"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'app:show_votantes' %}">
+                    <span>Votantes</span>
+                    <i class="fa fa-user"></i>
+                </a>
+            </li>
+        </ul>
+
+        <div class="menu_btn">
+            <i class="fa fa-times" id="menu_icon" aria-hidden="true"></i>
+        </div>
+
+    </div>
+</div>
+
+{% block scriptcontent %}
+<script type="text/javascript">
+
+    const menu_btn = document.querySelector('.menu_btn');
+    const menu_icon = document.getElementById('menu_icon');
+    const lateral = document.getElementById('lateral');
+
+    menu_btn.addEventListener('click', e => {
+
+        menu_icon.classList.toggle("fa-bars");
+        menu_icon.classList.toggle("fa-times");
+
+        lateral.classList.toggle("lateral__hiden");
+        lateral.classList.toggle("lateral-nav");
+
+    })
+
+    window.addEventListener("resize", e => {
+        if (window.innerWidth < 768) {
+            lateral.classList.add("lateral__hiden");
+            lateral.classList.remove("lateral-nav");
+        } else {
+            lateral.classList.remove("lateral__hiden");
+            lateral.classList.add("lateral-nav");
+        }
+    })
+
+</script>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %} {% load permissions_tags %}
+{% block title %}
+    Resumen | MCD
+{% endblock %}
+
+{% block content %}
+    <div class="container separator">
+        <div class="people_cards">
+            <div class="card">
+                <div class="card-header bg-primary">
+                    <h3>Total </h3>
+                </div>
+                <div class="card-body">
+                    <i class="fa fa-user"></i>
+                </div>
+                <div class="card-footer">
+                    <h3>{{data.num_votantes}}</h3>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header bg-success">
+                    <h3> procesados</h3>
+                </div>
+                <div class="card-body">
+                    <i class="fa fa-check-circle"></i>
+                </div>
+                <div class="card-footer">
+                    <h3>{{data.votante_proceess}}</h3>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header bg-danger">
+                    <h3>Error</h3>
+                </div>
+                <div class="card-body">
+                    <i class="fa fa-times-circle "></i>
+                </div>
+                <div class="card-footer">
+                    <h3>{{data.votante_error}}</h3>
+                </div>                
+            </div>
+            <div class="card">
+                <div class="card-header bg-info">
+                    <h3>Pendientes</h3>
+                </div>
+                <div class="card-body">
+                    <i class="fa fa-cogs"></i>
+                </div>
+                <div class="card-footer">
+                    <h3>{{data.votante_pending_proceess}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="stadistics">
+            <div class="square ">
+                <canvas  id="chart" class="chart"></canvas >
+            </div>
+    
+            <div class="square">
+                <div class="">
+                   <canvas  id="chart2" class="chart"></canvas >
+                </div>
+            </div>
+    
+        </div>
+    </div>
+{% endblock %}
+{% block scriptcontent %}
+
+    <script type="text/javascript">
+        const config = {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    data: [
+                        "{{data.num_votantes_seis_dias_atras}}",
+                        "{{data.num_votantes_cinco_dias_atras}}",
+                        "{{data.num_votantes_cuatro_dias_atras}}",
+                        "{{data.num_votantes_tre_dias_atras}}",
+                        "{{data.num_votantes_dos_dias_atras}}",
+                        "{{data.num_votantes_ayer}}", 
+                        "{{data.num_votantes_hoy}}", 
+
+                    ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132)',
+                    ],
+                    label: 'Votantes agregados'
+                }],
+                labels: [
+                    'hace 6 dias',
+                    'hace 5 dias',
+                    'hace 4 dias',
+                    'hace 3 dias',
+                    'hace 2 dias',
+                    'ayer',
+                    'Hoy',
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: "Movimiento de datos 6 dias atras"
+                    }
+                }
+            },
+        };
+
+        const config2 = {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [
+                        "{{data.num_votantes}}",
+                        "{{data.num_lideres}}",
+                        "{{data.num_coordinadores}}",
+                    ],
+                    backgroundColor: [
+                        '#cc65fe',
+                        '#ff6384',
+                        '#ffce56',
+
+                    ],
+                    label: null
+                }],
+                labels: [
+                    'Votantes',
+                    'Lideres',
+                    'Coordinadores',
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: "Conteo de Coordinadores - Lideres y Votantes"
+                    }
+                }
+            },
+        };
+
+        window.onload = function() {
+            const ctx = document.getElementById('chart').getContext('2d');
+            window.myPie = new Chart(ctx, config)
+
+            const ctx2 = document.getElementById('chart2').getContext('2d');
+            window.myPie = new Chart(ctx2, config2)
+
+        }
+
+        
+    </script>
+{% endblock %}

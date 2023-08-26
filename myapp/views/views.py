@@ -34,7 +34,7 @@ def home(request):
     context.update(summary)
     return render(
         request,
-        'home.html',
+        'charts.html',
         context
     )
 
@@ -395,7 +395,7 @@ def votantes_download(request):
 
 
 # @login_required
-def validate_cc(request, document_id):
+def validate_cc(_request, document_id):
     document_validation = DataController.validate_document_id(document_id)
 
     response = {
@@ -404,7 +404,7 @@ def validate_cc(request, document_id):
     return JsonResponse(response)
 
 # @login_required
-def get_barrio_by_municipio(request, municipio_id):
+def get_barrio_by_municipio(_request, municipio_id):
     barrios = DataController.get_barrios_by_municipio(municipio_id)
 
     response = {
@@ -438,6 +438,7 @@ def get_mapa_puestos(request):
 def get_barrio_votantes(request, barrio):
     if barrio:
         data = DataController.get_votantes_to_plot_by_barrio(request, barrio)
+
     response = {
         "data": data
     }
@@ -487,4 +488,13 @@ def eliminar_votante(request, document_id):
     else:
         messages.success(request, respuesta["message"])
     return redirect('app:show_votantes')
-        
+
+
+@login_required
+def charts_view(request):
+    data = DataController.get_summary_api()
+    context = {
+        'data': data
+    }
+
+    return render(request,'charts.html', context)

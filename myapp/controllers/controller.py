@@ -280,6 +280,69 @@ class DataController():
                 created_at__lte=today,
             ).all()),
         }
+    
+
+    @staticmethod
+    def get_summary_api():
+        votantes = Votante.objects.all()
+        total_votantes = votantes.count()
+        number_lideres = len(EtiquetaVotante.objects.filter(etiqueta=1).all())
+        number_coordinadores = len(EtiquetaVotante.objects.filter(etiqueta=3).all())
+
+        data = {}
+        today = datetime.today()
+
+        data["num_votantes"] = total_votantes
+        data["num_lideres"] = number_lideres
+        data["num_coordinadores"] = number_coordinadores
+
+        data["votante_error"] = len(votantes.filter(status="ERROR").all())
+        data["votante_pending_proceess"] = len(votantes.filter(status="PENDING").all())
+        data["votante_proceess"] = len(votantes.filter(status="PROCESSED").all())
+
+        # todo: agregar filtro por mes, semana, dia
+        data["num_votantes_mes"] = len(votantes.filter(
+            created_at__gte=(today - timedelta(days=today.day)),
+            created_at__lte=today,
+        ).all())
+        data["num_votantes_semana"] = len(votantes.filter(
+            created_at__gte=(
+                    today - timedelta(hours=today.hour, minutes=today.minute, seconds=today.second) - timedelta(
+                days=today.weekday())),
+            created_at__lte=today + timedelta(days=1),
+        ).all())
+        
+        data["num_votantes_hoy"] = len(votantes.filter(
+            created_at__gte=(today.replace(hour=0, minute=0, second=0, microsecond=0) ),
+            created_at__lte=today,
+        ).all())
+        data["num_votantes_ayer"] = len(votantes.filter(
+            created_at__gte=(today.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=1)),
+            created_at__lte=today.replace(hour=0, minute=0, second=0, microsecond=0),
+        ).all())
+        data["num_votantes_dos_dias_atras"] = len(votantes.filter(
+            created_at__gte=(today.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=2)),
+            created_at__lte=today.replace(hour=0, minute=0, second=0, microsecond=0),
+        ).all())
+        data["num_votantes_tre_dias_atras"] = len(votantes.filter(
+            created_at__gte=(today.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=3)),
+            created_at__lte=today.replace(hour=0, minute=0, second=0, microsecond=0),
+        ).all())
+        data["num_votantes_tre_cuatro_atras"] = len(votantes.filter(
+            created_at__gte=(today.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=4)),
+            created_at__lte=today.replace(hour=0, minute=0, second=0, microsecond=0),
+        ).all())
+        data["num_votantes_tre_cinco_atras"] = len(votantes.filter(
+            created_at__gte=(today.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=5)),
+            created_at__lte=today.replace(hour=0, minute=0, second=0, microsecond=0),
+        ).all())
+        data["num_votantes_tre_seis_atras"] = len(votantes.filter(
+            created_at__gte=(today.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=6)),
+            created_at__lte=today.replace(hour=0, minute=0, second=0, microsecond=0),
+        ).all())
+
+
+        return data
 
     @staticmethod
     def get_votantes_information_to_download():
@@ -395,7 +458,6 @@ class DataController():
 
         data["puesto_votacion_mapping"] = puesto_votacion_mapping
 
-        print('data', data)
         return data
 
     @staticmethod
