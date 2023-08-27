@@ -1143,15 +1143,20 @@ class DataController():
 
     @staticmethod
     def get_all_votantes_api():
+        # TODO: continue improve those calls
         all_votantes = Votante.objects.all()
         votantes = []
+        puesto_mapping = DataController.get_puesto_mapping()
+        profile_mapping = DataController.get_profile_mapping()
+
         for votante in all_votantes:
-            votante_profile = votante.votanteprofile_set.first()
+            votante_profile = profile_mapping.get(votante.id, {})
 
             votante_data = {
                 "id": votante.id,
-                "name": votante.full_name().strip(),
+                "name": votante_profile.get("full_name") if votante_profile else "",
                 "document_id": votante.document_id,
+                "municipio": "",
                 "message_wp": "Hola",
             }
             has_customlink = votante.customlink_set.first()
@@ -1162,22 +1167,18 @@ class DataController():
                 votante_data['is_leader'] = False
 
             if votante_profile:
-                votante_data['municipio'] = str(votante_profile.municipio)
-                votante_data['mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
-                votante_data['age'] = votante_profile.age()
-                votante_data['barrio'] = str(votante_profile.barrio)
-                #listar barrios
+                votante_data['mobile_phone'] = votante_profile.get("mobile_phone")
 
             votante_puestovotacion = votante.votantepuestovotacion_set.first()
             if votante_puestovotacion:
-                puesto = votante_puestovotacion.puesto_votacion
+                puesto = puesto_mapping.get(votante_puestovotacion.puesto_votacion_id)
                 if puesto:
-                    votante_data['municipio'] = str(puesto.municipio.name)
+                    votante_data['municipio'] = str(puesto.get("municipio_name"))
                     base_message = "*{name}*%0D%0A%0D%0A*LUGAR DE VOTACIÓN* 🗳️%0D%0ADepartamento:%0D%0A*{departamento}*%0D%0AMunicipio:%0D%0A*{municipio}*%0D%0APuesto:%0D%0A*{puesto}*%0D%0AMesa:%0D%0A*{mesa}*".format(
                         name=votante.full_name().strip().upper(),
-                        departamento=str(puesto.municipio.departamento.name),
-                        municipio=str(puesto.municipio.name),
-                        puesto=puesto.name,
+                        departamento=puesto.get('departamento_name'),
+                        municipio=puesto.get('municipio_name'),
+                        puesto=puesto.get('name'),
                         mesa=votante_puestovotacion.mesa
                     )
                     votante_data['message_wp'] = base_message
@@ -1189,6 +1190,42 @@ class DataController():
         votantes = sorted(votantes, key=lambda x: x["name"])
 
         return votantes
+
+    @staticmethod
+    def get_puesto_mapping():
+        puesto_mapping = {
+        }
+        puestos = PuestoVotacion.objects.values(
+            'id', 'name', 'municipio__name', 'departamento__name'
+        )
+
+        for puesto in puestos:
+            puesto_mapping[puesto["id"]] = {
+                "name": puesto["name"],
+                "municipio_name": puesto["municipio__name"],
+                "departamento_name": puesto["departamento__name"],
+            }
+
+        return puesto_mapping
+
+    @staticmethod
+    def get_profile_mapping():
+        puesto_mapping = {
+        }
+        puestos = VotanteProfile.objects.values(
+           'votante_id', 'mobile_phone', 'first_name', 'last_name'
+        )
+
+        for puesto in puestos:
+            puesto_mapping[puesto["votante_id"]] = {
+                "mobile_phone": puesto["mobile_phone"],
+                "full_name": "{} {}".format(puesto["first_name"], puesto["last_name"])
+            }
+
+        return puesto_mapping
+
+
+
 
     @staticmethod
     def get_all_dinamizadoress():
