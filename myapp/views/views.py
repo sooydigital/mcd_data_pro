@@ -7,7 +7,6 @@ from myapp.controllers.controller import DataController
 from django.http import JsonResponse
 
 
-# Create your views here.
 
 def has_role(user, names):
     role_names = names.split(',')
@@ -17,7 +16,6 @@ def has_role(user, names):
     return False
 
 
-# Create your views here.
 @login_required
 def home(request):
     if not request.session.get('color_principal'):
@@ -38,7 +36,6 @@ def home(request):
         context
     )
 
-# Create your views here.
 @login_required
 def test(request):
     from myapp.models import VotantePuestoVotacion, PuestoVotacion
@@ -95,17 +92,17 @@ def insert_votante(request):
     context = {
         'days': [d for d in range(1,32)],
         'months': [
-            (1,'Enero'), 
-            (2,'Febrero'), 
-            (3,'Marzo'), 
-            (4,'Abril'), 
-            (5,'Mayo'), 
-            (6,'Junio'), 
-            (7,'Julio'), 
-            (8,'Agosto'), 
-            (9,'Septiembre'), 
-            (10,'Octubre'), 
-            (11,'Noviembre'), 
+            (1,'Enero'),
+            (2,'Febrero'),
+            (3,'Marzo'),
+            (4,'Abril'),
+            (5,'Mayo'),
+            (6,'Junio'),
+            (7,'Julio'),
+            (8,'Agosto'),
+            (9,'Septiembre'),
+            (10,'Octubre'),
+            (11,'Noviembre'),
             (12,'Diciembre'),
         ],
         'years': [str(y).replace('.','') for y in range(1900,2006)]
@@ -145,22 +142,22 @@ def insert_votante_with_sub_link(request, sub_link):
     context = {
         'days': [d for d in range(1,32)],
         'months': [
-            (1,'Enero'), 
-            (2,'Febrero'), 
-            (3,'Marzo'), 
-            (4,'Abril'), 
-            (5,'Mayo'), 
-            (6,'Junio'), 
-            (7,'Julio'), 
-            (8,'Agosto'), 
-            (9,'Septiembre'), 
-            (10,'Octubre'), 
-            (11,'Noviembre'), 
+            (1,'Enero'),
+            (2,'Febrero'),
+            (3,'Marzo'),
+            (4,'Abril'),
+            (5,'Mayo'),
+            (6,'Junio'),
+            (7,'Julio'),
+            (8,'Agosto'),
+            (9,'Septiembre'),
+            (10,'Octubre'),
+            (11,'Noviembre'),
             (12,'Diciembre'),
         ],
         'years': [str(y).replace('.','') for y in range(1900,2006)]
     }
-    
+
     if request.method == 'POST':
         respuesta = DataController.store_reponses(dict(request.POST), request.user, sub_link=sub_link)
         if type(respuesta) == str:
@@ -254,7 +251,6 @@ def get_votantes_api(request):
 
 @login_required
 def list_dinamizadores(request):
-    # here
     context = {}
     votantes = DataController.get_all_dinamizadoress()
     context.update(votantes)
@@ -319,17 +315,17 @@ def editar_votante(request, document_id):
     context = {
         'days': [d for d in range(1,32)],
         'months': [
-            (1,'Enero'), 
-            (2,'Febrero'), 
-            (3,'Marzo'), 
-            (4,'Abril'), 
-            (5,'Mayo'), 
-            (6,'Junio'), 
-            (7,'Julio'), 
-            (8,'Agosto'), 
-            (9,'Septiembre'), 
-            (10,'Octubre'), 
-            (11,'Noviembre'), 
+            (1,'Enero'),
+            (2,'Febrero'),
+            (3,'Marzo'),
+            (4,'Abril'),
+            (5,'Mayo'),
+            (6,'Junio'),
+            (7,'Julio'),
+            (8,'Agosto'),
+            (9,'Septiembre'),
+            (10,'Octubre'),
+            (11,'Noviembre'),
             (12,'Diciembre'),
         ],
         'years': [str(y).replace('.','') for y in range(1900,2006)]
