@@ -227,6 +227,7 @@ def geomapa_detail_by_votante(request, votante_cc):
 
 @login_required
 def leaders(request):
+    # here 2
     context = {}
     info_puesto = DataController.get_all_leaders()
     context.update(info_puesto)
@@ -253,6 +254,7 @@ def get_votantes_api(request):
 
 @login_required
 def list_dinamizadores(request):
+    # here
     context = {}
     votantes = DataController.get_all_dinamizadoress()
     context.update(votantes)

@@ -1092,40 +1092,52 @@ class DataController():
         return data
 
     @staticmethod
-    def get_all_leaders():
-        custom_links = CustomLink.objects.all()
+    def get_all_info(etiqueta_name="LIDER"):
+        all_votantes = Votante.objects.filter(etiquetavotante__etiqueta__name=etiqueta_name).all()
         votantes = []
-        for custom_link in custom_links:
-            votante = custom_link.votante
+        for votante in all_votantes:
             votante_profile = votante.votanteprofile_set.first()
 
             votante_data = {
                 "id": votante.id,
-                "name": votante.full_name(),
+                "name": votante.full_name().strip(),
                 "referrals": len(votante.votante_set.all()),
-                "document_id": votante.document_id
+                "document_id": votante.document_id,
+                "custom_link": "",
+                'is_leader': True
+
             }
-            has_customlink = votante.customlink_set.first()
-            if has_customlink:
-                votante_data['is_leader'] = True
-                votante_data['custom_link'] = has_customlink.sub_link
-            else:
-                votante_data['is_leader'] = False
+            cl = votante.customlink_set.first()
+            if cl:
+                votante_data['custom_link'] = cl.sub_link
+
+            votante_data['ticket'] = "DINAMIZADORES"
 
             if votante_profile:
-                votante_data['show_mobile_phone'] = format_phone(votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
+                votante_data['municipio'] = votante_profile.municipio
+                votante_data['show_mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
                 votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
                 votante_data['age'] = votante_profile.age()
 
+            votante_puestovotacion = votante.votantepuestovotacion_set.first()
+            if votante_puestovotacion:
+                puesto = votante_puestovotacion.puesto_votacion
+                if puesto:
+                    votante_data['municipio'] = puesto.municipio.name
 
             votantes.append(
                 votante_data
             )
 
-        votantes = sorted(votantes, key=lambda x: x["referrals"], reverse=True)
+        votantes = sorted(votantes, key=lambda x: x["name"])
 
+        return votantes
+
+    @staticmethod
+    def get_all_leaders():
+        all_votantes = DataController.get_all_info(etiqueta_name="LIDER")
         return {
-            "leaders": votantes
+            "leaders": all_votantes
         }
 
 
@@ -1180,43 +1192,9 @@ class DataController():
 
     @staticmethod
     def get_all_dinamizadoress():
-        all_votantes = Votante.objects.filter(etiquetavotante__etiqueta__name="DINAMIZADORES").all()
-        votantes = []
-        for votante in all_votantes:
-            votante_profile = votante.votanteprofile_set.first()
-
-            votante_data = {
-                "id": votante.id,
-                "name": votante.full_name().strip(),
-                "referrals": len(votante.votante_set.all()),
-                "document_id": votante.document_id,
-                "custom_link": ""
-            }
-            cl = votante.customlink_set.first()
-            if cl:
-                votante_data['custom_link'] = cl.sub_link
-
-            votante_data['ticket'] = "DINAMIZADORES"
-
-            if votante_profile:
-                votante_data['municipio'] = votante_profile.municipio
-                votante_data['show_mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
-                votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
-                votante_data['age'] = votante_profile.age()
-
-            votante_puestovotacion = votante.votantepuestovotacion_set.first()
-            if votante_puestovotacion:
-                puesto = votante_puestovotacion.puesto_votacion
-                if puesto:
-                    votante_data['municipio'] = puesto.municipio.name
-
-            votantes.append(
-                votante_data
-            )
-
-        votantes = sorted(votantes, key=lambda x: x["name"])
+        all_votantes = DataController.get_all_info(etiqueta_name="DINAMIZADORES")
         return {
-            "votantes": votantes
+            "votantes": all_votantes
         }
 
 
