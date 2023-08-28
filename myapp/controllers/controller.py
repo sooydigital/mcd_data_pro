@@ -731,14 +731,14 @@ class DataController():
         municipio = registro.get("municipio")
         barrio = registro.get("barrio")
         etiqueta = registro.get("etiqueta")
-
+        validation_name = registro.get("full_name")
+        lider_id = registro.get("lider")
 
         votante = Votante.objects.filter(document_id=document_id).first()
         if votante:
-
-
-
             votante_profile = DataController.get_or_create_votante_profile(votante)
+            if validation_name:
+                votante_profile.validation_name = validation_name
             if first_name:
                 votante_profile.first_name = first_name
 
@@ -755,6 +755,10 @@ class DataController():
                 votante_profile.birthday = birthday
 
             if gender:
+                if gender.upper() in ("HOMBRE", "MASCULINO"):
+                    gender = "HOMBRE"
+                else:
+                    gender = "MUJER"
                 votante_profile.gender = gender
 
             if address:
@@ -775,12 +779,20 @@ class DataController():
             if etiqueta != None and etiqueta != "none":
                 etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
                 print(etiqueta_instance)
-                etiqueta_v = EtiquetaVotante(
-                    votante = votante,
-                    etiqueta = etiqueta_instance
-                )
+                if not EtiquetaVotante.objects.filter(votante=votante,etiqueta=etiqueta_instance).exists():
+                    etiqueta_v = EtiquetaVotante(
+                        votante = votante,
+                        etiqueta = etiqueta_instance
+                    )
 
-                etiqueta_v.save()
+                    etiqueta_v.save()
+
+            if lider_id != None and lider_id != "none":
+                lider = Votante.objects.filter(document_id=lider_id).first()
+                print(lider)
+                if lider:
+                    votante.lider = lider
+                    votante.save()
 
 
 

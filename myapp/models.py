@@ -242,6 +242,13 @@ class VotanteProfile(models.Model):
         on_delete=models.CASCADE
     )
 
+    validation_name = models.CharField(
+        max_length=1024,
+        blank=True,
+        null=True,
+        verbose_name="Apellido Nombre (Validación)"
+    )
+
     first_name = models.CharField(
         max_length=1024,
         blank=True,
