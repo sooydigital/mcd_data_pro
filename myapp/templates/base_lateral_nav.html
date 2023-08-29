@@ -5,13 +5,13 @@
         <i class="fa fa-3x fa-user-circle" aria-hidden="true"></i>
         <h4>{{ request.user.first_name }}<br /> {{ request.user.last_name }}</h4>
     </div>
-
     <div class="navigation">
+    {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ALIMENTADOR' %}
         <ul>
             <li>
-                <a href="{% url 'app:chart' %}">
+                <a href="{% url 'app:home' %}">
                     <span>Inicio</span>
-                    <i class="fa fa-bar-chart"></i>
+                    <i class="fa fa-home"></i>
                 </a>
             </li>
             <li>
@@ -21,7 +21,7 @@
                 </a>
             </li>
             <li>
-                <a href="{% url 'app:insert_votante' %}">
+                <a href="{% url 'app:home' %}">
                     <span>Agregar</span>
                     <i class="fa fa-plus" id="arrow"></i>
                 </a>
@@ -44,8 +44,20 @@
                     <i class="fa fa-user"></i>
                 </a>
             </li>
+            <li>
+                <a href="{% url 'app:chart' %}">
+                    <span>Estadisticas</span>
+                    <i class="fa fa-bar-chart"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}" class="logout-btn btn btn-sm btn-danger ">
+                    <span>Salir</span>
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                </a>
+            </li>
         </ul>
-
+    {% endif %}
         <div class="menu_btn">
             <i class="fa fa-times" id="menu_icon" aria-hidden="true"></i>
         </div>

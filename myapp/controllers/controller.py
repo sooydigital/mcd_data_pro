@@ -172,11 +172,21 @@ class DataController():
         if sub_link:
             sub_link_obj = CustomLink.objects.filter(sub_link=sub_link).first()
             if sub_link_obj:
-                votante_lider = sub_link_obj.votante
+                votante_custom = sub_link_obj.votante
 
         document_id = clena_data_cc(get_data_from_post(data, "document_id"))
         if Votante.objects.filter(document_id=document_id).exists():
             return "Esta cedula ya existe"
+
+        etiqueta_votante = EtiquetaVotante.objects.filter(votante=votante_custom)
+
+        etiqueta_id = etiqueta_votante.values()[0]['etiqueta_id']
+
+        if etiqueta_id == 1:
+            votante_lider = votante_custom
+
+        elif etiqueta_id == 3:
+            votante_coordinador = votante_custom
 
         status = "PENDING"
         custom_user = None
@@ -185,11 +195,17 @@ class DataController():
             status=status,
         )
 
+
+
         if votante_lider:
-            print('is leader')
             votante.lider = votante_lider
             custom_user = votante_lider.custom_user
             votante.custom_user = custom_user
+        elif votante_coordinador:
+            votante.coordinador = votante_coordinador
+            custom_user = votante_coordinador.custom_user
+            votante.custom_user = custom_user
+            etiqueta = "LIDER"
         else:
             custom_user = user.customuser_set.first()
             votante.custom_user = custom_user
@@ -227,12 +243,31 @@ class DataController():
                 municipio=municipio_obj,
                 barrio=barrio_obj,
             )
+
             votante_profile.save()
+            mensaje = f"Felicidades se ha agregado a {first_name} {last_name} satisfactoriamente"
+            if etiqueta:
+                campain_url = DataController.get_current_campaing().url
+                etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
+                etiqueta_v = EtiquetaVotante(
+                    votante = votante,
+                    etiqueta = etiqueta_instance
+                )
+                etiqueta_v.save()
+
+                link_v = CustomLink(
+                    votante = votante,
+                    sub_link = document_id,
+                )
+                link_v.save()
+                mensaje = f"Felicidades {first_name} {last_name} se ha creado como lider correctamente, su link es: {campain_url}/iv/{document_id}"
+                
         except Exception as e:
             return "Woops hubo un error, por favor verifica que estés enviando información correcta"
         
         
         return {
+            "mensaje": mensaje,
             "votante": votante,
             "votante_profile": votante_profile
         }
@@ -952,10 +987,10 @@ class DataController():
 
                 has_customlink = votante.customlink_set.first()
                 if has_customlink:
-                    votante_data['is_leader'] = True
+                    votante_data['is_coordinador'] = True
                     votante_data['custom_link'] = has_customlink.sub_link
                 else:
-                    votante_data['is_leader'] = False
+                    votante_data['is_coordinador'] = False
 
                 if votante_profile:
                     votante_data['show_mobile_phone'] = format_phone(

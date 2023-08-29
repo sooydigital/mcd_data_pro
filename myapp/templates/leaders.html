@@ -1,28 +1,30 @@
 {% extends 'base.html' %}
 {% load static %} {% load permissions_tags %}
 {% block headcontent %}
-    <script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src='https://cdn.plot.ly/plotly-2.17.1.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 {% endblock %}
 {% block title %}
-    Geo Mapa | MCD
+Geo Mapa | MCD
 {% endblock %}
 {% block content %}
 
-    <h2 class="text-center">
+<h2 class="text-center">
     <i class="fa fa-users" aria-hidden="true"></i>
-        <b>Líderes</b>
-    </h2>
-    <div class="col-ms-3">
-        <a href="{% url 'app:create_leader' %}" class="btn btn-sm btn-success" style="color: #fff;"><b>Crear Lider <i class="fa fa-plus" aria-hidden="true"></i></b></a>
-    </div>
-    <input type="hidden" id="mapa_leader_id" value="1">
-    <div class="container">
+    <b>Líderes</b>
+</h2>
+<div class="col-ms-3">
+    <a href="{% url 'app:create_leader' %}" class="btn btn-sm btn-success" style="color: #fff;"><b>Crear Lider <i
+                class="fa fa-plus" aria-hidden="true"></i></b></a>
+</div>
+<input type="hidden" id="mapa_leader_id" value="1">
+<div class="container">
 
-        <div class="row mt-5">
-            <table class="table table-hover">
-                <thead>
+    <div class="row mt-5 ">
+
+        <table class="table table-hover">
+            <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col" class="w-30">Nombre</th>
@@ -32,9 +34,10 @@
                     <th scope="col" class="text-center">Estructura</th>
                     <th scope="col" class="text-center"></th>
                 </tr>
-                </thead>
-                <tbody>
-                {% for leader in leaders %}
+            </thead>
+            <tbody>
+                <div class="internal-scroll">
+                    {% for leader in leaders %}
                     <tr>
                         <th scope="row ">
                             <spam class="table-icon-text">
@@ -45,10 +48,12 @@
                         </th>
                         <td>
                             <spam class="table-icon-text">
-                                <a href="{% url 'app:geomapa_detail_by_votante' leader.document_id %}"><i class="fa fa-users" aria-hidden="true"></i></a>
+                                <a href="{% url 'app:geomapa_detail_by_votante' leader.document_id %}"><i
+                                        class="fa fa-users" aria-hidden="true"></i></a>
 
                                 <b>{{ leader.name|upper }}</b>
-                                <a href="{% url 'app:editar_votante' leader.document_id %}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                <a href="{% url 'app:editar_votante' leader.document_id %}"><i class="fa fa-pencil"
+                                        aria-hidden="true"></i></a>
                             </spam>
                         </td>
 
@@ -59,16 +64,16 @@
                         </td>
                         <td>
                             {% if leader.mobile_phone %}
-                                <a class="text-decoration-none" href="tel:{{ leader.mobile_phone }}">
-                                    <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
-                                </a>
-                                <spam class="table-icon-text">
-                                    |
-                                </spam>
-                                <a class="text-decoration-none verde_color_t"
+                            <a class="text-decoration-none" href="tel:{{ leader.mobile_phone }}">
+                                <i class="fa fa-phone table-icon-text" aria-hidden="true"></i>
+                            </a>
+                            <spam class="table-icon-text">
+                                |
+                            </spam>
+                            <a class="text-decoration-none verde_color_t"
                                 href="https://api.whatsapp.com/send?phone=57{{ leader.mobile_phone }}&text=Hola+L%C3%ADder%21+%0D%0A*{{ nombre }}*%20😁%0A%0AEstamos+encantados+de+tenerte+en+nuestra+organizaci%C3%B3n.+%0D%0A%0D%0APodr%C3%A1s+agregar+tus+votantes+en+el+siguiente+enlace:%0D%0A%0D%0A*{{campain_url}}/iv/{{ leader.custom_link }}*">
-                                    <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
-                                </a>
+                                <i class="fa fa-whatsapp table-icon-text" aria-hidden="true"></i>
+                            </a>
                             {% endif %}
 
                             <spam class="table-icon-text ">
@@ -87,25 +92,27 @@
                         <td class="text-center">
                             <spam class="table-icon-text">
                                 {% if leader.is_leader %}
-                                    <a href="{% url 'app:geomapa_detail_by_leader' leader.id %}"><i class="fa fa-sitemap" aria-hidden="true"></i></a>
+                                <a href="{% url 'app:geomapa_detail_by_leader' leader.id %}"><i class="fa fa-sitemap"
+                                        aria-hidden="true"></i></a>
                                 {% endif %}
                             </spam>
                         </td>
                     </tr>
-                {% endfor %}
-                </tbody>
+                    {% endfor %}
+                </div>
+            </tbody>
+        </table>
 
-            </table>
 
 
-        </div>
     </div>
+</div>
 
 {% endblock %}
 
 {% block scriptcontent %}
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     function pintarMapa(new_data) {
         ids = new_data.ids
@@ -117,7 +124,7 @@
         in_text = new_data.in_text
         in_size = new_data.in_size
 
-        center = {"lat": 7.070479, "lon": -73.106224}
+        center = { "lat": 7.070479, "lon": -73.106224 }
         if (new_data.center) {
             center = new_data.center
         }
@@ -131,7 +138,7 @@
                 "lat": lat,
                 "lon": lon,
                 "marker": {
-                    "meta": {"columnNames": {"size": "Intensidad, size"}},
+                    "meta": { "columnNames": { "size": "Intensidad, size" } },
                     "sizeref": null,
                     "size": in_size
                 },
@@ -147,7 +154,7 @@
                 "lat": lat,
                 "lon": lon,
                 "marker": {
-                    "meta": {"columnNames": {"size": "Puesto de Votación, size"}},
+                    "meta": { "columnNames": { "size": "Puesto de Votación, size" } },
                     "sizeref": null,
                     "size": pv_size
                 },
@@ -157,16 +164,16 @@
         ]
 
         var layout = {
-            "title": {"text": "Geo Mapa"},
+            "title": { "text": "Geo Mapa" },
             "height": 550,
-            "legend": {"x": 0, "y": 1},
+            "legend": { "x": 0, "y": 1 },
             "mapbox": {
                 "zoom": 11,
                 "pitch": 2,
                 "center": center,
                 "bearing": 0
             },
-            "margin": {"b": 40, "l": 40, "r": 40, "t": 40},
+            "margin": { "b": 40, "l": 40, "r": 40, "t": 40 },
             "autosize": true,
             "hovermode": "closest",
             "showlegend": true

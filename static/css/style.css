@@ -489,8 +489,6 @@ body {
 
 .lateral-nav{
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
     width: 100%;
     height: 100%;
@@ -501,8 +499,6 @@ body {
 
 .lateral__hiden{
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
     width: 70px;
     height: 100%;
@@ -806,11 +802,11 @@ main {
     font-weight: bold;
 }
 
-.logout-btn {
-    font-size: 28px;
-    position: absolute;
-    top: 5px;
-    right: 5px;
+.content-overflow{
+    background-color: #0a2653;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden !important;
 }
 
 
@@ -844,6 +840,10 @@ main {
 
     .table th{
         font-size: 20px !important;
+    }
+
+    .people_cards .card-header h3{
+        font-size: 18px;
     }
 
 }
@@ -889,6 +889,31 @@ main {
         font-size: 18px;
     }
 
+    .separator{
+        gap: 30px;
+    }
+
+    .people_cards{
+        grid-template-rows: 1fr;
+        gap: 10px;
+    }
+
+    .people_cards .card-body i{
+        font-size: 40px;
+    }
+    
+    .people_cards .card-footer h3{
+        font-size: 18px;
+    }
+
+    .stadistics {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        width: 90%;
+        height: 80%;
+    }
+    
 
 }
 
@@ -908,12 +933,34 @@ main {
         padding: 3px !important;
     }
 
+    .separator{
+        grid-template-rows: 150px 1fr;
+        gap: 20px;
+    }
+    
+
+    .people_cards .card {
+        height: 120px;
+    }
+
     .navigation i {
         font-size: 30px;
     }
+
+    .people_cards .card-header h3{
+        font-size: 12px;
+    }
+
+    .people_cards .card-body {
+       display: none;
+    }
+
+    .people_cards .card-footer h3{
+        padding: 10px;
+    }
 }
 
-@media only screen and (max-width: 555px) {
+@media only screen and (max-width: 581px) {
 
     .table-icon-text {
         font-size: 8px !important;
@@ -923,7 +970,22 @@ main {
         font-size: 12px !important;
     }
 
-    
+    .separator{
+        grid-template-rows: 120px 1fr;
+    }
+
+    .people_cards{
+        grid-template-rows: 1fr;
+    }
+
+    .people_cards .card{
+        width: 100px;
+    }
+
+    .people_cards .card-header h3{
+        font-size: 10px;
+    }
+
 
 }
 

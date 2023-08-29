@@ -34,7 +34,7 @@ def home(request):
     context.update(summary)
     return render(
         request,
-        'charts.html',
+        'crear_view.html',
         context
     )
 
@@ -185,7 +185,7 @@ def insert_votante_as_coordinador(request):
             (12,'Diciembre'),
         ],
         'years': [str(y).replace('.','') for y in range(1900,2006)],
-        'title': 'Crear Coordinador',
+        'title': 'Crear Capitan',
         'is_coordinador': True,
     }
     
@@ -247,7 +247,7 @@ def insert_votante_with_sub_link(request, sub_link):
         if type(respuesta) == str:
             messages.error(request, respuesta)
         else:
-            messages.success(request, 'El votante se ha registrado correctamente en V-Data.')
+            messages.success(request, respuesta['mensaje'])
         return redirect('./'+sub_link)
 
 
