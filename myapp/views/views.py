@@ -190,7 +190,7 @@ def insert_votante_as_coordinador(request):
     }
     
     if request.method == 'POST':
-        respuesta = DataController.store_votante_as_leader(dict(request.POST))
+        respuesta = DataController.store_votante_as_coordinador(dict(request.POST))
         if type(respuesta) == str:
             messages.error(request, respuesta)
         else:

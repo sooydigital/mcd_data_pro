@@ -204,12 +204,12 @@ class DataController():
             votante.lider = votante_lider
             custom_user = votante_lider.custom_user
             votante.custom_user = custom_user
-            etiqueta = "LIDER"
+            etiqueta = None
         elif votante_coordinador:
             votante.coordinador = votante_coordinador
             custom_user = votante_coordinador.custom_user
             votante.custom_user = custom_user
-            etiqueta = "COORDINADOR"
+            etiqueta = "LIDER"
         else:
             custom_user = user.customuser_set.first()
             votante.custom_user = custom_user
@@ -251,7 +251,10 @@ class DataController():
 
             votante_profile.save()
             mensaje = f"Felicidades se ha agregado a {first_name} {last_name} satisfactoriamente"
-            if etiqueta != None:
+
+            print(etiqueta)
+            if etiqueta == "COORDINADOR" or etiqueta == "LIDER":
+                print('es aca')
                 campain_url = DataController.get_current_campaing().url
                 etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
                 etiqueta_v = EtiquetaVotante(
