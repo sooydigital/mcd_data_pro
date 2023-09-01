@@ -408,7 +408,9 @@ class EtiquetaVotante(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return '{} - {} #{}'.format(self.votante.document_id, self.etiqueta.name, self.is_active)
+        if self.etiqueta:
+            return '{} - {} #{}'.format(self.votante.document_id, self.etiqueta.name, self.is_active)
+        return '{} - {} #{}'.format(self.votante.document_id, "", self.is_active)
 
 
 class CustomLink(models.Model):

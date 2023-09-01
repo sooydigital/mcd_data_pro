@@ -689,7 +689,13 @@ class DataController():
 
         votante = Votante.objects.filter(document_id=document_id).first()
         if not votante:
-            return None
+            status = "PENDING"
+            votante = Votante(
+                document_id=document_id,
+                status=status,
+            )
+
+            votante.save()
 
         if votante.status == "PROCESSED":
             return None
@@ -735,6 +741,14 @@ class DataController():
         lider_id = registro.get("lider")
 
         votante = Votante.objects.filter(document_id=document_id).first()
+        if not votante:
+            status = "PENDING"
+            votante = Votante(
+                document_id=document_id,
+                status=status,
+            )
+            votante.save()
+
         if votante:
             votante_profile = DataController.get_or_create_votante_profile(votante)
             if validation_name:
@@ -776,7 +790,7 @@ class DataController():
 
             votante_profile.save()
 
-            if etiqueta != None and etiqueta != "none":
+            if etiqueta and etiqueta != None and etiqueta != "none":
                 etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
                 print(etiqueta_instance)
                 if not EtiquetaVotante.objects.filter(votante=votante,etiqueta=etiqueta_instance).exists():
@@ -787,14 +801,21 @@ class DataController():
 
                     etiqueta_v.save()
 
+                cl = CustomLink.objects.filter(votante=votante).first()
+                if not cl:
+                    cl = CustomLink()
+                    cl.votante = votante
+                    ts = str(int(time.time()))
+                    ts = "{}_{}".format(etiqueta[0], ts)
+                    cl.sub_link = ts
+                    cl.save()
+
             if lider_id != None and lider_id != "none":
                 lider = Votante.objects.filter(document_id=lider_id).first()
                 print(lider)
                 if lider:
                     votante.lider = lider
                     votante.save()
-
-
 
 
     @staticmethod
