@@ -23,6 +23,8 @@ urlpatterns = [
     path('geomapa/detail_by_leader/<str:leader_id>', views.geomapa_detail_by_leader, name='geomapa_detail_by_leader'),
     path('geomapa/detail_by_votante/<str:votante_cc>', views.geomapa_detail_by_votante, name='geomapa_detail_by_votante'),
 
+    path('events', views.list_events, name='list_events'),
+    path('event/create', views.create_event, name='create_event'),
     path('coordinadores', views.list_coordinadores, name='coordinadores'),
     path('coordinador/create', views.insert_votante_as_coordinador, name='create_coordinador'),
     path('detail_by_coordinador/<str:coordinador_id>', views.list_leaders_by_coordinador, name='detail_by_coordinador'),

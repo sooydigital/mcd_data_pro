@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %} {% load permissions_tags %}
+{% block title %}
+Crear Evento | MCD
+{% endblock %}
+
+{% block headcontent %}
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+{% endblock %}
+{% block content %}
+
+<!-- Modal -->
+<div class="card">
+    <div class="card card-header p-2 principal_color">
+        <h2 class="text-center card-title">
+            {% if custom_name %}
+                {{custom_name}}
+            {% elif title %}
+                {{title}}
+            {% else %}
+                Crear Evento
+
+            {% endif %}
+        </h2>
+    </div>
+    <form method="POST" class="card card-body rounded">
+        {% csrf_token %}
+        <div class="row g-6 my-4">
+
+            <div class="col-sm-6 my-2">
+                <label for="nombre" class="form-label">Nombre del evento</label>
+                <input required type="text" class="form-control" placeholder="Nombre del evento" name="nombre" id="nombre">
+            </div>
+
+            <div class="col-sm-6 my-2">
+                <label for="responsable" class="form-label">Responsable</label>
+                <select required class="form-select" aria-label="Default select example" name="responsable" id="responsable">
+                    <option value="None">Seleccione</option>
+                    {% for coordinador in coordinadores %}
+                        <option value="{{coordinador.document_id}}">{{coordinador.document_id}} - {{coordinador.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+           
+            <div class="d-flex justify-content-center my-5 ">
+                <button id="enviar_form" type="submit" class="btn btn-success">Guardar</button>
+            </div>
+            
+        </div>
+
+    </form>
+</div>
+{% endblock %}
+
+{% block scriptcontent %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}

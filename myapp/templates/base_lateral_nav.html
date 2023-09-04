@@ -22,11 +22,17 @@
             </li>
             <li>
                 <a href="{% url 'app:home' %}">
-                    <span>Agregar</span>
+                    <span>Crear</span>
                     <i class="fa fa-plus" id="arrow"></i>
                 </a>
             </li>
             {% if request.session.campaing == 'Pereira' %}
+            <li>
+                <a href="{% url 'app:list_events' %}">
+                    <span>Eventos</span>
+                    <i class="fa fa-bookmark"></i>
+                </a>
+            </li>
             <li>
                 <a href="{% url 'app:coordinadores' %}">
                     <span>Capitanes</span>

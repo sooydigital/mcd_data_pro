@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %} {% load permissions_tags %}
+{% block headcontent %}
+{% endblock %}
+{% block title %}
+    List de Eventos | MCD
+{% endblock %}
+{% block content %}
+    <div class="container">
+
+            <h1 class="text-center"> <strong> Eventos Creados </strong> </h1>
+
+        <div>
+
+        </div>
+        <div class="row mt-5">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" class="w-30"> <b>Nombre</b></th>
+                    <th scope="col" class="w-30"> <b>Encargado</b></th>
+                    <th scope="col" class="w-30"> <b>Lideres</b></th>
+                    <th scope="col" class="w-30"> <b>Votantes</b></th>
+
+                    <th scope="col" class="text-center"> <b>Total</b></th>
+                    <th scope="col"></th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for evento in events %}
+                    <tr>
+                        <th scope="row ">
+                            <spam class="table-icon-text">
+                               <b>
+                                   {{ forloop.counter }}
+                               </b>
+                            </spam>
+                        </th>
+                        <td>
+                            <spam class="table-icon-text">
+                                {{ evento.nombre|upper }}
+                            </spam>
+                        </td>
+                        <td>
+                            <spam class="table-icon-text">
+                                {{ evento.nombre|upper }}
+                            </spam>
+                        </td>
+                        <td>
+                            <spam class="table-icon-text">
+                                {{ evento.nombre|upper }}
+                            </spam>
+                        </td>
+                        <td>
+                            <spam class="table-icon-text">
+                                {{ evento.nombre|upper }}
+                            </spam>
+                        </td>
+
+                        <td class="text-center">
+                            <spam class="table-icon-text ">
+                                <spam class="table-icon-text">
+                                    222
+                                </spam>
+                            </spam>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

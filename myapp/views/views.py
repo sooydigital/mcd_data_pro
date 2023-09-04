@@ -191,12 +191,12 @@ def insert_votante_as_coordinador(request):
     }
     
     if request.method == 'POST':
-        respuesta = DataController.store_votante_as_leader(dict(request.POST))
+        respuesta = DataController.store_votante_as_coordinador(dict(request.POST))
         if type(respuesta) == str:
             messages.error(request, respuesta)
         else:
             messages.success(request, respuesta["message"])
-            return redirect('app:leaders')
+            return redirect('app:coordinadores')
 
     return render(
         request,
@@ -257,6 +257,25 @@ def insert_votante_with_sub_link(request, sub_link):
         'insert_votante.html',
         context
     )
+
+
+@login_required
+def create_event(request):
+    context = {}
+    coordinadores = DataController.get_all_coordinadores()
+    context.update(coordinadores)
+
+    if request.method == 'POST':
+        respuesta = DataController.store_event(dict(request.POST))
+        print(respuesta)
+        if type(respuesta) == str:
+            messages.error(request, respuesta)
+        else:
+            messages.success(request, respuesta["message"])
+
+            return redirect('app:coordinadores')
+
+    return render(request, 'crear_evento.html', context)
 
 
 #LISTS
@@ -325,6 +344,7 @@ def list_barrios(request):
         context
     )
 
+@login_required
 def votantes_by_barrio(request, barrio):
     context = {
         'barrio':barrio,
@@ -337,6 +357,16 @@ def votantes_by_barrio(request, barrio):
         'show_votantes_by_barrio.html',
         context
     )
+
+
+@login_required
+def list_events(request):
+    context = {}
+    eventos = DataController.list_events()
+    context.update(eventos)
+    print(context)
+    return render(request, 'list_events.html', context)
+
 
 # GEOMAPA
 @login_required
@@ -499,3 +529,5 @@ def charts_view(request):
     }
 
     return render(request,'charts.html', context)
+
+

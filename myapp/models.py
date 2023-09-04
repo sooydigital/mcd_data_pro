@@ -471,3 +471,21 @@ class Campaign(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.name, self.is_active)
+
+
+class Evento(models.Model):
+    name = models.CharField(
+        max_length=255,
+        verbose_name="Nombre del evento",
+    )
+
+    responsable = models.ForeignKey(
+        Votante,
+        on_delete=models.CASCADE
+    )
+
+    active = models.BooleanField(default=True)
+
+
+    def __str__(self):
+        return self.name
