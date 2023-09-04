@@ -26,12 +26,14 @@
                     <i class="fa fa-plus" id="arrow"></i>
                 </a>
             </li>
+            {% if request.session.campaing == 'Pereira' %}
             <li>
                 <a href="{% url 'app:coordinadores' %}">
                     <span>Capitanes</span>
                     <i class="fa fa-certificate"></i>
                 </a>
             </li>
+            {% endif %}
             <li>
                 <a href="{% url 'app:leaders' %}">
                     <span>Lideres</span>
@@ -56,6 +58,7 @@
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                 </a>
             </li>
+
         </ul>
     {% endif %}
         <div class="menu_btn">

@@ -27,6 +27,7 @@ def home(request):
     if not request.session.get('longitude_principal'):
         request.session['longitude_principal'] = DataController.get_current_campaing().longitude_principal
         request.session['latitude_principal'] = DataController.get_current_campaing().latitude_principal
+        request.session['campaing'] = DataController.get_current_campaing().name
     context = {}
     customer_user_id = request.user.id
     summary = DataController.get_summary_by_user(customer_user_id)
