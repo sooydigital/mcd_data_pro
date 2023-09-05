@@ -364,7 +364,6 @@ def list_events(request):
     context = {}
     eventos = DataController.list_events()
     context.update(eventos)
-    print(context)
     return render(request, 'list_events.html', context)
 
 

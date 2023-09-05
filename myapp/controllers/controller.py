@@ -960,9 +960,6 @@ class DataController():
         data = {
             "coordinador_id": coordinador_id,
             "nombre": "",
-            "link": "",
-            'intencion_voto': 0,
-            'intencion_voto_percentage': 0
         }
         coordinador = Votante.objects.filter(id=coordinador_id).first()
         votantes_list = []
@@ -975,24 +972,19 @@ class DataController():
                 data["link"] = full_url
 
             lideres = Votante.objects.filter(coordinador_id=coordinador_id)
+
             for votante in lideres:
                 votante_profile = votante.votanteprofile_set.first()
-                votante_puestovotacion = votante.votantepuestovotacion_set.first()
                 votante_data = {
+                    "id": votante.id,
                     "name": votante.full_name(),
                     "document_id": votante.document_id,
                     "mesa": "",
                     "puesto_nombre": "",
                     "puesto_municipio": "",
-                    "status": votante.status
+                    "status": votante.status,
+                    "lideres_count": len(Votante.objects.filter(lider_id=votante.id))
                 }
-
-                if votante_puestovotacion:
-                    votante_data["mesa"] = votante_puestovotacion.mesa if votante_puestovotacion else ""
-                    puesto = votante_puestovotacion.puesto_votacion
-                    votante_data["puesto_id"] = puesto.id if puesto else ""
-                    votante_data["puesto_nombre"] = puesto.name if puesto else ""
-                    votante_data["puesto_municipio"] = puesto.municipio.name if puesto and puesto.municipio else ""
 
                 has_customlink = votante.customlink_set.first()
                 if has_customlink:
@@ -1707,7 +1699,7 @@ class DataController():
             responsable=votante_instance
             )
             evento.save()
-            mensaje = "El evento {name} se ha creado satisfactoriamente"
+            mensaje = f"El evento {name} se ha creado satisfactoriamente"
 
             return {"message":mensaje}
         
@@ -1720,11 +1712,25 @@ class DataController():
         events = Evento.objects.all()
 
         eventos = []
-
+        count_lideres = 0
+        count_referidos = 0
         for event in events:
+            votante = event.responsable
+            link = votante.customlink_set.first()
             event_data = {
-                'nombre': event.name
+                "id": votante.id,
+                'event_name': event.name,
+                "votante_name": votante.full_name().strip(),
+                "document_id": votante.document_id,
+                "custom_link": link.sub_link
             }
+            lideres = Votante.objects.filter(coordinador_id=votante.id).all()
+
+            for lider in lideres:
+                count_lideres += 1
+                count_referidos += len(Votante.objects.filter(lider_id=lider.id))
+            event_data['lideres'] = count_lideres
+            event_data['referidos'] = count_referidos
 
             eventos.append(event_data)
         

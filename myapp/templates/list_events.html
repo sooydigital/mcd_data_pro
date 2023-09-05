@@ -22,9 +22,7 @@
                     <th scope="col" class="w-30"> <b>Encargado</b></th>
                     <th scope="col" class="w-30"> <b>Lideres</b></th>
                     <th scope="col" class="w-30"> <b>Votantes</b></th>
-
-                    <th scope="col" class="text-center"> <b>Total</b></th>
-                    <th scope="col"></th>
+                    <th scope="col" class="w-30"> <b>Acciones</b></th>
 
                 </tr>
                 </thead>
@@ -40,30 +38,34 @@
                         </th>
                         <td>
                             <spam class="table-icon-text">
-                                {{ evento.nombre|upper }}
+                                {{ evento.event_name|upper }}
                             </spam>
                         </td>
                         <td>
                             <spam class="table-icon-text">
-                                {{ evento.nombre|upper }}
+                                {{ evento.votante_name|upper }}
                             </spam>
                         </td>
                         <td>
-                            <spam class="table-icon-text">
-                                {{ evento.nombre|upper }}
+                            <spam class="table-icon-text text-center">
+                                <a href="{% url 'app:detail_by_coordinador' evento.id %}" class="btn btn-success">
+                                    {{ evento.lideres }}
+                                </a>
                             </spam>
                         </td>
                         <td>
-                            <spam class="table-icon-text">
-                                {{ evento.nombre|upper }}
-                            </spam>
-                        </td>
-
-                        <td class="text-center">
                             <spam class="table-icon-text ">
-                                <spam class="table-icon-text">
-                                    222
-                                </spam>
+                                <a class="btn btn-success">
+                                    {{ evento.referidos }}
+                                </a>
+                            </spam>
+                        </td>
+                        <td>
+                            <spam class="table-icon-text">
+                                <a href=" ./iv/{{ evento.custom_link }} " class="btn btn-primary text-center">
+                                    Agregar Lider
+                                    {{ custom_link }}
+                                </a>
                             </spam>
                         </td>
 
