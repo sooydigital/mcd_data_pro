@@ -1129,7 +1129,7 @@ class DataController():
                 votante_data
             )
 
-        votantes = sorted(votantes, key=lambda x: x["name"])
+        votantes = sorted(votantes, key=lambda x: x["referrals"], reverse=True)
 
         return votantes
 
