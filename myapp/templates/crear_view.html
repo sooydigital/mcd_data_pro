@@ -4,50 +4,52 @@
 <div class="container mt-3">
     {% if request.user|has_role:'SUPER_ADMIN,SUPERVISOR,ALIMENTADOR' %}
 
-    <div class="row md-n3">
-        <div class=" d-md-none d-lg-block col-lg-2"></div>
+        <div class="row md-n3">
+            <div class=" d-md-none d-lg-block col-lg-2"></div>
 
-        <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
-            <a href="{% url 'app:insert_votante' %}" class="home-action-btn text-center ">
-                <i class="fa fa-plus fa-3x "></i><br>
-                <h4 class="my-3">Agregar Dato</h4>
-            </a>
+            <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+                <a href="{% url 'app:insert_votante' %}" class="home-action-btn text-center ">
+                    <i class="fa fa-plus fa-3x "></i><br>
+                    <h4 class="my-3">Agregar Dato</h4>
+                </a>
+            </div>
+            <div class=" col-md-2 d-lg-none"></div>
+
+            <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+                <a href="{% url 'app:create_leader' %}" class="home-action-btn text-center ">
+                    <i class="fa fa-users fa-3x"></i>
+                    <h4 class="my-3">Agregar Lider</h4>
+                </a>
+            </div>
+
+            <div class=" d-md-none d-lg-block col-lg-2"></div>
+
         </div>
-        <div class=" col-md-2 d-lg-none"></div>
 
-        <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
-            <a href="{% url 'app:create_leader' %}" class="home-action-btn text-center ">
-                <i class="fa fa-users fa-3x"></i>
-                <h4 class="my-3">Agregar Lider</h4>
-            </a>
-        </div>
-
-        <div class=" d-md-none d-lg-block col-lg-2"></div>
-
-    </div>
-
-    <div class="row md-n3">
-        <div class=" d-md-none d-lg-block col-lg-2"></div>
-
-        <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
-            <a href="{% url 'app:create_coordinador' %}" class="home-action-btn text-center ">
-                <i class="fa fa-certificate fa-3x"></i>
-                <h4 class="my-3">Agregar Capitan</h4>
-            </a>
-        </div>
-        <div class=" col-md-2 d-lg-none"></div>
         {% if request.session.campaing == 'Pereira' %}
 
-        <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
-            <a href="{% url 'app:create_event' %}" class="home-action-btn text-center ">
-                <i class="fa fa-bookmark fa-3x"></i>
-                <h4 class="my-3">Crear Evento</h4>
-            </a>
-        </div>
-        {% endif %}
-        <div class=" d-md-none d-lg-block col-lg-2"></div>
+            <div class="row md-n3">
+                <div class=" d-md-none d-lg-block col-lg-2"></div>
 
-    </div>
+                <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+                    <a href="{% url 'app:create_coordinador' %}" class="home-action-btn text-center ">
+                        <i class="fa fa-certificate fa-3x"></i>
+                        <h4 class="my-3">Agregar Capitan</h4>
+                    </a>
+                </div>
+                <div class=" col-md-2 d-lg-none"></div>
+
+                <div class=" col-md-5 col-lg-4 d-flex justify-content-center  gy-3">
+                    <a href="{% url 'app:create_event' %}" class="home-action-btn text-center ">
+                        <i class="fa fa-bookmark fa-3x"></i>
+                        <h4 class="my-3">Crear Evento</h4>
+                    </a>
+                </div>
+                <div class=" d-md-none d-lg-block col-lg-2"></div>
+
+            </div>
+        {% endif %}
+
     {% endif %}
 
 </div>
