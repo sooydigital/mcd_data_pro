@@ -804,11 +804,14 @@ class DataController():
         municipio = registro.get("municipio")
         barrio = registro.get("barrio")
         etiqueta = registro.get("etiqueta")
+        lider_id = registro.get("lider")
+
+        lider_instance = Votante.objects.filter(document_id = lider_id).first()
 
 
         votante = Votante.objects.filter(document_id=document_id).first()
+        votante.lider = lider_instance
         if votante:
-            
             votante_profile = DataController.get_or_create_votante_profile(votante)
             if first_name:
                 votante_profile.first_name = first_name
@@ -841,6 +844,7 @@ class DataController():
                     barrio = DataController.get_or_create_barrio(municipio_obj, barrio)
                     votante_profile.barrio = barrio
 
+            votante.save()
             votante_profile.save()
 
             if etiqueta != None and etiqueta != "none":
@@ -858,6 +862,7 @@ class DataController():
     @staticmethod
     def insert_only_cc_votante(document_id):
         status = "PENDING"
+
 
         if not Votante.objects.filter(document_id=document_id).exists():
             votante = Votante(
