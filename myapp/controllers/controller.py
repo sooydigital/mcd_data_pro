@@ -971,9 +971,10 @@ class DataController():
                 full_url = request.build_absolute_uri(url)
                 data["link"] = full_url
 
-            lideres = Votante.objects.filter(coordinador_id=coordinador_id)
+            referidos = list(Votante.objects.filter(coordinador_id=coordinador_id))
+            referidos += list(Votante.objects.filter(lider_id=coordinador_id))
 
-            for votante in lideres:
+            for votante in referidos:
                 votante_profile = votante.votanteprofile_set.first()
                 votante_data = {
                     "id": votante.id,
@@ -1195,7 +1196,7 @@ class DataController():
             votante_data = {
                 "id": votante.id,
                 "name": votante.full_name(),
-                "referrals": len(Votante.objects.filter(coordinador_id=votante.id)),
+                "referrals": len(Votante.objects.filter(coordinador_id=votante.id)) + len(Votante.objects.filter(lider_id=votante.id)),
                 "document_id": votante.document_id,
             }
             has_customlink = votante.customlink_set.first()
@@ -1487,33 +1488,37 @@ class DataController():
                 votante_profile.save()
                 campain_url = DataController.get_current_campaing().url
                 mensaje = f"Felicidades {first_name} {last_name} se ha actualizado correctamente"
-                if etiqueta:
-                    if etiqueta != None and etiqueta != "none" and etiqueta != "Seleccione...":
-                        etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
-                        if not EtiquetaVotante.objects.filter(votante = votante).first():
-                            etiqueta_v = EtiquetaVotante(
-                                votante = votante,
-                                etiqueta = etiqueta_instance
-                            )
-                            etiqueta_v.save()
 
-                        if link != None and link != "none":
-                            c_link = CustomLink.objects.filter(votante = votante).first()
-                            if c_link:
-                                c_link.sub_link = link
-                                c_link.save()
-                                mensaje = f"Felicidades el líder {first_name} {last_name} se ha actualizado correctamente, su link es: {campain_url}/iv/{link}"
-                            else:
-                                link_v = CustomLink(
-                                    votante = votante,
-                                    sub_link = link,
-                                )
-                                link_v.save()
-                                mensaje = f"Felicidades {first_name} {last_name} se ha convertido en lider correctamente, su link es: {campain_url}/iv/{link}"
+                if etiqueta == "LIDER" or etiqueta == "COORDINADOR":
+                    etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
+                    etiqueta_votante = EtiquetaVotante.objects.filter(votante = votante).first()
+                    if etiqueta_votante:
+                        etiqueta_votante.etiqueta = etiqueta_instance
+                    else:
+                        etiqueta_votante = EtiquetaVotante(
+                            votante = votante,
+                            etiqueta = etiqueta_instance
+                        )
+
+                    etiqueta_votante.save()
+
+                    if link != None and link != "none":
+                        c_link = CustomLink.objects.filter(votante = votante).first()
+
+                        if c_link:
+                            c_link.sub_link = link
+                            mensaje = f"Felicidades el líder {first_name} {last_name} se ha actualizado correctamente, su link es: {campain_url}/iv/{link}"
+                        else:
+                            c_link = CustomLink(
+                                votante = votante,
+                                sub_link = link,
+                            )
+                            mensaje = f"Felicidades {first_name} {last_name} se ha convertido en {etiqueta} correctamente, su link es: {campain_url}/iv/{link}"
+
+                        c_link.save()
                             
                 return {"message":mensaje}
             except Exception as e:
-                print(e)
                 return f"Lo sentimos hubo un error al intentar actualizar a {first_name} {last_name}"
 
     
@@ -1712,9 +1717,9 @@ class DataController():
         events = Evento.objects.all()
 
         eventos = []
-        count_lideres = 0
-        count_referidos = 0
         for event in events:
+            count_lideres = 0
+            count_referidos = 0
             votante = event.responsable
             link = votante.customlink_set.first()
             event_data = {
@@ -1729,6 +1734,7 @@ class DataController():
             for lider in lideres:
                 count_lideres += 1
                 count_referidos += len(Votante.objects.filter(lider_id=lider.id))
+
             event_data['lideres'] = count_lideres
             event_data['referidos'] = count_referidos
 

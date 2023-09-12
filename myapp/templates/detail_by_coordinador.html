@@ -90,13 +90,22 @@ Coordinador | MCD
                             {{ votante.lideres_count }}
                         </spam>
                     </td>
-
+                    
+                    {% if votante.is_coordinador %}
                     <td class="text-center">
                         <spam class="table-icon-text">
                             <a href="{% url 'app:geomapa_detail_by_leader' votante.id %}"><i class="fa fa-sitemap"
                                     aria-hidden="true"></i></a>
                         </spam>
                     </td>
+                    {% else %}
+                    <td class="text-center">
+                        <spam class="table-icon-text">
+                            V
+                        </spam>
+                    </td>
+                    {% endif %}
+
 
                 </tr>
                 {% endfor %}
