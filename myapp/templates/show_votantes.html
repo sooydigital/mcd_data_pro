@@ -147,14 +147,12 @@
     const renderPaginatior = async (current, pages) => {
         let paginate = ``
 
-        for(let page = 1; page < pages ; page++) {
-            if (page == current){
-                paginate += `<button data-id="${page}" class="paginator_btn current">${page}</button>`
-            } else{
-                paginate += `<button data-id="${page}" class="paginator_btn ">${page}</button>`
-            }
-
-        }
+        paginate += `<button data-id="${current}" class="paginator_btn current">Inicio</button>`
+        paginate += `<button data-id="${current - 1}" class="paginator_btn current">Anterior</button>`
+        paginate += `<button data-id="${current}" class="paginator_btn current">${current}</button>`
+        paginate += `<button data-id="${current + 1}" class="paginator_btn current">Siguiente</button>`
+        paginate += `<button data-id="${pages}" class="paginator_btn current">Ultima</button>`
+        
         
         paginator.innerHTML = paginate
 
