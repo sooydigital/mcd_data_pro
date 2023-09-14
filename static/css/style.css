@@ -966,11 +966,11 @@ main .content {
 @media only screen and (max-width: 449px) {
 
     .table-icon-text {
-        font-size: 8px !important;
+        font-size: 12px !important;
     }
 
     .table th{
-        font-size: 8px !important;
+        font-size: 10px !important;
     }
 
 }
