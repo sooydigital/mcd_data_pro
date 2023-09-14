@@ -320,14 +320,16 @@ def list_leaders_by_coordinador(request, coordinador_id):
 
 @login_required
 def list_votantes(request):
+    
     return render(request,'show_votantes.html',)
 
 
 @login_required
 def get_votantes_api(request):
-    votantes = list(DataController.get_all_votantes_api())
+    votantes = DataController.get_all_votantes_api(request)
+    
     if len(votantes) > 0:
-        data = {"message": 'Success', 'votantes': votantes}
+        data = {"message": 'Success', 'votantes': votantes }
     else:
         data = {"message": 'Not found'}
     return JsonResponse(data)

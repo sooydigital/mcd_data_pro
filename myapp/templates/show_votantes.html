@@ -16,18 +16,9 @@
         <b>Votantes</b>
     </h2>
 
-    <div class="col-sm-4">
-        <form action="" >
-            <label for="search" class="form-label">Busca un votante </label>
-            <input type="text" placeholder="Digita la cedula que deseas buscar 🔍" class="form-control" name="search" id="search">
-        </form>
-    </div>
-
-    <input type="hidden" id="mapa_leader_id" value="1">
-    <div class="container ancla">
-        <div id="loading_container">
-            <span class="loader"></span>
-        </div>
+    
+    <div class="container">
+        
         <div class="row mt-5">
             <table class="table table-hover">
                 <thead>
@@ -46,7 +37,14 @@
 
             </table>
 
+        </div>
 
+        <div class="row mt-5">
+            <div class="paginator-container">
+                <div id="paginator">
+    
+                </nav>
+            </div>
         </div>
     </div>
 
@@ -57,23 +55,21 @@
     <script type="text/javascript">
 
     // MOSTRAR VOTANTES DE FORMA ASINCRONA
-    
     let votantes = []
-    let observador = new IntersectionObserver((entradas, observador) => {
-
-    }, { 
-        rootMargin: '0px 0px 0px 0px',
-        threshold: 1.0
-    });
     
-    const listarVotantes = async () => {
+    const listarVotantes = async (pagina) => {
         try{
-            const response = await fetch('./api/get_all_votantes')
+            const response = await fetch(`./api/get_all_votantes?page=${pagina}`)
             const data = await response.json()
+
             if(data.message === "Success"){
-                loading_container.style.display = 'none'
-                votantes = data.votantes
+                votantes = data.votantes.votantes
                 renderVotantes(votantes);
+
+                current = data.votantes.current_page
+                pages = data.votantes.pages
+                
+                renderPaginatior(current,pages)
 
             } else {
                 console.log("Votantes no encontrados :(")
@@ -148,16 +144,34 @@
         votantes_table.innerHTML = opciones
     }
 
+    const renderPaginatior = async (current, pages) => {
+        let paginate = ``
+
+        for(let page = 1; page < pages ; page++) {
+            if (page == current){
+                paginate += `<button data-id="${page}" class="paginator_btn current">${page}</button>`
+            } else{
+                paginate += `<button data-id="${page}" class="paginator_btn ">${page}</button>`
+            }
+
+        }
+        
+        paginator.innerHTML = paginate
+
+    }
+
     const cargaInicial = async () => {
-        search.addEventListener('keyup', e => {
-            const filterVotantes = votantes.filter(votante => votante.document_id.includes(search.value))
-            renderVotantes(filterVotantes)
+        paginator.addEventListener('click',  async e =>{
+            if(e.target.classList.contains('paginator_btn')){
+                pagina = e.target.dataset.id
+                listarVotantes(pagina)
+            }
+            e.stopPropagation();
         })
         
-        await listarVotantes()
-
+        await listarVotantes(1);
+        
     };
-
 
     window.addEventListener("load", async () => {
 

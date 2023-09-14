@@ -898,6 +898,60 @@ class DataController():
 
         return data
 
+
+    @staticmethod
+    def get_all_votantes_api(request):
+        all_votantes = Votante.objects.all()
+        paginator = Paginator(all_votantes, 50)
+        pagina = request.GET.get('page') or 1
+        votantes_page = paginator.get_page(pagina)
+
+        current_page = int(pagina)
+        paginas = int(votantes_page.paginator.num_pages + 1)
+
+        votantes = []
+
+        for votante in votantes_page:
+            votante_profile = votante.votanteprofile_set.first()
+
+            votante_data = {
+                "id": votante.id,
+                "name": votante.full_name().strip(),
+                "document_id": votante.document_id,
+            }
+            has_customlink = votante.customlink_set.first()
+            if has_customlink:
+                votante_data['is_leader'] = True
+                votante_data['custom_link'] = has_customlink.sub_link
+            else:
+                votante_data['is_leader'] = False
+            
+            if votante_profile:
+                votante_data['municipio'] = str(votante_profile.municipio)
+                votante_data['mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
+                votante_data['age'] = votante_profile.age()
+                votante_data['barrio'] = str(votante_profile.barrio)
+            votante_puestovotacion = votante.votantepuestovotacion_set.first()
+            if votante_puestovotacion:
+                puesto = votante_puestovotacion.puesto_votacion
+                if puesto:
+                    votante_data['municipio'] = str(puesto.municipio.name)
+
+            votantes.append(
+                votante_data
+            )
+
+        votantes = sorted(votantes, key=lambda x: x["name"])
+
+
+        
+        return {
+            "votantes": votantes,
+            "current_page": current_page,
+            "pages": paginas,
+        }
+    
+
     @staticmethod
     def get_info_puesto_by_id(puesto_id):
         data = {
@@ -1032,48 +1086,48 @@ class DataController():
         if lider:
             has_link = lider.customlink_set.first()
             if has_link:
-
                 url = reverse("app:insert_votante_sub_link", args=[has_link.sub_link])
                 full_url = request.build_absolute_uri(url)
                 data["link"] = full_url
 
-            votantes = Votante.objects.filter(lider_id=leader_id)
-            for votante in votantes:
-                votante_profile = votante.votanteprofile_set.first()
-                votante_puestovotacion = votante.votantepuestovotacion_set.first()
-                votante_data = {
-                    "name": votante.full_name(),
-                    "document_id": votante.document_id,
-                    "mesa": "",
-                    "puesto_nombre": "",
-                    "puesto_municipio": "",
-                    "status": votante.status
-                }
+        #VOTANTES BY LEADER
+        votantes = Votante.objects.filter(lider_id=leader_id)
+        for votante in votantes:
+            votante_profile = votante.votanteprofile_set.first()
+            votante_puestovotacion = votante.votantepuestovotacion_set.first()
+            votante_data = {
+                "name": votante.full_name(),
+                "document_id": votante.document_id,
+                "mesa": "",
+                "puesto_nombre": "",
+                "puesto_municipio": "",
+                "status": votante.status
+            }
 
-                if votante_puestovotacion:
-                    votante_data["mesa"] = votante_puestovotacion.mesa if votante_puestovotacion else ""
-                    puesto = votante_puestovotacion.puesto_votacion
-                    votante_data["puesto_id"] = puesto.id if puesto else ""
-                    votante_data["puesto_nombre"] = puesto.name if puesto else ""
-                    votante_data["puesto_municipio"] = puesto.municipio.name if puesto and puesto.municipio else ""
+            if votante_puestovotacion:
+                votante_data["mesa"] = votante_puestovotacion.mesa if votante_puestovotacion else ""
+                puesto = votante_puestovotacion.puesto_votacion
+                votante_data["puesto_id"] = puesto.id if puesto else ""
+                votante_data["puesto_nombre"] = puesto.name if puesto else ""
+                votante_data["puesto_municipio"] = puesto.municipio.name if puesto and puesto.municipio else ""
 
-                has_customlink = votante.customlink_set.first()
-                if has_customlink:
-                    votante_data['is_leader'] = True
-                    votante_data['custom_link'] = has_customlink.sub_link
-                else:
-                    votante_data['is_leader'] = False
+            has_customlink = votante.customlink_set.first()
+            if has_customlink:
+                votante_data['is_leader'] = True
+                votante_data['custom_link'] = has_customlink.sub_link
+            else:
+                votante_data['is_leader'] = False
 
-                if votante_profile:
-                    votante_data['show_mobile_phone'] = format_phone(
-                        votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
-                    votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
-                    votante_data['age'] = votante_profile.age()
+            if votante_profile:
+                votante_data['show_mobile_phone'] = format_phone(
+                    votante_profile.mobile_phone) if votante_profile.mobile_phone else ""
+                votante_data['mobile_phone'] = votante_profile.mobile_phone or ""
+                votante_data['age'] = votante_profile.age()
 
-                votantes_list.append(
-                    votante_data
-                )
-            votantes_list = sorted(votantes_list, key=lambda k: k['name'])
+            votantes_list.append(
+                votante_data
+            )
+        votantes_list = sorted(votantes_list, key=lambda k: k['name'])
         data["votantes"] = votantes_list
         data["nombre"] = lider.full_name()
         lider_profile = lider.votanteprofile_set.first()
@@ -1224,47 +1278,6 @@ class DataController():
         return {
             "coordinadores": votantes
         }
-
-
-    @staticmethod
-    def get_all_votantes_api():
-        all_votantes = Votante.objects.all()
-        votantes = []
-        for votante in all_votantes:
-            votante_profile = votante.votanteprofile_set.first()
-
-            votante_data = {
-                "id": votante.id,
-                "name": votante.full_name().strip(),
-                "document_id": votante.document_id,
-            }
-            has_customlink = votante.customlink_set.first()
-            if has_customlink:
-                votante_data['is_leader'] = True
-                votante_data['custom_link'] = has_customlink.sub_link
-            else:
-                votante_data['is_leader'] = False
-            
-            if votante_profile:
-                votante_data['municipio'] = str(votante_profile.municipio)
-                votante_data['mobile_phone'] = votante_profile.mobile_phone if votante_profile.mobile_phone else ""
-                votante_data['age'] = votante_profile.age()
-                votante_data['barrio'] = str(votante_profile.barrio)
-                #listar barrios
-
-            votante_puestovotacion = votante.votantepuestovotacion_set.first()
-            if votante_puestovotacion:
-                puesto = votante_puestovotacion.puesto_votacion
-                if puesto:
-                    votante_data['municipio'] = str(puesto.municipio.name)
-
-            votantes.append(
-                votante_data
-            )
-
-        votantes = sorted(votantes, key=lambda x: x["name"])
-        
-        return votantes
     
     
     @staticmethod

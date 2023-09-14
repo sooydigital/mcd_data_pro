@@ -14,7 +14,7 @@
         <i class="fa  fa-sitemap" aria-hidden="true"></i>
         {{ nombre }}
 
-        <a href={{ link }}><i class="fa fa-user-plus" aria-hidden="true"></i></a>
+        <a href="{{ link }}"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
 
         {% if mobile_phone %}
             <a class="verde_color_t"
@@ -22,7 +22,7 @@
              <i class="fa fa-whatsapp" aria-hidden="true"></i></a>
         {% endif %}
     </h1>
-    <input type="hidden" id="mapa_leader_id" value={{ leader_id }}>
+    <input type="hidden" id="mapa_leader_id" value="{{ leader_id }}">
     <div class="container">
         <div class="row  mt-2">
             <div id='myDiv_super_visor_map'><!-- Plotly chart will be drawn inside this DIV --></div>

@@ -402,79 +402,6 @@ body {
     font-size: 20px;
 }
 
-.modal-body{
-    text-align: justify;
-}
-
-.modal-header{
-    color: white;
-    font-weight: bold;
-}
-
-.show-modal{
-    transition: .5s;
-    display: block;
-    position: absolute;
-    z-index: 1;
-    right: 35%;
-}
-
-.hide-modal{
-    transition: .5s;
-    display: none;
-}
-
-.ancla{
-    position: relative;
-}
-
-#loading_container{
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
-    left: 40%;
-    top: 100px;
-}
-
-.loading_text {
-    text-align: center;
-    font-size: 26px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.loader {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: inline-block;
-    position: relative;
-    border: 10px solid;
-    box-sizing: border-box;
-    animation: animloader 1s linear infinite alternate;
-  }
-@keyframes animloader {
-0% {
-    border-color: #202020 rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
-}
-33% {
-    border-color: #202020 #202020 rgba(255, 255, 255, 0) rgba(255, 255, 255, 0);
-}
-66% {
-    border-color: #202020 #202020 #202020 rgba(255, 255, 255, 0);
-}
-100% {
-    border-color: #202020 #202020 #202020 #202020;
-}
-} 
-.bg-dark{
-    background-color: #0f243f !important;
-}
-
 .navbar{
     display: flex;
     justify-content: center;
@@ -713,6 +640,14 @@ main {
     grid-template-columns: 15% 1fr;
     width: 100%;
     height: 100%;
+    overflow: hidden;
+}
+
+main .content {
+    width: 100%;
+    height: 90%;
+    padding: 10px;
+    overflow-y: scroll;
 }
 
 .base_nav_lateral{
@@ -809,6 +744,45 @@ main {
     overflow: hidden !important;
 }
 
+
+.center{
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.paginator-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#paginator{
+    display: grid;
+    grid-template-columns: repeat(15,auto);
+}
+
+.paginator_btn{
+    padding: 5px 10px;
+    background-color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bolder;
+    margin: 5px;
+    border: 1px solid darkblue;
+    transition: .5s linear;
+}
+
+.paginator_btn:hover{
+    transition: .3s linear;
+    background-color: #3edbaf;
+    color: #fff;
+}
+
+.current{
+    background-color: #109a73;
+    color: #fff;
+}
 
 @media only screen and (max-width: 1600px) {
 
