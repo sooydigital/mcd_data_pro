@@ -45,8 +45,10 @@ urlpatterns = [
      path('api/mapa_barrio/<str:barrio>', views.get_barrio_votantes,
          name='mapa_barrios'),
 
-    # integracion para programa de Registraduria y WebWhatsapp
+ # integracion para programa de Registraduria y WebWhatsapp
     path('api/whatsapp-response/', api_views.whatsapp_response, name='whatsapp_response'),
+    path('api/whatsapp-validate/', api_views.whatsapp_validate, name='whatsapp_validate'),
+    path('api/whatsapp-adduser/', api_views.whatsapp_add_user, name='whatsapp_add_user'),
 
     path('api/insert-multi-votantes/', api_views.insert_multi_votantes, name='insert_multi_votantes'),
     path('api/update-multi-profile-votantes/', api_views.update_multi_profile_votantes, name='update_multi_profile_votantes'),
