@@ -77,13 +77,14 @@ class DataController():
             first_name = data.get('first_name', "")
             mobile_phone = data.get('mobile_phone', "")
             municipio = data.get('municipio', "")
+            municipio_instance = Municipio.objects.filter(name=municipio).first()
             gender = "OTRO" 
 
             vp = VotanteProfile()
             vp.votante = votante
             vp.first_name = first_name
             vp.mobile_phone = mobile_phone
-            vp.municipio = municipio
+            vp.municipio = municipio_instance
             vp.gender = gender
 
             vp.save()
