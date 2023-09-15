@@ -63,6 +63,42 @@ def clena_data_cc(message):
 
 
 class DataController():
+
+    @staticmethod
+    def save_votante_info(data):
+        # TODO: revisar si necsito mensaje de error o validaciones...
+        document_id = data.get('document_id')
+        if not document_id:
+            return None
+
+        votante = Votante.objects.filter(document_id=document_id).first()
+        vp = VotanteProfile.objects.filter(votante=votante).first()
+        if not vp:
+            first_name = data.get('first_name', "")
+            mobile_phone = data.get('mobile_phone', "")
+            gender = "OTRO" 
+
+            vp = VotanteProfile()
+            vp.votante = votante
+            vp.first_name = first_name
+            vp.mobile_phone = mobile_phone
+            vp.gender = gender
+
+            vp.save()
+
+
+    @staticmethod
+    def validate_votante_exist(document_id, create=False):
+        votante_exist = Votante.objects.filter(document_id=document_id).exists()
+        if not votante_exist and create:
+            v = Votante()
+            v.document_id = document_id
+            v.status = "PENDING"
+            v.save()
+
+        return votante_exist
+    
+    
     @staticmethod
     def get_current_campaing():
         campaign = Campaign.objects.filter(is_active=True).first()
