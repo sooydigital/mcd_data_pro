@@ -96,6 +96,8 @@ def whatsapp_add_user(request):
         document_id = data.get('query').get('document_id')
         first_name = data.get('query').get('first_name', "")
         mobile_phone = data.get('query').get('mobile_phone', "")
+        municipio = data.get('query').get('municipio', "")
+
         if len(mobile_phone) > 10:
             mobile_phone = mobile_phone[-10:]
 
@@ -104,7 +106,9 @@ def whatsapp_add_user(request):
         data = dict(
             document_id=document_id,
             first_name=first_name,
-            mobile_phone=mobile_phone
+            mobile_phone=mobile_phone,
+            municipio=municipio
+
         )
 
         DataController.save_votante_info(data)

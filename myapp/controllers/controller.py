@@ -76,12 +76,14 @@ class DataController():
         if not vp:
             first_name = data.get('first_name', "")
             mobile_phone = data.get('mobile_phone', "")
+            municipio = data.get('municipio', "")
             gender = "OTRO" 
 
             vp = VotanteProfile()
             vp.votante = votante
             vp.first_name = first_name
             vp.mobile_phone = mobile_phone
+            vp.municipio = municipio
             vp.gender = gender
 
             vp.save()
