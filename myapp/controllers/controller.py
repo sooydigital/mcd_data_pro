@@ -1393,6 +1393,9 @@ class DataController():
                 "departamento": p.municipio.departamento.name,
                 "num_votantes": len(p.votantepuestovotacion_set.all()),
             })
+
+            lista_puestos = sorted(lista_puestos, key=lambda k: k['num_votantes'], reverse=True)
+
         return lista_puestos
 
 
