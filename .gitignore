@@ -134,3 +134,4 @@ dmypy.json
 /media/result.pdf
 /__procesamiento/
 /__procesamiento/*
+/save_dbs
