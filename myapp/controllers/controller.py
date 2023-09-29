@@ -251,8 +251,9 @@ class DataController():
             custom_user = votante_lider.custom_user
             votante.custom_user = custom_user
         else:
-            custom_user = user.customuser_set.first()
-            votante.custom_user = custom_user
+            if user:
+                custom_user = user.customuser_set.first()
+                votante.custom_user = custom_user
 
 
         votante.save()
