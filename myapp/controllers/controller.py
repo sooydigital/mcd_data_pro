@@ -251,7 +251,7 @@ class DataController():
             custom_user = votante_lider.custom_user
             votante.custom_user = custom_user
         else:
-            if user:
+            if user and hasattr(user, 'customuser_set'):
                 custom_user = user.customuser_set.first()
                 votante.custom_user = custom_user
 
