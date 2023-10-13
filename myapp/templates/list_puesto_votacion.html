@@ -66,6 +66,7 @@
                         </td>
 
                         <td class="text-center">
+                            {% if puesto.id != 0 %}
                             <spam class="table-icon-text ">
                                  <spam class="table-icon-text">
                                         <a href="{% url 'app:geomapa_detail_id' puesto.id %}">
@@ -73,6 +74,7 @@
                                         </a>
                                     </spam>
                             </spam>
+                            {% endif %}
                         </td>
 
                     </tr>
