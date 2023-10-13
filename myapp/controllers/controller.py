@@ -1203,14 +1203,15 @@ class DataController():
         puestos = PuestoVotacion.objects.order_by("name").all()
         lista_puestos = []
         for p in puestos:
-            lista_puestos.append({
-                "id": p.id,
-                "name": p.name,
-                "address": p.address,
-                "municipio": p.municipio.name,
-                "departamento": p.municipio.departamento.name,
-                "num_votantes": len(p.votantepuestovotacion_set.all()),
-            })
+            if p.municipio.name == "BUCARAMANGA":
+                lista_puestos.append({
+                    "id": p.id,
+                    "name": p.name,
+                    "address": p.address,
+                    "municipio": p.municipio.name,
+                    "departamento": p.municipio.departamento.name,
+                    "num_votantes": len(p.votantepuestovotacion_set.all()),
+                })
         lista_puestos = sorted(lista_puestos, key=lambda x: x["num_votantes"], reverse=True)
         return lista_puestos
 
