@@ -36,7 +36,7 @@ def whatsapp_response(request):
             mesa = vontante_info.get("mesa")
             direccion = vontante_info.get("direccion")
 
-            base_message = "*{name}* \nDocumento: \n*{document_id}* \n\n*Puesto de Votación* 🗳️ \n\nDepartamento: \n*{departamento}* \nMunicipio: \n*{municipio}* \nPuesto: \n*{puesto}* \nMesa: *{mesa}* \nDirección: *{direccion}*  \n\n¿Cómo llegar? 🗺️📍\nDa click en el enlace.👇🏻 \n\n{puesto_url}".format(
+            base_message = "*{name}* \nDocumento: *{document_id}* \n\n*Puesto de Votación* 🗳️ \n\nDepartamento: \n*{departamento}* \nMunicipio: \n*{municipio}* \nPuesto: \n*{puesto}* \nMesa: *{mesa}* \nDirección: *{direccion}*  \n\n¿Cómo llegar? 🗺️📍\nDa click en el enlace.👇🏻 \n\n{puesto_url}".format(
                 document_id=document_id,
                 name=name.lstrip().rstrip(),
                 departamento=departamento,
