@@ -52,6 +52,9 @@ class Municipio(models.Model):
         blank=True,
         null=True,
     )
+    
+    link = models.URLField(default=None, null=True, blank=True)
+    
     def save(self, *args, **kwargs):
         if not self.id:
             # Newly created object, so set slug
