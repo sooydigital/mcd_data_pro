@@ -134,7 +134,7 @@ class PuestoVotacion(models.Model):
         blank=True,
         null=True,
     )
-    
+
     link = models.URLField(default=None, null=True, blank=True)
 
     def __str__(self):

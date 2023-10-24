@@ -637,7 +637,7 @@ class DataController():
                 "departamento": departamento,
                 "municipio": municipio,
                 "puesto": puesto.name,
-                "url": puesto.url,
+                "url": puesto.link or 'https://maps.app.goo.gl/3RzFjeSYqdFF9PSY8',
                 "mesa": votante_puesto.mesa,
                 "direccion": puesto.address,
             }

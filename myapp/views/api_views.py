@@ -27,18 +27,22 @@ def whatsapp_response(request):
         vontante_info = DataController.get_votante_info(message)
         context = {}
         if vontante_info:
+            document_id = vontante_info.get("document_id")
             name = vontante_info.get("name")
             departamento = vontante_info.get("departamento")
             municipio = vontante_info.get("municipio")
             puesto = vontante_info.get("puesto")
+            puesto_url = vontante_info.get("url")
             mesa = vontante_info.get("mesa")
             direccion = vontante_info.get("direccion")
 
-            base_message = "*{name}* \n\n*LUGAR DE VOTACIÓN* 🗳️ \nDepartamento: \n*{departamento}* \nMunicipio: \n*{municipio}* \nPuesto: \n*{puesto}* \nMesa: \n*{mesa}* \nDirección: \n*{direccion}*".format(
+            base_message = "*{name}* \nDocumento: \n*{document_id}* \n\n*Puesto de Votación* 🗳️ \n\nDepartamento: \n*{departamento}* \nMunicipio: \n*{municipio}* \nPuesto: \n*{puesto}* \nMesa: *{mesa}* \nDirección: *{direccion}*  \n\n¿Cómo llegar? 🗺️📍\nDa click en el enlace.👇🏻 \n\n{puesto_url}".format(
+                document_id=document_id,
                 name=name.lstrip().rstrip(),
                 departamento=departamento,
                 municipio=municipio,
                 puesto=puesto,
+                puesto_url=puesto_url,
                 mesa=mesa,
                 direccion=direccion
             )
