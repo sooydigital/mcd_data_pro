@@ -53,8 +53,7 @@ class Municipio(models.Model):
         null=True,
     )
     
-    link = models.URLField(default=None, null=True, blank=True)
-    
+
     def save(self, *args, **kwargs):
         if not self.id:
             # Newly created object, so set slug
@@ -134,8 +133,9 @@ class PuestoVotacion(models.Model):
         verbose_name="longitude",
         blank=True,
         null=True,
-
     )
+    
+    link = models.URLField(default=None, null=True, blank=True)
 
     def __str__(self):
         return '{} -- {} -- {}'.format(self.name, self.address, self.municipio)

@@ -632,10 +632,12 @@ class DataController():
                     departamento = puesto.municipio.departamento.name
 
             data = {
+                "document_id": document_id,
                 "name": votante_perfil.full_name(),
                 "departamento": departamento,
                 "municipio": municipio,
                 "puesto": puesto.name,
+                "url": puesto.url,
                 "mesa": votante_puesto.mesa,
                 "direccion": puesto.address,
             }
