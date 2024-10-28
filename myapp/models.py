@@ -194,6 +194,11 @@ class Votante(models.Model):
         verbose_name="Cedula",
         unique=True
     )
+    TYPE_VOTANTE = [
+        ("VOTANTE", "VOTANTE"),
+        ("LIDER", "LIDER"),
+        ("DINAMIZADOR", "DINAMIZADOR"),
+    ]
 
     STATUS_CHOICES = [
         ("PENDING", "PENDING"),
@@ -205,6 +210,14 @@ class Votante(models.Model):
         max_length=10,
         choices=STATUS_CHOICES,
     )
+    type = models.CharField(
+        max_length=12,
+        choices=TYPE_VOTANTE,
+        default="VOTANTE"
+    )
+    num_referidos = models.IntegerField(
+        default=0
+    )
 
     custom_user = models.ForeignKey(
         CustomUser,
@@ -214,13 +227,13 @@ class Votante(models.Model):
         verbose_name='supervisor'
     )
 
-    coordinador = models.ForeignKey(
-        "self",
-        related_name='Coordinador',
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-    )
+    # coordinador = models.ForeignKey(
+    #     "self",
+    #     related_name='Coordinador',
+    #     blank=True,
+    #     null=True,
+    #     on_delete=models.CASCADE,
+    # )
 
     lider = models.ForeignKey(
         "self",
