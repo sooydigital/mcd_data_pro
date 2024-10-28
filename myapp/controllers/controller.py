@@ -974,11 +974,12 @@ class DataController():
                 full_url = request.build_absolute_uri(url)
                 data["link"] = full_url
 
-            lideres = Votante.objects.filter(coordinador_id=coordinador_id)
+            lideres = Votante.objects.filter(lider_id=coordinador_id)
             for votante in lideres:
                 votante_profile = votante.votanteprofile_set.first()
                 votante_puestovotacion = votante.votantepuestovotacion_set.first()
                 votante_data = {
+                    "id": votante.id,
                     "name": votante.full_name(),
                     "document_id": votante.document_id,
                     "mesa": "",
@@ -994,12 +995,14 @@ class DataController():
                     votante_data["puesto_nombre"] = puesto.name if puesto else ""
                     votante_data["puesto_municipio"] = puesto.municipio.name if puesto and puesto.municipio else ""
 
-                has_customlink = votante.customlink_set.first()
-                if has_customlink:
-                    votante_data['is_coordinador'] = True
-                    votante_data['custom_link'] = has_customlink.sub_link
+                is_lider = votante.type in ["LIDER", "DINAMIZADOR"]
+                if is_lider:
+                    votante_data['is_leader'] = True
+                    has_customlink = votante.customlink_set.first()
+                    if has_customlink:
+                        votante_data['custom_link'] = has_customlink.sub_link
                 else:
-                    votante_data['is_coordinador'] = False
+                    votante_data['is_leader'] = False
 
                 if votante_profile:
                     votante_data['show_mobile_phone'] = format_phone(
@@ -1044,6 +1047,7 @@ class DataController():
                 votante_profile = votante.votanteprofile_set.first()
                 votante_puestovotacion = votante.votantepuestovotacion_set.first()
                 votante_data = {
+                    "id": votante.id,
                     "name": votante.full_name(),
                     "document_id": votante.document_id,
                     "mesa": "",
@@ -1059,10 +1063,12 @@ class DataController():
                     votante_data["puesto_nombre"] = puesto.name if puesto else ""
                     votante_data["puesto_municipio"] = puesto.municipio.name if puesto and puesto.municipio else ""
 
-                has_customlink = votante.customlink_set.first()
-                if has_customlink:
+                is_lider = votante.type in ["DINAMIZADOR", "LIDER"]
+                if is_lider:
                     votante_data['is_leader'] = True
-                    votante_data['custom_link'] = has_customlink.sub_link
+                    has_customlink = votante.customlink_set.first()
+                    if has_customlink:
+                        votante_data['custom_link'] = has_customlink.sub_link
                 else:
                     votante_data['is_leader'] = False
 
@@ -1158,10 +1164,9 @@ class DataController():
 
     @staticmethod
     def get_all_leaders():
-        etiquetas = EtiquetaVotante.objects.filter(etiqueta=1).all()
+        votantes_list = Votante.objects.filter(type="LIDER").all()
         votantes = []
-        for etiqueta in etiquetas:
-            votante = etiqueta.votante
+        for votante in votantes_list:
             votante_profile = votante.votanteprofile_set.first()
             votante_data = {
                 "id": votante.id,
@@ -1169,10 +1174,13 @@ class DataController():
                 "referrals": len(Votante.objects.filter(lider_id=votante.id)),
                 "document_id": votante.document_id
             }
-            has_customlink = votante.customlink_set.first()
-            if has_customlink:
+            is_lider = votante.type in ['DINAMIZADOR', "LIDER"]
+            if is_lider:
                 votante_data['is_leader'] = True
-                votante_data['custom_link'] = has_customlink.sub_link
+
+                has_customlink = votante.customlink_set.first()
+                if has_customlink:
+                    votante_data['custom_link'] = has_customlink.sub_link
             else:
                 votante_data['is_leader'] = False
 
@@ -1195,15 +1203,14 @@ class DataController():
 
     @staticmethod
     def get_all_coordinadores():
-        etiquetas = EtiquetaVotante.objects.filter(etiqueta=3).all()
+        votante_list = Votante.objects.filter(type="DINAMIZADOR").all()
         votantes = []
-        for etiqueta in etiquetas:
-            votante = etiqueta.votante
+        for votante in votante_list:
             votante_profile = votante.votanteprofile_set.first()
             votante_data = {
                 "id": votante.id,
                 "name": votante.full_name(),
-                "referrals": len(Votante.objects.filter(coordinador_id=votante.id)),
+                "referrals": len(Votante.objects.filter(lider_id=votante.id)),
                 "document_id": votante.document_id
             }
             has_customlink = votante.customlink_set.first()
