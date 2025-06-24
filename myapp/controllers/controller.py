@@ -190,6 +190,8 @@ class DataController():
 
             elif etiqueta_id == 3:
                 votante_coordinador = votante_custom
+            else:
+                votante_lider = votante_custom
 
         status = "PENDING"
         custom_user = None
@@ -1557,6 +1559,7 @@ class DataController():
         votante = Votante(
             document_id=document_id,
             status=status,
+            type="LIDER"
         )
 
         votante.save()
@@ -1636,6 +1639,7 @@ class DataController():
         votante = Votante(
             document_id=document_id,
             status=status,
+            type="DINAMIZADOR",
         )
 
         votante.save()
