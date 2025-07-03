@@ -83,7 +83,7 @@ body {
 
 .home-action-btn {
 
-    background-color: #0047BA;
+    background-color: #323F1D;
     color: white;
     text-align: center;
     font-size: 30px;
@@ -102,7 +102,7 @@ body {
 
 
 .home-action-btn:hover {
-    background-color: #0159e7;
+    background-color: #323F1D;
     color: white;
 }
 
@@ -472,7 +472,7 @@ body {
 }
 } 
 .bg-dark{
-    background-color: #0f243f !important;
+    background-color: #323F1D !important;
 }
 
 .navbar{

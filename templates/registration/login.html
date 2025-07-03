@@ -19,9 +19,20 @@
             Data Pro | MCD
         {% endblock %}
     </title>
+<style>
+    body {
+      height: 100vh;
+      margin: 0;
+      background-image: url({% static 'img/background.gif' %});
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: auto; /* ¡Clave! Mantiene el tamaño original */
+      background-color: #f0f0f0; /* Relleno del fondo */
+    }
+  </style>
 </head>
 
-<body style="background-color: #47B5FF;">
+<body>
 <section>
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -29,14 +40,13 @@
                 <div class="card" style="border-radius: 1rem;">
                     <div class="row g-0">
                         <div class="col-md-6 col-lg-5 d-none d-md-block">
-                            <img src="{% static 'img/fondo_login.jpg' %}"
+                            <img src="{% static 'img/fondo_login.png' %}"
                                  alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;"/>
-
                         </div>
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
                             <div class="card-body p-4 p-lg-5 text-black col-md-9 col-sm-12">
                                 <div class="d-flex align-items-center mb-3 pb-1">
-                                    <img class="mx-auto d-block" src="{% static 'img/logo_mcd.JPG' %}" height="90"
+                                    <img class="mx-auto d-block" src="{% static 'img/logo_verde.png' %}" height="90"
                                          alt="logo">
                                 </div>
                                 <br>
@@ -78,7 +88,7 @@
                                     <br>
                                     <div class="form-group mb-0 row">
                                         <div class="text-muted text-center">
-                                            <button class="btn btn-primary" type="submit">
+                                            <button class="btn btn-primary" style="background-color: #323F1D; border-color: #323F1D" type="submit">
 
                                                 Iniciar sesión
                                             </button>
@@ -95,8 +105,8 @@
                 <br>
                 <br>
 
-                Copyright © 2023
-                <a class='text-decoration-none' href="http://www.miclickdigital.com/"> <b> Mi Click Digital</b></a>
+                Copyright © 2025
+                <a style="color: #B9D4AA " class='text-decoration-none' href="http://www.aspencreativo.com"> <b> Aspen Creativo. </b></a>
                 Todos los derechos reservados.
 
 
