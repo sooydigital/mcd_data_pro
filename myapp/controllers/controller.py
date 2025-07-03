@@ -1268,8 +1268,9 @@ class DataController():
             votante_puestovotacion = votante.votantepuestovotacion_set.first()
             if votante_puestovotacion:
                 puesto = votante_puestovotacion.puesto_votacion
-                if puesto:
-                    votante_data['municipio'] = str(puesto.municipio.name)
+                if puesto and puesto.municipio:
+                    votante_data['votacion_municipio'] = str(puesto.municipio.name)
+                    votante_data['votacion_id'] = str(puesto.id)
 
             votantes.append(
                 votante_data
@@ -1367,6 +1368,7 @@ class DataController():
                 "departamento": p.municipio.departamento.name,
                 "num_votantes": len(p.votantepuestovotacion_set.all()),
             })
+        lista_puestos.sort(key=lambda k: -k['num_votantes'])
         return lista_puestos
 
 
