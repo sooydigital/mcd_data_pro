@@ -1,7 +1,7 @@
 # admin.py
 
 from django.contrib import admin
-from myapp.models import Departamento, Municipio, Barrio
+from myapp.models import Departamento, Municipio, Barrio, Comuna
 from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage
 from myapp.models import PuestoVotacion, CustomUser, IntecionDeVoto
 from myapp.models import CustomLink, EtiquetaVotante, Etiqueta
@@ -76,6 +76,11 @@ class MunicipioAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 
+class ComunaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'number', 'name', 'municipio')
+    list_filter = ('municipio',)
+    search_fields = ('number', 'name',)
+
 class BarrioAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'municipio')
     list_filter = ('municipio',)
@@ -149,6 +154,7 @@ class VotanteMessageAdmin(admin.ModelAdmin):
 admin.site.register(Departamento, DepartamentoAdmin)
 admin.site.register(Municipio, MunicipioAdmin)
 admin.site.register(Barrio, BarrioAdmin)
+admin.site.register(Comuna, ComunaAdmin)
 
 # Puesto Votacion y User
 admin.site.register(PuestoVotacion, PuestoVotacionAdmin)

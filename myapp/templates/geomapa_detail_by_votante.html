@@ -90,6 +90,18 @@ Geo Mapa | MCD
                     {% endif %}
                 </div>
                 <div class="col-lg-3">
+                    <h3 class="h6"><b>Comuna:</b></h3>
+                    {% if votante.comuna %}
+                        <p class="text-start">
+                            {{votante.comuna}}
+                        </p>
+                    {% else %}
+                        <div id="loaing_validation" class="spinner-border text-info" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-lg-3">
                     <h3 class="h6"><b>Barrio:</b></h3>
                     {% if votante.barrio %}
                         <p class="text-start">

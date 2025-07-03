@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone, dateformat
 
 from myapp.models import Etiqueta, Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage, EtiquetaVotante
-from myapp.models import Municipio, Barrio, Departamento, PuestoVotacion
+from myapp.models import Municipio, Barrio, Comuna, Departamento, PuestoVotacion
 from myapp.models import CustomUser, CustomLink
 from myapp.models import Campaign
 import math
@@ -152,6 +152,42 @@ class DataController():
             )
             municipio_obj.save()
         return municipio_obj
+
+    @staticmethod
+    def get_or_create_comuna(municipio, barrio, comuna):
+        barrio_obj = None
+        if barrio:
+            if Barrio.objects.filter(municipio=municipio, name=barrio).exists():
+                barrio_obj = Barrio.objects.filter(municipio=municipio, name=barrio).first()
+            else:
+                barrio_obj = Barrio(
+                    municipio=municipio,
+                    name=barrio,
+                )
+                barrio_obj.save()
+
+        comuna_obj = None
+        comuna_number = 0
+        comuna_name = comuna
+        if comuna.split()[0].isdigit():
+            comuna_number = comuna.split()[0]
+            comuna_name = " ".join(comuna.split()[1:])
+
+        if Comuna.objects.filter(municipio=municipio, name=comuna_name).exists():
+            comuna_obj = Comuna.objects.filter(municipio=municipio, name=comuna_name).first()
+        else:
+            comuna_obj = Comuna(
+                municipio=municipio,
+                name=comuna_name,
+                number=comuna_number,
+            )
+            comuna_obj.save()
+
+        if barrio_obj:
+            barrio_obj.comuna = comuna_obj
+            barrio_obj.save()
+
+        return comuna_obj
 
     @staticmethod
     def get_or_create_barrio(municipio, barrio):
@@ -804,6 +840,7 @@ class DataController():
         gender = registro.get("gender")
         address = registro.get("address")
         municipio = registro.get("municipio")
+        comuna = registro.get("comuna")
         barrio = registro.get("barrio")
         etiqueta = registro.get("etiqueta")
 
@@ -842,6 +879,9 @@ class DataController():
                 if barrio:
                     barrio = DataController.get_or_create_barrio(municipio_obj, barrio)
                     votante_profile.barrio = barrio
+
+                if comuna:
+                    comuna = DataController.get_or_create_comuna(municipio_obj, barrio, comuna)
 
             votante_profile.save()
 
@@ -1156,6 +1196,8 @@ class DataController():
                 votante_data['barrio'] = ""
                 if votante_profile.barrio:
                     votante_data['barrio'] = votante_profile.barrio.name
+                    if votante_profile.barrio.comuna:
+                        votante_data['comuna'] = votante_profile.barrio.comuna.name
 
             votantes_list.append(
                 votante_data

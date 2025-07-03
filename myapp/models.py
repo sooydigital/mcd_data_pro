@@ -63,9 +63,43 @@ class Municipio(models.Model):
         return '{}'.format(self.name)
 
 
+class Comuna(models.Model):
+    municipio = models.ForeignKey(
+        Municipio,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
+    number = models.PositiveSmallIntegerField(
+        blank=True,
+        null=True,
+    )
+    name = models.CharField(
+        max_length=1024,
+        verbose_name="nombre de la comuna"
+    )
+    slug = models.SlugField()
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Newly created object, so set slug
+            self.slug = slugify(self.name)
+
+        super(Comuna, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return '{}'.format(self.name)
+
+
 class Barrio(models.Model):
     municipio = models.ForeignKey(
         Municipio,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
+    comuna = models.ForeignKey(
+        Comuna,
         blank=True,
         null=True,
         on_delete=models.CASCADE
