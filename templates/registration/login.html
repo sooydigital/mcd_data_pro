@@ -20,14 +20,14 @@
         {% endblock %}
     </title>
 <style>
-    body {
-      height: 100vh;
+    html, body {
       margin: 0;
-      background-image: url({% static 'img/background.gif' %});
-      background-repeat: no-repeat;
+      padding: 0;
+      height: 100vh;
+        background-image: url({% static 'img/background.gif' %});
       background-position: center center;
-      background-size: auto; /* ¡Clave! Mantiene el tamaño original */
-      background-color: #f0f0f0; /* Relleno del fondo */
+      background-size: contain;  /* 🔑 Ajusta al tamaño del viewport sin recorte */
+      background-color: #000;    /* Se verá si sobran espacios */
     }
   </style>
 </head>
