@@ -1295,6 +1295,7 @@ class DataController():
                 "id": votante.id,
                 "name": votante.full_name().strip(),
                 "document_id": votante.document_id,
+                "votacion_municipio": 'X'
             }
             has_customlink = votante.customlink_set.first()
             if has_customlink:
@@ -1321,7 +1322,7 @@ class DataController():
                 votante_data
             )
 
-        votantes = sorted(votantes, key=lambda x: x["name"])
+        votantes = sorted(votantes, key=lambda x: (x["votacion_municipio"], x["name"]))
         
         return votantes
     
