@@ -172,7 +172,7 @@ class DataController():
         comuna_obj = None
         comuna_number = 0
         comuna_name = comuna
-        if comuna.split()[0].isdigit():
+        if comuna and comuna.split()[0].isdigit() and len(comuna.split())>1:
             comuna_number = comuna.split()[0]
             comuna_name = " ".join(comuna.split()[1:])
 
