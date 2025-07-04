@@ -166,6 +166,43 @@ def insert_votante_as_leader(request):
     )
 
 
+def insert_votante_as_leader_qr(request):
+    context = {
+        'days': [d for d in range(1,32)],
+        'months': [
+            (1,'Enero'),
+            (2,'Febrero'),
+            (3,'Marzo'),
+            (4,'Abril'),
+            (5,'Mayo'),
+            (6,'Junio'),
+            (7,'Julio'),
+            (8,'Agosto'),
+            (9,'Septiembre'),
+            (10,'Octubre'),
+            (11,'Noviembre'),
+            (12,'Diciembre'),
+        ],
+        'years': [str(y).replace('.','') for y in range(1900,2008)],
+        'title': 'Crear Líder',
+        'is_leader': True,
+
+    }
+    if request.method == 'POST':
+        respuesta = DataController.store_votante_as_user_leader(request, dict(request.POST))
+        if type(respuesta) == str:
+            messages.error(request, respuesta)
+        else:
+            messages.success(request, respuesta["message"])
+            return redirect('app:geomapa_detail_leader')
+
+
+    return render(
+        request,
+        'qr_insert_lider.html',
+        context
+    )
+
 @login_required
 def insert_votante_as_coordinador(request):
     context = {
@@ -184,7 +221,7 @@ def insert_votante_as_coordinador(request):
             (11,'Noviembre'), 
             (12,'Diciembre'),
         ],
-        'years': [str(y).replace('.','') for y in range(1900,2006)],
+        'years': [str(y).replace('.','') for y in range(1900,2008)],
         'title': 'Crear Capitan',
         'is_coordinador': True,
     }
@@ -362,7 +399,25 @@ def geomapa_detail(request, puesto_id=None):
         'geomapa_detail.html',
         context
     )
+@login_required
+def geomapa_detail_leader(request):
+    lider_id = 0
+    try:
+        type = request.user.customuserlider_set.first().votante.type
+        if type == 'LIDER':
+            lider_id = request.user.customuserlider_set.first().votante.id
+    except:
+        pass
+    context = {}
 
+    info_puesto = DataController.get_info_puesto_by_leader(request, lider_id)
+    context.update(info_puesto)
+    context['leader_id'] = str(context['leader_id'])
+    return render(
+        request,
+        'geomapa_detail_by_leader.html',
+        context
+    )
 @login_required
 def geomapa_detail_by_leader(request, leader_id):
     context = {}

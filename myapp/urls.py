@@ -20,6 +20,7 @@ urlpatterns = [
     path('geomapa', views.geomapa, name='geomapa'),
     path('geomapa/detail/', views.geomapa_detail, name='geomapa_detail'),
     path('geomapa/detail/<str:puesto_id>', views.geomapa_detail, name='geomapa_detail_id'),
+    path('geomapa/detail_leader', views.geomapa_detail_leader, name='geomapa_detail_leader'),
     path('geomapa/detail_by_leader/<str:leader_id>', views.geomapa_detail_by_leader, name='geomapa_detail_by_leader'),
     path('geomapa/detail_by_votante/<str:votante_cc>', views.geomapa_detail_by_votante, name='geomapa_detail_by_votante'),
 
@@ -28,6 +29,7 @@ urlpatterns = [
     path('detail_by_coordinador/<str:coordinador_id>', views.list_leaders_by_coordinador, name='detail_by_coordinador'),
     path('leaders', views.list_leaders, name='leaders'),
     path('leaders/create', views.insert_votante_as_leader, name='create_leader'),
+    path('QR_leaders/create', views.insert_votante_as_leader_qr, name='create_leader_qr'),
     path('votantes', views.list_votantes, name='show_votantes'),
     path('votante/editar/<str:document_id>', views.editar_votante, name='editar_votante'),
     path('votante/eliminar/<str:document_id>', views.eliminar_votante, name='eliminar_votante'),

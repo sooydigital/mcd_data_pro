@@ -1,12 +1,15 @@
+import random
 from datetime import datetime, timedelta
 from django.urls import reverse
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone, dateformat
+from django.contrib.auth.models import User, Group
+from django.contrib.auth import authenticate, login, logout
 
 from myapp.models import Etiqueta, Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage, EtiquetaVotante
 from myapp.models import Municipio, Barrio, Comuna, Departamento, PuestoVotacion
-from myapp.models import CustomUser, CustomLink
+from myapp.models import CustomUser, CustomLink, CustomUserLider
 from myapp.models import Campaign
 import math
 
@@ -1489,7 +1492,7 @@ class DataController():
     def update_profile_votantes_custom(data, document_id):
         first_name = get_data_from_post(data, "first_name")
         last_name = get_data_from_post(data, "last_name")
-        email = "null"
+        email = get_data_from_post(data, "email")
         mobile_phone = get_data_from_post(data, "mobile_phone")
         day = get_data_from_post(data, "day")
         month = get_data_from_post(data, "month")
@@ -1610,7 +1613,7 @@ class DataController():
 
         first_name = get_data_from_post(data, "first_name")
         last_name = get_data_from_post(data, "last_name")
-        email = "null"
+        email = get_data_from_post(data, "email")
         mobile_phone = get_data_from_post(data, "mobile_phone")
         day = get_data_from_post(data, "day")
         month = get_data_from_post(data, "month")
@@ -1620,6 +1623,7 @@ class DataController():
         address = get_data_from_post(data, "address")
         municipio = get_data_from_post(data, "municipio")
         barrio = get_data_from_post(data, "barrio")
+        comuna = get_data_from_post(data, "comuna")
         departamento_obj = Departamento.objects.first()
         etiqueta = get_data_from_post(data,"etiqueta")
         if get_data_from_post(data,"link"):
@@ -1629,6 +1633,7 @@ class DataController():
 
         municipio_obj = DataController.get_or_create_municipio(departamento_obj, municipio)
         barrio_obj = DataController.get_or_create_barrio(municipio_obj, barrio)
+        comuna_obj = DataController.get_or_create_comuna(municipio_obj, barrio, comuna)
 
         try:
             votante_profile = VotanteProfile(
@@ -1669,7 +1674,109 @@ class DataController():
             return {"message":mensaje}
         except Exception as e:
             return "Woops hubo un error, por favor verifica que estés enviando información correcta"
-        
+
+    @staticmethod
+    def store_votante_as_user_leader(request, data):
+        document_id = clena_data_cc(get_data_from_post(data, "document_id"))
+
+        if Votante.objects.filter(document_id=document_id).exists():
+            return "Esta cedula ya existe"
+
+        status = "PENDING"
+        votante = Votante(
+            document_id=document_id,
+            status=status,
+            type="LIDER"
+        )
+
+        votante.save()
+
+        first_name = get_data_from_post(data, "first_name")
+        last_name = get_data_from_post(data, "last_name")
+        email = get_data_from_post(data, "email")
+        mobile_phone = get_data_from_post(data, "mobile_phone")
+        day = get_data_from_post(data, "day")
+        month = get_data_from_post(data, "month")
+        year = get_data_from_post(data, "year")
+        birthday = str(year+'-'+month+'-'+day)
+        gender = get_data_from_post(data, "gender")
+        address = get_data_from_post(data, "address")
+        municipio = get_data_from_post(data, "municipio")
+        barrio = get_data_from_post(data, "barrio")
+        comuna = get_data_from_post(data, "comuna")
+        departamento_obj = Departamento.objects.first()
+        etiqueta = get_data_from_post(data,"etiqueta")
+        if get_data_from_post(data,"link"):
+            link = get_data_from_post(data,"link")
+        else:
+            link = "{}_{}".format(first_name, document_id[:5])
+
+        municipio_obj = DataController.get_or_create_municipio(departamento_obj, municipio)
+        barrio_obj = DataController.get_or_create_barrio(municipio_obj, barrio)
+        comuna_obj = DataController.get_or_create_comuna(municipio_obj, barrio, comuna)
+
+        try:
+            votante_profile = VotanteProfile(
+                votante=votante,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                mobile_phone=mobile_phone,
+                birthday=birthday,
+                gender=gender,
+                address=address,
+                municipio=municipio_obj,
+                barrio=barrio_obj,
+            )
+            votante_profile.save()
+            campain_url = DataController.get_current_campaing().url
+            if etiqueta != None and etiqueta != "none":
+                etiqueta_instance = Etiqueta.objects.filter(name=etiqueta).first()
+                etiqueta_v = EtiquetaVotante(
+                    votante = votante,
+                    etiqueta = etiqueta_instance
+                )
+                etiqueta_v.save()
+
+                while CustomLink.objects.filter(sub_link=link).exists():
+                    link = "{}_{}".format(first_name, random.randint(1000, 9999))
+
+                link_v = CustomLink(
+                        votante = votante,
+                        sub_link = document_id,
+                    )
+                link_v.save()
+                # crear usuario
+                grupo = Group.objects.get(name='LIDER')
+                user_object = None
+                if not User.objects.filter(email=email).exists():
+                    print(">>> User with username: '{}' created".format(document_id))
+                    user_object = User(username=email, email=email, first_name=first_name,
+                                       last_name=last_name)
+                    user_object.set_password(document_id)
+                    user_object.save()
+                else:
+                    user_object = User.objects.filter(email=email).first()
+
+                user_object.groups.add(grupo)
+                user_object.save()
+                if not CustomUserLider.objects.filter(user=user_object, votante=votante).exists():
+                    CustomUserLider(user=user_object, votante=votante).save()
+
+                # autenticando este nuevo usuario
+
+                username = email
+                password = document_id
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+
+                mensaje = f"Felicidades {first_name} {last_name} se ha creado como lider correctamente, su link es: {campain_url}/iv/{link}"
+            # crear usuario
+            return {"message":mensaje}
+        except Exception as e:
+            return "Woops hubo un error, por favor verifica que estés enviando información correcta"
+
 
     @staticmethod
     def store_votante_as_coordinador(data):
