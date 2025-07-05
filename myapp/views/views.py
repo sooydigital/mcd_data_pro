@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from myapp.controllers.download_controller import DownloadController
 from myapp.controllers.controller import DataController
 from django.http import JsonResponse
+from django.urls import reverse
 
 
 # Create your views here.
@@ -202,6 +203,29 @@ def insert_votante_as_leader_qr(request):
         'qr_insert_lider.html',
         context
     )
+
+
+def a_ganar(request):
+    lider = None
+    try:
+        type = request.user.customuserlider_set.first().votante.type
+        if type == 'LIDER':
+            lider = request.user.customuserlider_set.first().votante
+    except:
+        pass
+    context = {}
+    if lider:
+        context = {
+            'nombre': lider.full_name(),
+            'mobile_phone': lider.votanteprofile_set.first().mobile_phone,
+            'link': lider.customlink_set.first().sub_link if lider.customlink_set.first() else '',
+        }
+    sub_link = lider.customlink_set.first().sub_link if lider.customlink_set.first() else ''
+    link = reverse("app:insert_votante_sub_link", args=[sub_link])
+    full_url = request.build_absolute_uri(link)
+    context["link"]=full_url
+    return render(request, 'a_ganar.html', context)
+
 
 @login_required
 def insert_votante_as_coordinador(request):

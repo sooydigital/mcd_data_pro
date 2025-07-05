@@ -30,6 +30,7 @@ urlpatterns = [
     path('leaders', views.list_leaders, name='leaders'),
     path('leaders/create', views.insert_votante_as_leader, name='create_leader'),
     path('QR_leaders/create', views.insert_votante_as_leader_qr, name='create_leader_qr'),
+    path('a_ganar', views.a_ganar, name='a_ganar'),
     path('votantes', views.list_votantes, name='show_votantes'),
     path('votante/editar/<str:document_id>', views.editar_votante, name='editar_votante'),
     path('votante/eliminar/<str:document_id>', views.eliminar_votante, name='eliminar_votante'),
