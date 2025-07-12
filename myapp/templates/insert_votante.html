@@ -20,7 +20,7 @@ Agregar Amigo | MCD
             {% elif title %}
                 {{title}}
             {% else %}
-                Ingresar Votante
+                Ingresar Amigo
 
             {% endif %}
         </h2>
@@ -149,7 +149,7 @@ Agregar Amigo | MCD
                     <label for="etiqueta" class="form-label">Etiqueta</label>
                     <select required class="form-select" aria-label="Default select example" name="etiqueta" id="etiqueta">
                         {% if is_leader %}
-                            <option value="LIDER">Líder</option>
+                            <option value="LIDER">Coordinador</option>
                         {% elif is_coordinador %}
                             <option value="COORDINADOR">Coordinador</option>
                         {% endif %}
