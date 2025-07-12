@@ -11,6 +11,7 @@ from myapp.models import Etiqueta, Votante, VotanteProfile, VotantePuestoVotacio
 from myapp.models import Municipio, Barrio, Comuna, Departamento, PuestoVotacion
 from myapp.models import CustomUser, CustomLink, CustomUserLider
 from myapp.models import Campaign
+from myapp.models import AdditionalQuestion
 import math
 
 from myapp.serializers import BarrioSerializer
@@ -1707,6 +1708,20 @@ class DataController():
         comuna = get_data_from_post(data, "comuna")
         departamento_obj = Departamento.objects.first()
         etiqueta = get_data_from_post(data,"etiqueta")
+        additionals_question = [(key, value) for key, value in data.items() if 'add_question' in key]
+        if additionals_question:
+            for additional_question in additionals_question:
+                question = additional_question[0]
+                answer = additional_question[1]
+                if type(answer) == list and len(answer) > 0:
+                    answer = answer[0]
+
+                add_question = AdditionalQuestion(
+                    votante= votante,
+                    question=question,
+                    answer=answer,
+                )
+                add_question.save()
         if get_data_from_post(data,"link"):
             link = get_data_from_post(data,"link")
         else:

@@ -541,3 +541,16 @@ class Campaign(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.name, self.is_active)
+
+class AdditionalQuestion(models.Model):
+    votante = models.ForeignKey(
+        Votante,
+        blank=True,
+        on_delete=models.CASCADE,
+        null=True
+    )
+    question = models.CharField(max_length=1024)
+    answer = models.CharField(max_length=1024)
+
+    def __str__(self):
+        return '{} - {} - {}'.format(self.votante, self.question, self.answer)

@@ -5,7 +5,7 @@ from myapp.models import Departamento, Municipio, Barrio, Comuna
 from myapp.models import Votante, VotanteProfile, VotantePuestoVotacion, VotanteMessage
 from myapp.models import PuestoVotacion, CustomUser, IntecionDeVoto
 from myapp.models import CustomLink, EtiquetaVotante, Etiqueta
-from myapp.models import Campaign
+from myapp.models import Campaign, AdditionalQuestion
 from datetime import date, timedelta
 
 # filters
@@ -174,3 +174,4 @@ admin.site.register(CustomLink)
 
 # campaing
 admin.site.register(Campaign)
+admin.site.register(AdditionalQuestion)

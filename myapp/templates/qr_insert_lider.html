@@ -153,6 +153,66 @@
           </select>
         </div>
 
+
+        <div>
+          <label class="form-label">DESEA REALIZAR REUNION</label>
+          <select name="add_question_desea_reunion" class="form-select" required>
+            <option value="SI">Si</option>
+            <option value="NO">NO</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label">DIA EN EL QUE DESEA REALIZAR SU REUNION</label>
+          <select name="add_question_dia_reunion" class="form-select" required>
+            <option value="LUNES">LUNES</option>
+            <option value="MARTES">MARTES</option>
+            <option value="MIERCOLES">MIERCOLES</option>
+            <option value="JUEVES">JUEVES</option>
+            <option value="VIERNES">VIERNES</option>
+            <option value="SABADO">SABADO</option>
+            <option value="DOMINGO">DOMINGO</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label">JORNADA EN LA CUAL DESEA REALIZAR SU REUNION</label>
+          <select name="add_question_jornada_reunion" class="form-select" required>
+            <option value="MAÑANA">MAÑANA (8AM A 12AM)</option>
+            <option value="TARDE">TARDE (3PM A 6.00PM)</option>
+            <option value="NOCHE">NOCHE (6PM A 9PM)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label">CUANTAS MUJERES PUEDEN PARTICIPAR EN EL EVENTO DE MUJERES</label>
+          <input type="number" class="form-control" name="add_question_cuantas_mujeres" required inputmode="numeric" >
+        </div>
+
+
+        <div>
+          <label class="form-label">CUANTAS JOVENES PUEDEN PARTICIPAR EN EL EVENTO DE JOVENES</label>
+          <input type="number" class="form-control" name="add_question_cuantos_jovenes" required inputmode="numeric">
+        </div>
+
+        <div>
+          <label class="form-label">DESEA HACER PARTE DE LOS GRUPOS DE LA CAMPAÑA</label>
+          <select name="add_question_parte_de_grupos" class="form-select" required>
+            <option value="SI">Si</option>
+            <option value="NO">NO</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label">EN QUE GRUPO DESEA PARTICIPAR</label>
+          <select name="add_question_grupo_participar" class="form-select" required>
+            <option value="AVANZADA">AVANZADA</option>
+            <option value="LOGISTICA DE EVENTOS">LOGISTICA DE EVENTOS</option>
+            <option value="ORADOR">ORADOR</option>
+            <option value="ACOMPAÑAMIENTO">ACOMPAÑAMIENTO</option>
+          </select>
+        </div>
+
         <!-- Consentimiento -->
         <div class="form-check">
           <label class="form-check-label" for="flexCheckIndeterminate">

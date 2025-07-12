@@ -38,7 +38,7 @@ body {
 }
 
 .principal_color {
-    background-color: #323F1D !important;
+    background-color: #216220 !important;
 }
 
 .verde_color_b {
@@ -83,7 +83,7 @@ body {
 
 .home-action-btn {
 
-    background-color: #323F1D;
+    background-color: #216220;
     color: white;
     text-align: center;
     font-size: 30px;
@@ -102,7 +102,7 @@ body {
 
 
 .home-action-btn:hover {
-    background-color: #323F1D;
+    background-color: #216220;
     color: white;
 }
 
@@ -472,7 +472,7 @@ body {
 }
 } 
 .bg-dark{
-    background-color: #323F1D !important;
+    background-color: #216220 !important;
 }
 
 .navbar{
