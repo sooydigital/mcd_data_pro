@@ -1215,10 +1215,13 @@ class DataController():
         votantes = []
         for votante in votantes_list:
             votante_profile = votante.votanteprofile_set.first()
+            referrals = len(Votante.objects.filter(lider_id=votante.id))
+            if referrals < 15: # TODO Remove this machetazo 
+                continue
             votante_data = {
                 "id": votante.id,
                 "name": votante.full_name(),
-                "referrals": len(Votante.objects.filter(lider_id=votante.id)),
+                "referrals": referrals,
                 "document_id": votante.document_id
             }
             is_lider = votante.type in ['DINAMIZADOR', "LIDER"]
