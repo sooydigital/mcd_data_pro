@@ -297,7 +297,7 @@ def insert_votante_with_sub_link(request, sub_link):
             (11,'Noviembre'), 
             (12,'Diciembre'),
         ],
-        'years': [str(y).replace('.','') for y in range(1900,2006)]
+        'years': [str(y).replace('.','') for y in range(1900,2010)]
     }
     campaing_name = DataController.get_current_campaing().name
     if campaing_name == 'cartagena_agosto':
